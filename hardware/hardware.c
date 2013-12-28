@@ -2,6 +2,7 @@
 
 #include "FreeRTOS.h"
 #include "hardware.h"
+#include "monita.h"
 
 
 void setup_hardware()	{
@@ -119,34 +120,20 @@ void init_hardware()	{
 	#endif 
 }
 
-int setup_konter_onoff(unsigned int aaa, unsigned char statk) {
-	//printf("\r\n aaa: %d, statk: %d\r\n", aaa, statk);
+int init_konter_onoff(unsigned int aaa, unsigned char status) {
 	int bbb = 0;
-	if (statk==1) {
-
-	} else if (statk==3)	{
-		if (aaa==0) {	;	bbb = 201;	}
-		if (aaa==1) {	;	bbb = 202;	}
-		if (aaa==2) {	;	bbb = 203;	}
-		if (aaa==3) {	;	bbb = 204;	}
-		if (aaa==4) {	;	bbb = 205;	}
-		if (aaa==5) {	;	bbb = 206;	}
-		if (aaa==6) {	;	bbb = 207;	}
-		if (aaa==7) {	;	bbb = 208;	}
-		if (aaa==8) {	;	bbb = 209;	}
-		if (aaa==9) {	;	bbb = 210;	}
-	} else {
+	if (status==sONOFF)	{
+		printf("\r\n aaa: %d, statk: %d\r\n", aaa, status);
 		if (aaa==0) {	IO2_INT_EN_F &= ~iKonter_1;		bbb = 1;	}
 		if (aaa==1) {	IO2_INT_EN_F &= ~iKonter_2;		bbb = 2;	}
 		if (aaa==2) {	IO2_INT_EN_F &= ~iKonter_3;		bbb = 3;	}
 		if (aaa==3) {	IO2_INT_EN_F &= ~iKonter_4;		bbb = 4;	}
 		if (aaa==4) {	IO2_INT_EN_F &= ~iKonter_5;		bbb = 5;	}
-		if (aaa==5) {	IO2_INT_EN_F &= ~iKonter_6;		bbb = 6;	}
-		if (aaa==6) {	IO2_INT_EN_F &= ~iKonter_7;		bbb = 7;	}
-		if (aaa==7) {	IO2_INT_EN_F &= ~iKonter_8;		bbb = 8;	}
-		if (aaa==8) {	IO2_INT_EN_F &= ~iKonter_9;		bbb = 9;	}
-		if (aaa==9) {	IO2_INT_EN_F &= ~iKonter_10;	bbb = 10;	}
-		
+		if (aaa==5) {	IO0_INT_EN_F &= ~iKonter_6;		bbb = 6;	}
+		if (aaa==6) {	IO0_INT_EN_F &= ~iKonter_7;		bbb = 7;	}
+		if (aaa==7) {	IO0_INT_EN_F &= ~iKonter_8;		bbb = 8;	}
+		if (aaa==8) {	IO0_INT_EN_F &= ~iKonter_9;		bbb = 9;	}
+		if (aaa==9) {	IO0_INT_EN_F &= ~iKonter_10;	bbb = 10;	}
 	}
 	return bbb;
 }
@@ -176,6 +163,18 @@ void gpio_init()	{
 	PINMODE6 = 0x00000000;
 	PINMODE7 = 0x00000000;
 	PINMODE8 = 0x00000000;
+	
+	#ifdef BOARD_SANTER_v1_0
+		int i;
+		struct t_env *st_env;
+		st_env = ALMT_ENV;
+		
+		for (i=0; i<JML_KANAL; i++)		{
+			if (st_env->kalib[i].status==sONOFF)	{
+				init_konter_onoff(i, st_env->kalib[i].status);
+			}
+		}
+	#endif
 }
 
 // fungsi gpio_int_init untuk inisialisasi input interrupt konter

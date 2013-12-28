@@ -12,7 +12,7 @@ void setup_hardware();
 void init_hardware();
 void gpio_init();
 void gpio_int_init();
-int setup_konter_onoff(unsigned int kanale, unsigned char statk);
+int init_konter_onoff(unsigned int kanale, unsigned char status);
 
 void rtcWrite(struct tm *newTime);
 
