@@ -302,9 +302,20 @@ int proses_file_terkirim(int len, char *str)	{
 	sprintf(pch, "\\%s\\%s", FOLDER_SENDED, nf);
 	//uprintf("path: %s, ke: %s\r\n", path, pch);
 	res = f_rename(path, pch);
-	uprintf(" File %s sudah terkirim & dipindah ke %s: %d\r\n", nf, pch, res);
+	//uprintf(" File %s sudah terkirim & dipindah ke %s: %d\r\n", nf, pch, res);
 	
-	return 0;
+	int kk=1;
+	while(res == 8) 	{
+		sprintf(pch, "\\%s\\dob%d_%s", FOLDER_SENDED, kk, nf);
+		//uprintf("file %s dobel ke %s !!!\r\n", path, pch);
+		res = f_rename(path, pch);
+		uprintf(" >>>>> File DOBEL %s sudah terkirim & dipindah ke %s: %d\r\n", nf, pch, res);
+		kk++;
+		//vTaskDelay(1000);
+		//res = 0;
+	} 
+	
+	return res;
 }
 
 #endif
@@ -394,6 +405,8 @@ int tulis_reg_mb(int reg, int index, int jml, char* str)	{	// WRITE_MULTIPLE_REG
 	}
 	
 	float *fl;
+	struct tm aaa;
+	unsigned int wx = (unsigned int) now_to_time(1,aaa);		// epoch
 	for (i=0; i<njml; i++)	{
 		tmpFl = (str[7+i*4]<<24) | (str[8+i*4]<<16) | (str[9+i*4]<<8) | (str[10+i*4]) ;
 		fl = (float *)&tmpFl;
@@ -401,12 +414,19 @@ int tulis_reg_mb(int reg, int index, int jml, char* str)	{	// WRITE_MULTIPLE_REG
 
 		data_f[index+i] = *fl;
 		if (index+i==24)	{			// waktu epoch !!!
+			unsigned int wm = (unsigned int) data_f[index+i] + (60*60*7);
+			
+			//uprintf("epoch : %ld\r\n", wx);
+		
 			//uprintf(">>>>> sync waktu modem[%d] : %.0f\r\n", index+i, data_f[index+i]);
-			if (st_hw.uuwaktu>2)	{
-				uprintf("+++++ update waktu modem[%d] : %.0f !!!\r\n", index+i, data_f[index+i]);
-				sync_waktu_modem(data_f[index+i]);
+			#if 0
+			if (st_hw.uuwaktu>2)	
+			{
+				uprintf("+++++ update waktu modem[%d] : %.0f, %ld, epoch monita: %ld !!!\r\n", index+i, data_f[index+i], wm, wx);
+				sync_waktu_modem(wm);
 				st_hw.uuwaktu=0;
 			}
+			#endif
 		}
 	}
 	

@@ -69,10 +69,14 @@ char set_kanal(int argc, char **argv)		{
 		else if (strcmp(argv[2], "status") == 0)	{
 			int stx;
 			uprintf("no: %d, [0]: %s, [1]: %s, [2]: %s, [3]: %s\r\n", no, argv[0], argv[1], argv[2], argv[3]);
-			stx = atoi( argv[3] );
+			//stx = atoi(argv[3]);
 			st_env->kalib[no-1].status = stx;
-			if (stx == sRPM_RH)	{
+			if (atoi(argv[3]) == sRPM_RH)	{
 				st_env->kalib[no].status = sRUNNING_HOURS;
+			} else if ((atoi(argv[3])==sONOFF) || (strcmp(argv[3],"onoff")==0))	{
+				st_env->kalib[no].status = sONOFF;
+			} else {
+				st_env->kalib[no].status = sRPM;
 			}
 			uprintf("  status[%d] : %d\r\n", no, st_env->kalib[no-1].status);
 		} else	{
