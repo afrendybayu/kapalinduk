@@ -81,7 +81,7 @@ int ch;
 		loopac++;
 		if (loopac>=100)	{
 			hitung_rpm();
-			
+			cek_input_onoff();
 			loopac = 0;
 			#if 1
 			ff++;

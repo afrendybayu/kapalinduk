@@ -3,13 +3,45 @@
 #include "task.h"
 #include "ap_rpm.h"
 #include "monita.h"
+#include "hardware.h"
 #include "math.h"
 #include <time.h>
 
 extern unsigned int giliran;
 //extern volatile float data_f[];
 extern struct t2_konter konter;
-extern unsigned char status_konter[];
+//extern unsigned char status_konter[];
+
+
+void cek_input_onoff(void)	{
+	struct t_env *env2;
+	env2 = (char *) ALMT_ENV;
+	int i=0, ww=0, zzz;
+	
+	for (i=0; i<JML_KANAL; i++)	{
+		ww = env2->kalib[i].status;
+		if ( (ww==sONOFF) || (ww==sPUSHBUTTON)  || (ww==sONOFF_RH) || (ww==sFLOW1) || (ww==sFLOW2) || (ww==ssFLOW2) )	{
+			switch (i)	{
+				case 0: zzz = iKonter_1; break;
+				case 1: zzz = iKonter_2; break;
+				case 2: zzz = iKonter_3; break;
+				case 3: zzz = iKonter_4; break;
+				case 4: zzz = iKonter_5; break;
+				case 5: zzz = iKonter_6; break;
+				case 6: zzz = iKonter_7; break;
+				case 7: zzz = iKonter_8; break;
+				case 8: zzz = iKonter_9; break;
+				case 9: zzz = iKonter_10; break;
+			}
+			if (i>=6) {
+				konter.t_konter[i].onoff = PORT2_INPUT(zzz);
+			} else {
+				konter.t_konter[i].onoff = PORT0_INPUT(zzz);
+			}
+		}
+		
+	}
+}
 
 void set_konter_rpm(int st, unsigned int period)		{
 	//new_period = T1TC;
@@ -51,7 +83,7 @@ void reset_konter(void)	{
 		konter.t_konter[i].rh_flag = 0;
 		konter.t_konter[i].rh = 0;
 		
-		status_konter[i] = 0;
+		//status_konter[i] = 0;
 	}
 
 }
@@ -213,6 +245,9 @@ void data_frek_rpm (void) {
 			//*(&MEM_RTC0+(i*2))   = data_f[i*2];		// konter.t_konter[i].onoff;
 			//*(&MEM_RTC0+(i*2+1)) = data_f[i*2+1];		// konter.t_konter[i].hit;
 			#endif
+		}
+		else if (status==sONOFF_RH)	{
+			data_f[i] = konter.t_konter[i].onoff;
 		}
 		else if (status==sRUNNING_HOURS)	{
 			struct tm w;

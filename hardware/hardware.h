@@ -16,9 +16,9 @@ int init_konter_onoff(unsigned int kanale, unsigned char status);
 
 void rtcWrite(struct tm *newTime);
 
-#define PORT2_INPUT(kanal)	(FIO2PIN & BIT(kanal)) ? 1 : 0;
-#define PORT1_INPUT(kanal)	(FIO1PIN & BIT(kanal)) ? 1 : 0;
-#define PORT0_INPUT(kanal)	(FIO0PIN & BIT(kanal)) ? 1 : 0;
+#define PORT2_INPUT(kanal)	(FIO2PIN & kanal) ? 1 : 0;
+#define PORT1_INPUT(kanal)	(FIO1PIN & kanal) ? 1 : 0;
+#define PORT0_INPUT(kanal)	(FIO0PIN & kanal) ? 1 : 0;
 
 #ifdef BOARD_SANTER
 	#ifdef BOARD_SANTER_v1_0

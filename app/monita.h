@@ -65,6 +65,7 @@ typedef enum IAP_STATUS_t {
 #define  sFLOWx			5
 #define	 sRPM_RH		6
 #define	 sRUNNING_HOURS	7
+#define	 sONOFF_RH		8
 #define	 nFLOW1			100
 #define	 ssFLOW2		201
 #define	 nFLOW2			202
@@ -190,7 +191,7 @@ struct t2_konter{
 
 unsigned int giliran;
 struct t2_konter konter;
-unsigned char status_konter[JML_KANAL];
+//unsigned char status_konter[JML_KANAL];
 
 struct t_st_hw  {
 	unsigned char init;

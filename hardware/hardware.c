@@ -122,7 +122,7 @@ void init_hardware()	{
 
 int init_konter_onoff(unsigned int aaa, unsigned char status) {
 	int bbb = 0;
-	if (status==sONOFF)	{
+	if ( (status==sONOFF) || (status==sONOFF_RH))	{
 		printf("\r\n aaa: %d, statk: %d\r\n", aaa, status);
 		if (aaa==0) {	IO2_INT_EN_F &= ~iKonter_1;		bbb = 1;	}
 		if (aaa==1) {	IO2_INT_EN_F &= ~iKonter_2;		bbb = 2;	}
@@ -165,15 +165,18 @@ void gpio_init()	{
 	PINMODE8 = 0x00000000;
 	
 	#ifdef BOARD_SANTER_v1_0
-		int i;
+	#if 0		// tanpa interrupt 
+		int i, stt;
 		struct t_env *st_env;
 		st_env = ALMT_ENV;
 		
 		for (i=0; i<JML_KANAL; i++)		{
-			if (st_env->kalib[i].status==sONOFF)	{
-				init_konter_onoff(i, st_env->kalib[i].status);
+			stt = st_env->kalib[i].status;
+			if (stt==sONOFF)	{
+				init_konter_onoff(i, stt);
 			}
 		}
+	#endif
 	#endif
 }
 
