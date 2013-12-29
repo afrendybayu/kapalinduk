@@ -57,15 +57,15 @@ typedef enum IAP_STATUS_t {
 #define  YA				1
 #define  TIDAK			0
 
-#define  sRPM			0
-#define	 sONOFF			1
-#define	 sPUSHBUTTON	2
-#define	 sFLOW1			3
-#define	 sFLOW2			4
-#define  sFLOWx			5
-#define	 sRPM_RH		6
-#define	 sRUNNING_HOURS	7
-#define	 sONOFF_RH		8
+#define  sRPM			1
+#define	 sONOFF			2
+#define	 sPUSHBUTTON	3
+#define	 sFLOW1			4
+#define	 sFLOW2			5
+#define  sFLOWx			6
+#define	 sRPM_RH		7
+#define	 sRUNNING_HOURS	8
+#define	 sONOFF_RH		9
 #define	 nFLOW1			100
 #define	 ssFLOW2		201
 #define	 nFLOW2			202

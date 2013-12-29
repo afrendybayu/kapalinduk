@@ -34,9 +34,12 @@ void cek_input_onoff(void)	{
 				case 9: zzz = iKonter_10; break;
 			}
 			if (i>=6) {
-				konter.t_konter[i].onoff = PORT2_INPUT(zzz);
-			} else {
 				konter.t_konter[i].onoff = PORT0_INPUT(zzz);
+			} else {
+				konter.t_konter[i].onoff = PORT2_INPUT(zzz);
+				if (i==2)	{
+					uprintf("kanal 3: %d\r\n", konter.t_konter[i].onoff);
+				}
 			}
 		}
 		

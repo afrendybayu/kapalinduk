@@ -41,10 +41,20 @@ char set_kanal(int argc, char **argv)		{
 	sprintf(str_kanal, "%s", argv[1]);
 	ret = sscanf(str_kanal, "%d", &kanal);
 	
+
+	if (argc==2)	{
+		if (strcmp(argv[1], "default") == 0)	{
+			printf("  set_kanal dengan konfig default !\r\n");
+			set_kanal_default();
+		} else {
+			kanal_kitab();
+		}
+		return 0;
+	}
+	
 	int no = cek_nomor_valid(argv[1], JML_KANAL*2);
-		
 	if (no == TIDAK_VALID || no == NULL)	{
-		printf("  no sumber TIDAK VALID\r\n");
+		printf("  no kanal TIDAK VALID\r\n");
 		return 2;
 	}
 	
@@ -59,14 +69,9 @@ char set_kanal(int argc, char **argv)		{
 	
 	memcpy((char *) st_env, (char *) ALMT_ENV, (sizeof (struct t_env)));
 	
-	if (argc==4 || argc==2)	{
+	if (argc==4)	{
 		//int no = cek_nomor_valid(argv[1], JML_KANAL);
-		if (strcmp(argv[1], "default") == 0)	{
-			printf("  set_kanal dengan konfig default !\r\n");
-			set_kanal_default();
-			return 0;
-		}
-		else if (strcmp(argv[2], "status") == 0)	{
+		if (strcmp(argv[2], "status") == 0)	{
 			int stx;
 			uprintf("no: %d, [0]: %s, [1]: %s, [2]: %s, [3]: %s\r\n", no, argv[0], argv[1], argv[2], argv[3]);
 			//stx = atoi(argv[3]);
