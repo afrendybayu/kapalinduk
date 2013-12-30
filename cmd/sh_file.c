@@ -23,6 +23,7 @@ void set_konfig_file(int argc, char **argv)	{
 	
 	uprintf("\r\n Upload Konfig, path: %s\r\n", argv[1]);
 	upload_konfig(argv[1]);
+	uprintf("\r\n ******* SUKSES ! ke file %s\r\n", argv[1]);
 }
 
 void cek_file(int argc, char **argv)	{

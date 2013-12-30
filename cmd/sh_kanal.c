@@ -72,18 +72,25 @@ char set_kanal(int argc, char **argv)		{
 	if (argc==4)	{
 		//int no = cek_nomor_valid(argv[1], JML_KANAL);
 		if (strcmp(argv[2], "status") == 0)	{
-			int stx;
-			uprintf("no: %d, [0]: %s, [1]: %s, [2]: %s, [3]: %s\r\n", no, argv[0], argv[1], argv[2], argv[3]);
+			int stx = atoi(argv[3]);
+			uprintf("no: %d, [0]: %s, [1]: %s, [2]: %s, [3]: %s = %d\r\n", no, argv[0], argv[1], argv[2], argv[3], stx+1000);
 			//stx = atoi(argv[3]);
-			st_env->kalib[no-1].status = stx;
-			if (atoi(argv[3]) == sRPM_RH)	{
-				st_env->kalib[no-1].status = sRUNNING_HOURS;
-			} else if ((atoi(argv[3])==sONOFF_RH) || (atoi(argv[3])==sONOFF) || (strcmp(argv[3],"onoffrh")==0))	{
+			//st_env->kalib[no-1].status = ;
+			if ((stx==sRPM) || (strcmp(argv[3],"rpm")==0))	{
+				st_env->kalib[no-1].status = sRPM;
+			} else if ((stx==sRPM_RH) || (strcmp(argv[3],"rpmrh")==0))	{
+				st_env->kalib[no-1].status = sRPM_RH;
+				st_env->kalib[no].status = sRUNNING_HOURS;
+			} else if ((stx==sONOFF) || (strcmp(argv[3],"flowx")==0))	{
+				st_env->kalib[no-1].status = sFLOWx;
+			} else if ((stx==sONOFF) || (strcmp(argv[3],"onoff")==0))	{
+				st_env->kalib[no-1].status = sONOFF;
+			} else if ((stx==sONOFF_RH) || (strcmp(argv[3],"onoffrh")==0))	{
 				st_env->kalib[no-1].status = sONOFF_RH;
 			} else {
 				st_env->kalib[no-1].status = sRPM;
 			}
-			uprintf("  status[%d] : %d\r\n", no, st_env->kalib[no-1].status);
+			uprintf("  status[%d] : %d\r\n", no-1, st_env->kalib[no-1].status);
 		} else	{
 			sprintf(str_kanal, "%s", argv[2]);
 			ret = sscanf(str_kanal, "%f", &m);

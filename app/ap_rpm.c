@@ -37,9 +37,11 @@ void cek_input_onoff(void)	{
 				konter.t_konter[i].onoff = PORT0_INPUT(zzz);
 			} else {
 				konter.t_konter[i].onoff = PORT2_INPUT(zzz);
-				if (i==2)	{
+				/*
+				if (i==9)	{
 					uprintf("kanal 3: %d\r\n", konter.t_konter[i].onoff);
 				}
+				//*/
 			}
 		}
 		
@@ -249,8 +251,36 @@ void data_frek_rpm (void) {
 			//*(&MEM_RTC0+(i*2+1)) = data_f[i*2+1];		// konter.t_konter[i].hit;
 			#endif
 		}
-		else if (status==sONOFF_RH)	{
+		else if (status==sONOFF)	{
 			data_f[i] = konter.t_konter[i].onoff;
+		}
+		else if (status==sONOFF_RH)	{
+			//*
+			//data_f[i] = konter.t_konter[i].onoff;
+			struct tm w;
+			time_t t;
+			
+			t = now_to_time(1, w);
+			int fx = konter.t_konter[i].rh_flag;
+			if (konter.t_konter[i].onoff>0 && fx==0)	{		// rpm mutar dari mati
+				konter.t_konter[i].rh_on = t;		// waktu mulai
+				konter.t_konter[i].rh_flag = 1;
+				//uprintf("----------> flag: 1  >>> %ld  -- %ld !!\r\n", konter.t_konter[i].rh, konter.t_konter[i].rh_x);
+			}
+			if (fx==1)	{		// rpm jalan
+				konter.t_konter[i].rh_off = t;		// waktu berhenti
+				hitung_running_hours(i);
+				//uprintf("----------> flag: 1x >>> %ld  -- %ld !!\r\n", konter.t_konter[i].rh, konter.t_konter[i].rh_x);
+			}
+			if (data_f[i-1]==0 && fx==1)		{			// rpm mati, simpan dulu
+				konter.t_konter[i].rh_x += konter.t_konter[i].rh;
+				konter.t_konter[i].rh_flag = 2;
+				//uprintf("===========> flag: 2  >>> %ld  -- %ld !!\r\n", konter.t_konter[i].rh, konter.t_konter[i].rh_x);
+			}
+			if (fx==2)	{
+				konter.t_konter[i].rh_flag = 0;
+			}
+			//*/
 		}
 		else if (status==sRUNNING_HOURS)	{
 			struct tm w;
