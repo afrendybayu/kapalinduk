@@ -38,7 +38,7 @@ void cek_input_onoff(void)	{
 			} else {
 				konter.t_konter[i].onoff = PORT2_INPUT(zzz);
 			}
-			//*
+			/*
 			if (i==2)	{
 				uprintf("kanal 3: %d\r\n", konter.t_konter[i].onoff);
 			}
@@ -188,7 +188,7 @@ void hitung_running_hours(int i)		{
 	data_f[i] = konter.t_konter[i].rh_x + t;
 	*(&MEM_RTC0+RTC_MEM_START+i+1) = *( (int*) &data_f[i]);
 	
-	data_f[28] = konter.t_konter[i].rh_x + t;
+	//data_f[28] = konter.t_konter[i].rh_x + t;
 }
 
 int cobasini;// = 0;
@@ -207,7 +207,7 @@ void data_frek_rpm (void) {
 		status = st_env->kalib[i].status;
 		
 		if (status==sRPM || status==sRPM_RH)		{
-			
+			/*
 			if (data_putaran[i])	{
 				// cari frekuensi
 				temp_f = (float) 1000000000.00 / data_putaran[i]; // beda msh dlm nS
@@ -236,8 +236,10 @@ void data_frek_rpm (void) {
 			//*(&MEM_RTC0+(i*2+1)) = (int) data_f[i*2+1];	// konter.t_konter[i].hit;
 			//*(&MEM_RTC0+RTC_MEM_START+i+1) = 0;
 			#endif
+			//*/
 		}
 		else if (status==sFLOWx)	{
+			/*
 			data_f[i] = (konter.t_konter[i].hit*st_env->kalib[i].m)+st_env->kalib[i].C;
 			
 			#if 0
@@ -253,6 +255,7 @@ void data_frek_rpm (void) {
 			//*(&MEM_RTC0+(i*2))   = data_f[i*2];		// konter.t_konter[i].onoff;
 			//*(&MEM_RTC0+(i*2+1)) = data_f[i*2+1];		// konter.t_konter[i].hit;
 			#endif
+			//*/
 		}
 		else if (status==sONOFF)	{
 			//data_f[i] = konter.t_konter[i].onoff;
@@ -260,7 +263,7 @@ void data_frek_rpm (void) {
 		else if (status==sONOFF_RH)	{
 			cobasini++;
 			uprintf("cobasini: %d --- %d [%d]\r\n", konter.t_konter[i].onoff,cobasini, (konter.t_konter[i].onoff>0)?1:0);
-			uprintf("cobasini: %d --- %d [%d]\r\n", konter.t_konter[i].onoff,cobasini, (konter.t_konter[i].onoff>0)?1:0);
+			uprintf("---cobasini: %d --- %d [%d]\r\n", konter.t_konter[i].onoff,cobasini, (konter.t_konter[i].onoff>0)?1:0);
 			data_f[29] = konter.t_konter[i].onoff;
 			
 			struct tm w;
@@ -289,6 +292,7 @@ void data_frek_rpm (void) {
 			//*/
 		}
 		else if (status==sRUNNING_HOURS)	{
+		/*
 			struct tm w;
 			time_t t;
 			
@@ -312,6 +316,7 @@ void data_frek_rpm (void) {
 			if (fx==2)	{
 				konter.t_konter[i].rh_flag = 0;
 			}
+		//*/
 		}
 		
 		

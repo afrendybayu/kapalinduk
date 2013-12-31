@@ -80,7 +80,7 @@ int ch;
 		vTaskDelay(1);
 		loopac++;
 		if (loopac>=100)	{
-			hitung_rpm();
+			//hitung_rpm();
 			cek_input_onoff();
 			loopac = 0;
 			#if 1
