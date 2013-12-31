@@ -37,14 +37,13 @@ void cek_input_onoff(void)	{
 				konter.t_konter[i].onoff = PORT0_INPUT(zzz);
 			} else {
 				konter.t_konter[i].onoff = PORT2_INPUT(zzz);
-				/*
-				if (i==9)	{
-					uprintf("kanal 3: %d\r\n", konter.t_konter[i].onoff);
-				}
-				//*/
 			}
+			//*
+			if (i==2)	{
+				uprintf("kanal 3: %d\r\n", konter.t_konter[i].onoff);
+			}
+			//*/
 		}
-		
 	}
 }
 
@@ -188,7 +187,11 @@ void hitung_running_hours(int i)		{
 	konter.t_konter[i].rh = t;
 	data_f[i] = konter.t_konter[i].rh_x + t;
 	*(&MEM_RTC0+RTC_MEM_START+i+1) = *( (int*) &data_f[i]);
+	
+	data_f[28] = konter.t_konter[i].rh_x + t;
 }
+
+int cobasini;// = 0;
 
 void data_frek_rpm (void) {
 	//qsprintf("%s() masuk ...\r\n", __FUNCTION__);
@@ -252,14 +255,17 @@ void data_frek_rpm (void) {
 			#endif
 		}
 		else if (status==sONOFF)	{
-			data_f[i] = konter.t_konter[i].onoff;
+			//data_f[i] = konter.t_konter[i].onoff;
 		}
 		else if (status==sONOFF_RH)	{
-			//*
-			//data_f[i] = konter.t_konter[i].onoff;
+			cobasini++;
+			uprintf("cobasini: %d --- %d [%d]\r\n", konter.t_konter[i].onoff,cobasini, (konter.t_konter[i].onoff>0)?1:0);
+			uprintf("cobasini: %d --- %d [%d]\r\n", konter.t_konter[i].onoff,cobasini, (konter.t_konter[i].onoff>0)?1:0);
+			data_f[29] = konter.t_konter[i].onoff;
+			
 			struct tm w;
 			time_t t;
-			
+			//*
 			t = now_to_time(1, w);
 			int fx = konter.t_konter[i].rh_flag;
 			if (konter.t_konter[i].onoff>0 && fx==0)	{		// rpm mutar dari mati
