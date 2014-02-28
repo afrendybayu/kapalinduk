@@ -111,8 +111,9 @@ void info_kanal()	{
 	printf("   %4d : sRPM\r\n", sRPM);
 	printf("   %4d : sONOFF\r\n", sONOFF);
 	printf("   %4d : sPUSHBUTTON\r\n", sPUSHBUTTON);
-	printf("   %4d : sFLOW1\r\n", sFLOW1);
-	printf("   %4d : sFLOW2\r\n", sFLOW2);
+	//printf("   %4d : sFLOW1\r\n", sFLOW1);
+	printf("   %4d : sFLOWx\r\n", sFLOWx);
+	//printf("   %4d : sFLOW2\r\n", sFLOW2);
 	printf("   %4d : sRPM_RH\r\n", sRPM_RH);
 	printf("   %4d : sRUNNING_HOURS\r\n", sRUNNING_HOURS);
 	printf("   %4d : ANALOG MONITA\r\n", 250);

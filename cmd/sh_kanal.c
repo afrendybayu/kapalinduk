@@ -74,7 +74,7 @@ char set_kanal(int argc, char **argv)		{
 		//int no = cek_nomor_valid(argv[1], JML_KANAL);
 		if (strcmp(argv[2], "status") == 0)	{
 			int stx = atoi(argv[3]);
-			uprintf("no: %d, [0]: %s, [1]: %s, [2]: %s, [3]: %s = %d\r\n", no, argv[0], argv[1], argv[2], argv[3], stx+1000);
+			uprintf("no: %d, [0]: %s, [1]: %s, [2]: %s, [3]: %s = %d\r\n", no, argv[0], argv[1], argv[2], argv[3], stx);
 			//stx = atoi(argv[3]);
 			//st_env->kalib[no-1].status = ;
 			if ((stx==sRPM) || (strcmp(argv[3],"rpm")==0))	{
@@ -88,6 +88,8 @@ char set_kanal(int argc, char **argv)		{
 				st_env->kalib[no-1].status = sONOFF;
 			} else if ((stx==sONOFF_RH) || (strcmp(argv[3],"onoffrh")==0))	{
 				st_env->kalib[no-1].status = sONOFF_RH;
+			} else if ((stx==sFLOWx) || (strcmp(argv[3],"flowx")==0))	{
+				st_env->kalib[no-1].status = sFLOWx;
 			} else {
 				st_env->kalib[no-1].status = sRPM;
 			}

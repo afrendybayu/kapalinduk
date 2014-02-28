@@ -86,7 +86,7 @@ void gpio_ISR_Handler( void )	{
 	#endif
 	if (IO0_INT_STAT_R & iKonter_10) {
 		t = 9; zz = env2->kalib[t].status; 
-		if (zz==sRPM) {
+		if ((zz==sRPM) || (zz==sFLOWx)) {
 			set_konter_rpm(t, new_period);
 		} 
 		#if 0
@@ -119,7 +119,7 @@ void gpio_ISR_Handler( void )	{
 	#endif
 	if (IO0_INT_STAT_R & iKonter_9)	{
 		t = 8;	zz = env2->kalib[t].status; 
-		if (zz==sRPM) {
+		if ((zz==sRPM) || (zz==sFLOWx)) {
 			set_konter_rpm(t, new_period);
 		}
 		#if 0
@@ -162,7 +162,7 @@ void gpio_ISR_Handler( void )	{
 	#endif
 	if (IO0_INT_STAT_R & iKonter_8)	{
 		t = 7;  zz = env2->kalib[t].status; 
-		if (zz==sRPM) {
+		if ((zz==sRPM) || (zz==sFLOWx)) {
 			set_konter_rpm(t, new_period);
 		}
 		#if 0
@@ -211,7 +211,7 @@ void gpio_ISR_Handler( void )	{
 	#endif
 	if (IO0_INT_STAT_R & iKonter_7)	{
 		t = 6; zz = env2->kalib[t].status; 
-		if (zz==sRPM) {
+		if ((zz==sRPM) || (zz==sFLOWx)) {
 			set_konter_rpm(t, new_period);
 		}
 		#if 0
@@ -258,7 +258,7 @@ void gpio_ISR_Handler( void )	{
 	#endif
 	if (IO0_INT_STAT_R & iKonter_6)	{
 		t = 5;  zz = env2->kalib[t].status; 
-		if (zz==sRPM) {
+		if ((zz==sRPM) || (zz==sFLOWx)) {
 			set_konter_rpm(t, new_period);
 		}
 		#if 0
@@ -304,7 +304,7 @@ void gpio_ISR_Handler( void )	{
 	#endif
 	if (IO2_INT_STAT_R & iKonter_5)	{
 		t = 4;	zz = env2->kalib[t].status; 
-		if (zz==sRPM) {
+		if ((zz==sRPM) || (zz==sFLOWx)) {
 			set_konter_rpm(t, new_period);
 		}
 		#if 0
@@ -353,10 +353,9 @@ void gpio_ISR_Handler( void )	{
 	}
 	#endif
 	if (IO2_INT_STAT_R & iKonter_4)	{
-		t = 3;
-		zz = env2->kalib[t].status; 
+		t = 3;	zz = env2->kalib[t].status; 
 
-		if (zz==sRPM) {
+		if ((zz==sRPM) || (zz==sFLOWx)) {
 			set_konter_rpm(t, new_period);
 		}
 		#if 0
@@ -377,7 +376,7 @@ void gpio_ISR_Handler( void )	{
 	
 	if (IO2_INT_STAT_R & iKonter_3)	{
 		t = 2; zz = env2->kalib[t].status; 
-		if (zz==sRPM) {
+		if ((zz==sRPM) || (zz==sFLOWx)) {
 			set_konter_rpm(t, new_period);
 		}
 		#if 1
@@ -426,7 +425,7 @@ void gpio_ISR_Handler( void )	{
 
 	if (IO2_INT_STAT_R & iKonter_2)	{
 		t = 1; zz = env2->kalib[t].status; 
-		if (zz==sRPM) {
+		if ((zz==sRPM) || (zz==sFLOWx)) {
 			set_konter_rpm(t, new_period);
 		}
 		#if 0
@@ -471,14 +470,14 @@ void gpio_ISR_Handler( void )	{
 	
 	if (IO2_INT_STAT_R & iKonter_1)	{
 		t = 0;	zz = env2->kalib[t].status; 
-		if (zz==sRPM) {
+		if ((zz==sRPM) || (zz==sFLOWx)) {
 			set_konter_rpm(t, new_period);
 		}
 		#if 0
 		else if (zz==sONOFF) {
 			set_konter_onoff(t, 1);
 		#ifdef PAKAI_PUSHBUTTON
-		} else if (status_konter[t]==sPUSHBUTTON) {
+		} else if (zz==sPUSHBUTTON) {
 			if (debound[t]==0) {
 				debound[t] = DELAY_DEBOUND;
 				#ifdef PAKAI_RELAY

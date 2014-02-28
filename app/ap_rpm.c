@@ -129,21 +129,6 @@ void hitung_rpm(void)	{
 	}
 	giliran++;
 	if (giliran == JML_KANAL) giliran = 0;
-	
-	#if 0
-	//portENTER_CRITICAL();
-	for (i=0; i<KANALNYA; i++)
-	{
-		if (konter.t_konter[i].hit_lama == konter.t_konter[i].hit)
-		{
-			konter.t_konter[i].beda = 0;
-		}
-		
-		konter.t_konter[i].hit_lama = konter.t_konter[i].hit; 
-	}
-	//portEXIT_CRITICAL();
-	#endif
-	
 }
 
 #if 0
@@ -240,10 +225,10 @@ void data_frek_rpm (void) {
 			//*/
 		}
 		else if (status==sFLOWx)	{
-			/*
+			//*
 			data_f[i] = (konter.t_konter[i].hit*st_env->kalib[i].m)+st_env->kalib[i].C;
 			
-			#if 0
+			#if 1
 			if (data_f[i]>nFLOW_MAX) {		// reset setelah 10juta, 7 digit
 			//if (data_f[(i*2)+1]>1000) {		// tes saja, reset setelah 10juta, 7 digit
 				data_f[i] = 0;
