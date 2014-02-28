@@ -82,18 +82,19 @@ char set_kanal(int argc, char **argv)		{
 			} else if ((stx==sRPM_RH) || (strcmp(argv[3],"rpmrh")==0))	{
 				st_env->kalib[no-1].status = sRPM_RH;
 				st_env->kalib[no].status = sRUNNING_HOURS;
-			} else if ((stx==sONOFF) || (strcmp(argv[3],"flowx")==0))	{
+			} else if ((stx==sFLOWx) || (strcmp(argv[3],"flowx")==0))	{
 				st_env->kalib[no-1].status = sFLOWx;
 			} else if ((stx==sONOFF) || (strcmp(argv[3],"onoff")==0))	{
 				st_env->kalib[no-1].status = sONOFF;
 			} else if ((stx==sONOFF_RH) || (strcmp(argv[3],"onoffrh")==0))	{
 				st_env->kalib[no-1].status = sONOFF_RH;
-			} else if ((stx==sFLOWx) || (strcmp(argv[3],"flowx")==0))	{
-				st_env->kalib[no-1].status = sFLOWx;
 			} else {
 				st_env->kalib[no-1].status = sRPM;
 			}
 			uprintf("  status[%d] : %d\r\n", no-1, st_env->kalib[no-1].status);
+			if (st_env->kalib[no-1].status==sONOFF_RH)	{
+				printf(">>> RESET MODUL untuk MENGAKTIFKAN ONOFF RH <<<\r\n");
+			}
 		} else	{
 			sprintf(str_kanal, "%s", argv[2]);
 			ret = sscanf(str_kanal, "%f", &m);

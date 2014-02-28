@@ -248,9 +248,9 @@ void data_frek_rpm (void) {
 		}
 		else if (status==sONOFF_RH)	{
 			cobasini++;
-			uprintf("cobasini: %d --- %d [%d]\r\n", konter.t_konter[i].onoff,cobasini, (konter.t_konter[i].onoff>0)?1:0);
-			uprintf("---cobasini: %d --- %d [%d]\r\n", konter.t_konter[i].onoff,cobasini, (konter.t_konter[i].onoff>0)?1:0);
-			data_f[29] = konter.t_konter[i].onoff;
+			//uprintf("cobasin1: %d --- %d [%d]\r\n", konter.t_konter[i].onoff,cobasini, (konter.t_konter[i].onoff>0)?1:0);
+			//uprintf("cobasin2: %d --- %d [%d]\r\n", konter.t_konter[i].onoff,cobasini, (konter.t_konter[i].onoff>0)?1:0);
+			//data_f[29] = konter.t_konter[i].onoff;
 			
 			struct tm w;
 			time_t t;
