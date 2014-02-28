@@ -27,6 +27,7 @@ int ch;
 	//uprintf("  task : %s\r\n", __FUNCTION__);
 	
 	reset_konter();
+	
 	load_data_rtc();
 
 	#ifdef PAKAI_SDCARD
@@ -60,6 +61,11 @@ int ch;
 	st_hw.init++;
 	int loopac=0, ff=0;
 	struct tm a;
+	
+	int ww=0;
+	
+	gpio_int_init();
+	
 	for( ;; )	{
 		
 
@@ -80,8 +86,8 @@ int ch;
 		vTaskDelay(1);
 		loopac++;
 		if (loopac>=100)	{
-			//hitung_rpm();
-			cek_input_onoff();
+			hitung_rpm();
+			//cek_input_onoff();
 			loopac = 0;
 			#if 1
 			ff++;
@@ -91,6 +97,15 @@ int ch;
 				//	konter.t_konter[2].rh_flag, konter.t_konter[2].rh_on, konter.t_konter[2].rh, data_f[2]);
 				//uprintf("===> data rpm[1]: %.2f, rpm[2] : %.2f !!\r\n", data_f[0], data_f[1]);
 				ff = 0;
+				#if 0
+				if (w==0)	{
+					set_relay(1);
+				} else {
+					unset_relay(1);
+				}
+				ww=1-ww;
+				#endif
+				//printf("hit: %d\r\n", konter.t_konter[3].hit);
 			}
 			#endif
 		}

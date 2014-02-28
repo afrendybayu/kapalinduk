@@ -92,9 +92,7 @@ void init_hardware()	{
 
 
 	
-	#if 1
-	gpio_int_init();
-	#endif
+	
 	
 	#ifdef PAKAI_SPI_SSP0
 		//init_ssp0();
@@ -118,6 +116,10 @@ void init_hardware()	{
 	#ifdef PAKAI_SDCARD
 		
 	#endif 
+	
+	#if 1
+	//gpio_int_init();
+	#endif
 }
 
 int init_konter_onoff(unsigned int aaa, unsigned char status) {

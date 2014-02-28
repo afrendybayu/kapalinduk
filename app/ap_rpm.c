@@ -93,15 +93,16 @@ void reset_konter(void)	{
 }
 
 void hitung_rpm(void)	{	
-	//uprintf("%s() masuk ..., hit: %d, %d\r\n", __FUNCTION__, data_putaran[0], data_hit[0]);
+	//uprintf("%s() masuk ..., hit: %d, %d\r\n", __FUNCTION__, data_putaran[3], data_hit[3]);
 	//uprintf("%s() masuk ..., hit: %d %d\r\n", __FUNCTION__, konter.t_konter[0].hit, konter.t_konter[1].hit);
-	//struct t_env *env2;
-	//env2 = (char *) ALMT_ENV;
+
 	struct t_env *st_env;
 	st_env = ALMT_ENV;
 	int i;
 	
-	char status = st_env->kalib[i].status;
+	//printf("giliran: %d\r\n", giliran);
+	
+	char status = st_env->kalib[giliran].status;
 	if (status==sRPM || status == sRPM_RH)		{
 		
 		//portENTER_CRITICAL();
@@ -207,7 +208,7 @@ void data_frek_rpm (void) {
 		status = st_env->kalib[i].status;
 		
 		if (status==sRPM || status==sRPM_RH)		{
-			/*
+			//*
 			if (data_putaran[i])	{
 				// cari frekuensi
 				temp_f = (float) 1000000000.00 / data_putaran[i]; // beda msh dlm nS

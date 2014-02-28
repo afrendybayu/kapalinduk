@@ -24,6 +24,7 @@ void cek_kanal()	{
 		uprintf("    Kanal %2d. m: %8.3f, C: %8.3f, status: %d\r\n", \
 			(i+JML_KANAL+1), st_env->kalib[i+JML_KANAL].m, st_env->kalib[i+JML_KANAL].C, st_env->kalib[i+JML_KANAL].status);
 	}
+	info_kanal();
 }
 
 
