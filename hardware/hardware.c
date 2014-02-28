@@ -180,6 +180,12 @@ void gpio_init()	{
 		}
 	#endif
 	#endif
+	
+	setup_power();
+	FIO0CLR = POWER_5V;
+	FIO1CLR = POWER_24V;
+	
+	//#define POWER_2n5V
 }
 
 // fungsi gpio_int_init untuk inisialisasi input interrupt konter

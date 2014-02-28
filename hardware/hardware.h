@@ -206,6 +206,16 @@ void rtcWrite(struct tm *newTime);
 		#define iKonter_9		BIT(27)	// P027
 		#define iKonter_10		BIT(28)	// P028
 
+		
+		#define POWER_5V		BIT(19)	// P019
+		#define POWER_24V		BIT(28)	// P128
+		#define POWER_2n5V		BIT(29)	// P029
+
+		#define setup_power()		do {	\
+					FIO0DIR  |= POWER_5V;		\
+					FIO1DIR  |= POWER_24V;		\
+				} while(0)	
+
 	#endif
 #endif
 
