@@ -199,6 +199,8 @@ void data_frek_rpm (void) {
 				temp_f = (float) 1000000000.00 / data_putaran[i]; // beda msh dlm nS
 				// rpm
 				temp_rpm = temp_f * 60;		// ganti ke rps * 60;
+				if (temp_rpm>RPM_MAX)
+					temp_rpm = 0;
 			}
 			else	{
 				temp_f = 0;
