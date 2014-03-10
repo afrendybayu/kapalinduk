@@ -84,6 +84,8 @@ char set_kanal(int argc, char **argv)		{
 				st_env->kalib[no].status = sRUNNING_HOURS;
 			} else if ((stx==sFLOWx) || (strcmp(argv[3],"flowx")==0))	{
 				st_env->kalib[no-1].status = sFLOWx;
+			} else if ((stx==sPROP) || (strcmp(argv[3],"prop")==0))	{
+				st_env->kalib[no-1].status = sPROP;
 			} else if ((stx==sONOFF) || (strcmp(argv[3],"onoff")==0))	{
 				st_env->kalib[no-1].status = sONOFF;
 			} else if ((stx==sONOFF_RH) || (strcmp(argv[3],"onoffrh")==0))	{

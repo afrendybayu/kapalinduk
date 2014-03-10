@@ -51,8 +51,9 @@ typedef enum IAP_STATUS_t {
 
 //IAP_return_t iap_return;
 
-#define  RPM_MAX		1000
-#define  nFLOW_MAX		1000000
+#define  RPM_MAX		3000
+#define  PROP_MAX		300
+#define  nFLOW_MAX		10000000
 
 #define  YA				1
 #define  TIDAK			0
@@ -66,13 +67,14 @@ typedef enum IAP_STATUS_t {
 #define	 sRPM_RH		7
 #define	 sRUNNING_HOURS	8
 #define	 sONOFF_RH		9
+#define	 sPROP			10
 #define	 nFLOW1			100
 #define	 ssFLOW2		201
 #define	 nFLOW2			202
 #define	 fFLOW			203
 #define	 DAYA			6
 #define  fENERGI		251
-#define	 sADC_ORI		9
+#define	 sADC_ORI		240
 #define  sADC_7708		250
 
 #define  FOLDER_SENDED		"terkirim"

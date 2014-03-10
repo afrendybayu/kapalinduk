@@ -199,8 +199,7 @@ void data_frek_rpm (void) {
 				temp_f = (float) 1000000000.00 / data_putaran[i]; // beda msh dlm nS
 				// rpm
 				temp_rpm = temp_f * 60;		// ganti ke rps * 60;
-				if (temp_rpm>RPM_MAX)
-					temp_rpm = 0;
+				
 			}
 			else	{
 				temp_f = 0;
@@ -217,7 +216,8 @@ void data_frek_rpm (void) {
 			//data_f[i*2] = (float) (temp_rpm*st_env->kalib[i].m)+st_env->kalib[i].C;
 			
 			fl2 = (float) (temp_rpm*st_env->kalib[i].m)+st_env->kalib[i].C;
-			if (fl2<RPM_MAX)	data_f[i] = fl2;
+			if (fl2>RPM_MAX)	fl2 = 0;
+			else	data_f[i] = fl2;
 			#endif
 			
 			#ifdef PAKAI_RTC
@@ -225,6 +225,28 @@ void data_frek_rpm (void) {
 			//*(&MEM_RTC0+RTC_MEM_START+i+1) = 0;
 			#endif
 			//*/
+		}
+		else if (status==sPROP)		{
+			
+			//*
+			if (data_putaran[i])	{
+				// cari frekuensi
+				temp_f = (float) 1000000000.00 / data_putaran[i]; // beda msh dlm nS
+				// rpm
+				temp_rpm = temp_f * 60;		// ganti ke rps * 60;
+			}
+			else	{
+				temp_f = 0;
+				temp_rpm = 0;
+			}
+			//printf("kanal: %d, rpm: %.2f\r\n", i+1, temp_rpm);
+
+			#if 1
+			fl2 = (float) (temp_rpm*st_env->kalib[i].m)+st_env->kalib[i].C;
+			if (fl2>PROP_MAX)	fl2 = 0;
+			else	data_f[i] = fl2;
+			#endif
+
 		}
 		else if (status==sFLOWx)	{
 			//*
