@@ -178,7 +178,8 @@ int baca_kirim_file(int no, int len, char *str)		{
 	
 	if (no==0)	{
 		//cari_berkas("H-2", LIHAT);
-		cari_berkas("H-3", path, LIHAT_ISI_SATU);
+		//cari_berkas("H-3", path, LIHAT_ISI_SATU);
+		cari_berkas(KIRIM_FILE_MULAI_WAKTU, path, LIHAT_ISI_SATU);
 		//uprintf("no: %d ---> path: %s\r\n", no, path, strlen(nf));
 		
 		if (res = f_open(&fd2, path, FA_OPEN_EXISTING | FA_READ)) {
@@ -281,6 +282,7 @@ int proses_file_terkirim(int len, char *str)	{
 	sprintf(path, "\\%s\\%s", pch, nf);
 	
 	res = f_opendir(&dir, FOLDER_SENDED);		// masuk ke folder \\SENDED\\ //
+	printf("kirim ke sended: %d, %d\r\n", res, FOLDER_SENDED);
 	if (res != FR_OK)	{
 		res = f_mkdir(FOLDER_SENDED);
 		//if (res != FR_OK)	return 1;
@@ -302,7 +304,7 @@ int proses_file_terkirim(int len, char *str)	{
 	sprintf(pch, "\\%s\\%s", FOLDER_SENDED, nf);
 	//uprintf("path: %s, ke: %s\r\n", path, pch);
 	res = f_rename(path, pch);
-	//uprintf(" File %s sudah terkirim & dipindah ke %s: %d\r\n", nf, pch, res);
+	uprintf(" File %s sudah terkirim & dipindah ke %s: %d\r\n", nf, pch, res);
 	
 	int kk=1;
 	while(res == 8) 	{

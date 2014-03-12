@@ -52,7 +52,7 @@ typedef enum IAP_STATUS_t {
 //IAP_return_t iap_return;
 
 #define  RPM_MAX		3000
-#define  PROP_MAX		300
+#define  PROP_MAX		250
 #define  nFLOW_MAX		10000000
 
 #define  YA				1
@@ -77,7 +77,7 @@ typedef enum IAP_STATUS_t {
 #define	 sADC_ORI		240
 #define  sADC_7708		250
 
-#define  FOLDER_SENDED		"terkirim"
+#define  FOLDER_SENDED		"\\terkirim"
 #define	 LIHAT				0
 #define  LIHAT_ISI_SATU		1
 #define  MAX_SEND_FILE_MB	3600
@@ -85,6 +85,8 @@ typedef enum IAP_STATUS_t {
 #define  MAX_DEBUG_TX		2*1024
 
 #define  RTC_MEM_START		100
+
+#define KIRIM_FILE_MULAI_WAKTU	"H-10"
 
 //#define ATA		0
 //#define MMC		1

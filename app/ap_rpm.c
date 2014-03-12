@@ -103,7 +103,7 @@ void hitung_rpm(void)	{
 	//printf("giliran: %d\r\n", giliran);
 	
 	char status = st_env->kalib[giliran].status;
-	if (status==sRPM || status == sRPM_RH)		{
+	if (status==sPROP || status==sRPM || status == sRPM_RH)		{
 		
 		//portENTER_CRITICAL();
 		
@@ -170,10 +170,11 @@ time_t now_to_time(int now, struct tm waktu)	{
 void hitung_running_hours(int i)		{
 	time_t t;
 	t = konter.t_konter[i].rh_off - konter.t_konter[i].rh_on;
+	//printf("t: %d, off: %d, on: %d\r\n", t, konter.t_konter[i].rh_off, konter.t_konter[i].rh_on);
 	konter.t_konter[i].rh = t;
 	data_f[i] = konter.t_konter[i].rh_x + t;
 	*(&MEM_RTC0+RTC_MEM_START+i+1) = *( (int*) &data_f[i]);
-	
+	//printf("rh[%d]: %.0f, rh[%d]: %.0f\r\n", 3, data_f[2], 10, data_f[9]);
 	//data_f[28] = konter.t_konter[i].rh_x + t;
 }
 
@@ -239,10 +240,11 @@ void data_frek_rpm (void) {
 				temp_f = 0;
 				temp_rpm = 0;
 			}
-			//printf("kanal: %d, rpm: %.2f\r\n", i+1, temp_rpm);
+			
 
 			#if 1
 			fl2 = (float) (temp_rpm*st_env->kalib[i].m)+st_env->kalib[i].C;
+			//printf("kanal: %d, rpm: %.2f, fl: %.2f\r\n", i+1, temp_rpm, fl2);
 			if (fl2>PROP_MAX)	fl2 = 0;
 			else	data_f[i] = fl2;
 			#endif
@@ -280,6 +282,7 @@ void data_frek_rpm (void) {
 			time_t t;
 			//*
 			t = now_to_time(1, w);
+			//printf("       now_to_time: %d\r\n", t);
 			int fx = konter.t_konter[i].rh_flag;
 			if (konter.t_konter[i].onoff>0 && fx==0)	{		// rpm mutar dari mati
 				konter.t_konter[i].rh_on = t;		// waktu mulai
@@ -299,6 +302,7 @@ void data_frek_rpm (void) {
 			if (fx==2)	{
 				konter.t_konter[i].rh_flag = 0;
 			}
+			//printf("rh[%d]: %.0f\r\n", i+1, data_f[i]);
 			//*/
 		}
 		else if (status==sRUNNING_HOURS)	{
