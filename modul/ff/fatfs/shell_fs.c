@@ -222,7 +222,7 @@ int util_cd(int argc, char **argv)		{
 			strcat(abs_path, argv[1]);
 		}		
 	}
-	printf(" >> \\%s\r\n", abs_path);
+	printf("\r\n >> \\%s\r\n", abs_path);
 	
 	if ((res = f_opendir (&dirs, abs_path)))	{ 
 		printf("%s(): ERROR = %d\r\n", __FUNCTION__, res);
@@ -241,7 +241,7 @@ int util_pwd()	{
 	//char s[50];
 	//f_getcwd(s, 50);
 	//uprintf(" >> %s\r\n", s);
-	uprintf(" >> %s\r\n", abs_path);
+	uprintf("\r\n >> %s\r\n", abs_path);
 	return 0;
 }			
 

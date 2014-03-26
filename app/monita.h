@@ -73,9 +73,10 @@ typedef enum IAP_STATUS_t {
 #define	 nFLOW2			202
 #define	 fFLOW			203
 #define	 DAYA			6
-#define  fENERGI		251
+#define	 sADC_RH		230
 #define	 sADC_ORI		240
 #define  sADC_7708		250
+#define  fENERGI		251
 
 #define  FOLDER_SENDED		"\\terkirim"
 #define	 LIHAT				0
@@ -235,6 +236,11 @@ struct t_adc {
 	unsigned int count;
 	unsigned char ambil;
 	unsigned short data[JML_KANAL];
+	time_t rh_on[JML_KANAL];				// untuk mengetahui waktu aktif
+	time_t rh_off[JML_KANAL];				// untuk mengetahui waktu mati
+	unsigned int rh_flag[JML_KANAL];		// untuk mengetahui FSM rh
+	time_t rh[JML_KANAL];					// untuk mengetahui nilai running hours, setelah running, mulai 0 ketika sebelumnya mati
+	time_t rh_x[JML_KANAL];				// untuk mengetahui nilai running hours, total sebelum running lagi
 	//float flt_data[JML_KANAL];
 };
 struct t_adc adc;

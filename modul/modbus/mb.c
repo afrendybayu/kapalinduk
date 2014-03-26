@@ -150,18 +150,18 @@ int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 	}
 	
 	if (cmd==READ_FILE_CONTENT)		{				// #define READ_FILE_CONTENT		25
-		//uprintf("==> Modbus READ FILE COntent skywave\r\n");
+		uprintf("==> Modbus READ FILE COntent skywave\r\n");
 		#ifdef PAKAI_FILE_SIMPAN
 			//baca_kirim_file(reg, len, str);
 			baca_kirim_file(reg, len, strmb);
 		#endif
 	}
 	if (cmd==SENDED_FILE)		{				// #define READ_FILE_CONTENT		25
-		//uprintf("==> FILE SENDED\r\n");
+		uprintf("==> hapus file FILE SENDED\r\n");
 		#ifdef PAKAI_FILE_SIMPAN
 			//int kk = proses_file_terkirim(len, str);
 			int kk = proses_file_terkirim(len, strmb);
-			printf("hasil sended : %d\r\n", kk);
+			uprintf(" hasil sended : %d\r\n", kk);
 		#endif
 	}
 	return 10;
@@ -207,8 +207,9 @@ int baca_kirim_file(int no, int len, char *str)		{
 		//f_read(&fd2, &respon[30], fd2.fsize, &ufile);
 		f_read(&fd2, &outmb[30], fd2.fsize, &ufile);
 
-		#if 0
 		uprintf("namafile: %s : %d\r\n", nf, ufile);
+		#if 0
+		
 		int kk,ll, h=0;
 		for (kk=0; kk<fd2.fsize; kk++)	{
 			uprintf(" %02x", respon[30+kk]);
@@ -272,7 +273,7 @@ int proses_file_terkirim(int len, char *str)	{
 	char nf[32], path[64], pch[64];
 	int x = (int) (str[2]<<8 | str[3]);
 	memcpy(nf, &str[4], x);
-	//uprintf("nama file SENDED: %s\r\n", nf);
+	uprintf("nama file dikirim: %s\r\n", nf);
 	
 	FIL fd2;
 	FRESULT res;
@@ -282,11 +283,12 @@ int proses_file_terkirim(int len, char *str)	{
 	sprintf(path, "\\%s\\%s", pch, nf);
 	
 	res = f_opendir(&dir, FOLDER_SENDED);		// masuk ke folder \\SENDED\\ //
-	printf("kirim ke sended: %d, %d\r\n", res, FOLDER_SENDED);
+	uprintf("buka folder %s: %d, %d\r\n", FOLDER_SENDED, res );
 	if (res != FR_OK)	{
+		f_opendir(&dir, "\\");		// masuk ke folder \\SENDED\\ //
 		res = f_mkdir(FOLDER_SENDED);
 		//if (res != FR_OK)	return 1;
-		
+		uprintf("BUKA file %s GAGAL, bikin dulu !!\r\n", FOLDER_SENDED);
 		res = f_opendir(&dir, FOLDER_SENDED);
 		if (res != FR_OK)	return 2;
 		
@@ -301,7 +303,7 @@ int proses_file_terkirim(int len, char *str)	{
 		#endif
 	}
 	
-	sprintf(pch, "\\%s\\%s", FOLDER_SENDED, nf);
+	sprintf(pch, "%s\\%s", FOLDER_SENDED, nf);
 	//uprintf("path: %s, ke: %s\r\n", path, pch);
 	res = f_rename(path, pch);
 	uprintf(" File %s sudah terkirim & dipindah ke %s: %d\r\n", nf, pch, res);
@@ -315,7 +317,8 @@ int proses_file_terkirim(int len, char *str)	{
 		kk++;
 		//vTaskDelay(1000);
 		//res = 0;
-	} 
+	}
+	//f_chdir("\\");
 	
 	return res;
 }

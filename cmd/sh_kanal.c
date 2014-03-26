@@ -90,8 +90,13 @@ char set_kanal(int argc, char **argv)		{
 				st_env->kalib[no-1].status = sONOFF;
 			} else if ((stx==sONOFF_RH) || (strcmp(argv[3],"onoffrh")==0))	{
 				st_env->kalib[no-1].status = sONOFF_RH;
+			} else if ((stx==sADC_RH) || (strcmp(argv[3],"adcrh")==0))	{
+				st_env->kalib[no-1].status = sADC_RH;
+			} else if ((stx==sADC_7708) || (strcmp(argv[3],"adc")==0))	{
+				st_env->kalib[no-1].status = sADC_7708;
 			} else {
-				st_env->kalib[no-1].status = sRPM;
+				//st_env->kalib[no-1].status = sRPM;
+				st_env->kalib[no-1].status = 0;
 			}
 			uprintf("  status[%d] : %d\r\n", no-1, st_env->kalib[no-1].status);
 			if (st_env->kalib[no-1].status==sONOFF_RH)	{

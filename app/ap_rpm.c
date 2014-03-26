@@ -178,7 +178,7 @@ void hitung_running_hours(int i)		{
 	//data_f[28] = konter.t_konter[i].rh_x + t;
 }
 
-int cobasini;// = 0;
+//int cobasini;// = 0;
 
 void data_frek_rpm (void) {
 	//qsprintf("%s() masuk ...\r\n", __FUNCTION__);
@@ -273,7 +273,7 @@ void data_frek_rpm (void) {
 			//data_f[i] = konter.t_konter[i].onoff;
 		}
 		else if (status==sONOFF_RH)	{
-			cobasini++;
+			//cobasini++;
 			//uprintf("cobasin1: %d --- %d [%d]\r\n", konter.t_konter[i].onoff,cobasini, (konter.t_konter[i].onoff>0)?1:0);
 			//uprintf("cobasin2: %d --- %d [%d]\r\n", konter.t_konter[i].onoff,cobasini, (konter.t_konter[i].onoff>0)?1:0);
 			//data_f[29] = konter.t_konter[i].onoff;
