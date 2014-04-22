@@ -12,13 +12,13 @@ void setup_hardware();
 void init_hardware();
 void gpio_init();
 void gpio_int_init();
-int setup_konter_onoff(unsigned int kanale, unsigned char statk);
+int init_konter_onoff(unsigned int kanale, unsigned char status);
 
 void rtcWrite(struct tm *newTime);
 
-#define PORT2_INPUT(kanal)	(FIO2PIN & BIT(kanal)) ? 1 : 0;
-#define PORT1_INPUT(kanal)	(FIO1PIN & BIT(kanal)) ? 1 : 0;
-#define PORT0_INPUT(kanal)	(FIO0PIN & BIT(kanal)) ? 1 : 0;
+#define PORT2_INPUT(kanal)	(FIO2PIN & kanal) ? 1 : 0;
+#define PORT1_INPUT(kanal)	(FIO1PIN & kanal) ? 1 : 0;
+#define PORT0_INPUT(kanal)	(FIO0PIN & kanal) ? 1 : 0;
 
 #ifdef BOARD_SANTER
 	#ifdef BOARD_SANTER_v1_0
@@ -205,6 +205,16 @@ void rtcWrite(struct tm *newTime);
 		#define iKonter_8		BIT(26)	// P026
 		#define iKonter_9		BIT(27)	// P027
 		#define iKonter_10		BIT(28)	// P028
+
+		
+		#define POWER_5V		BIT(19)	// P019
+		#define POWER_24V		BIT(28)	// P128
+		#define POWER_2n5V		BIT(29)	// P029
+
+		#define setup_power()		do {	\
+					FIO0DIR  |= POWER_5V;		\
+					FIO1DIR  |= POWER_24V;		\
+				} while(0)	
 
 	#endif
 #endif

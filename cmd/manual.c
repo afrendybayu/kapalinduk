@@ -1,5 +1,10 @@
 
+#ifndef __KITAB__
+#define __KITAB__
+
+#include "FreeRTOS.h"
 #include "manual.h"
+#include "monita.h"
 
 void sumber_kitab()		{
 	printf(" Perintah untuk mengubah konfig sumber !\r\n");
@@ -100,6 +105,22 @@ void kanal_kitab()	{
 	printf(" Perintah untuk mengubah konfig kanal !\r\n");
 }
 
+void info_kanal()	{
+	printf("Setting Nomor Status input kanal\r\n");
+	printf("CMD : set_kanal [nokanal] status [nostatus]\r\n");
+	printf("   %4d : sRPM\r\n", sRPM);
+	printf("   %4d : sONOFF\r\n", sONOFF);
+	printf("   %4d : sPUSHBUTTON\r\n", sPUSHBUTTON);
+	//printf("   %4d : sFLOW1\r\n", sFLOW1);
+	printf("   %4d : sFLOWx\r\n", sFLOWx);
+	//printf("   %4d : sFLOW2\r\n", sFLOW2);
+	printf("   %4d : sRPM_RH\r\n", sRPM_RH);
+	printf("   %4d : sRUNNING_HOURS\r\n", sRUNNING_HOURS);
+	printf("   %4d : sONOFF_RH\r\n", sONOFF_RH);
+	printf("   %4d : ANALOG MONITA\r\n", 250);
+	printf("   %4d : ANALOG RUNNINGHOUR\r\n", 999);
+}
+
 void file_kitab()	{
 	
 }
@@ -107,3 +128,5 @@ void file_kitab()	{
 void rtc_kitab(int i)	{
 	printf(" Perintah untuk mengubah nilai memori RTC !\r\n");
 }
+
+#endif

@@ -11,6 +11,17 @@ extern volatile float data_f[];
 //extern float data_f[];
 //extern struct t_env env;
 
+void hitung_running_hours_adc(int i)		{
+	time_t t;
+	t = adc.rh_off[i] - adc.rh_on[i];
+	//printf("t: %d, off: %d, on: %d\r\n", t, konter.t_konter[i].rh_off, konter.t_konter[i].rh_on);
+	adc.rh[i] = t;
+	data_f[JML_KANAL+i] = adc.rh_x[i] + t;
+	*(&MEM_RTC0+RTC_MEM_START+i+JML_KANAL+1) = *( (int*) &data_f[JML_KANAL+i]);
+	//printf("rh[%d]: %.0f, rh[%d]: %.0f\r\n", 3, data_f[2], 10, data_f[9]);
+	//data_f[28] = konter.t_konter[i].rh_x + t;
+}
+
 void data_adc()	{
 	char i;
 	float tf;
@@ -20,8 +31,37 @@ void data_adc()	{
 	
 	for (i=0; i<JML_KANAL_ADC; i++)		{
 		tf = (float) (adc.data[i] * faktor_pengali_420 / 0xffff);
-		data_f[JML_KANAL+i] = st_env->kalib[JML_KANAL+i].m * tf + st_env->kalib[JML_KANAL+i].C;
-		//data_f[JML_KANAL+i] = tf;	
+		tf = st_env->kalib[JML_KANAL+i].m * tf + st_env->kalib[JML_KANAL+i].C;
+		
+		if (st_env->kalib[JML_KANAL_ADC+i].status == sADC_7708)	{
+			data_f[JML_KANAL+i] = tf;	
+		}
+		else if (st_env->kalib[JML_KANAL_ADC+i].status == sADC_RH)	{
+			//uprintf("data[%d] : %.2f\r\n", JML_KANAL+i+1, tf);
+			struct tm w;
+			time_t t;
+			t = now_to_time(1, w);
+				
+			int fx = adc.rh_flag[i];
+			if (tf>5 && fx==0)	{				// rpm mutar dari mati
+				adc.rh_on[i] = t;		// waktu mulai
+				adc.rh_flag[i] = 1;
+				//uprintf("----------> flag: 1  >>> %ld  -- %ld !!\r\n", adc.rh[i], adc.rh_x[i]);
+			}
+			if (fx==1)	{		// rpm jalan
+				adc.rh_off[i] = t;		// waktu berhenti
+				hitung_running_hours_adc(i);
+				//uprintf("----------> flag: 1x >>> %ld  -- %ld !!\r\n", adc.rh[i], adc.rh_x[i]);
+			}
+			if (tf<5 && fx==1)		{			// rpm mati, simpan dulu
+				adc.rh_x[i] += adc.rh[i];
+				adc.rh_flag[i] = 2;
+				//uprintf("===========> flag: 2  >>> %ld  -- %ld !!\r\n", adc.rh[i], adc.rh_x[i]);
+			}
+			if (fx==2)	{
+				adc.rh_flag[i] = 0;
+			}
+		}
 	}
 }
 #endif

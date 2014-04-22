@@ -421,6 +421,9 @@ void load_data_rtc()	{
 			data_f[i] = kf = *( (float*) &(*(&MEM_RTC0+(RTC_MEM_START+i+1))));
 			if (status==sRUNNING_HOURS)		{
 				konter.t_konter[i].rh_x = (int ) data_f[i];		// total sebelumnya
+			}
+			if (status==sONOFF_RH)		{
+				konter.t_konter[i].rh_x = (int ) data_f[i];		// total sebelumnya
 				//uprintf("RUNHOUR[%d] : %d  --> ", i+1, konter.t_konter[i].rh_x);
 			}
 			if (status==sFLOWx)		{

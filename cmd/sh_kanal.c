@@ -24,6 +24,7 @@ void cek_kanal()	{
 		uprintf("    Kanal %2d. m: %8.3f, C: %8.3f, status: %d\r\n", \
 			(i+JML_KANAL+1), st_env->kalib[i+JML_KANAL].m, st_env->kalib[i+JML_KANAL].C, st_env->kalib[i+JML_KANAL].status);
 	}
+	info_kanal();
 }
 
 
@@ -41,10 +42,20 @@ char set_kanal(int argc, char **argv)		{
 	sprintf(str_kanal, "%s", argv[1]);
 	ret = sscanf(str_kanal, "%d", &kanal);
 	
+
+	if (argc==2)	{
+		if (strcmp(argv[1], "default") == 0)	{
+			printf("  set_kanal dengan konfig default !\r\n");
+			set_kanal_default();
+		} else {
+			kanal_kitab();
+		}
+		return 0;
+	}
+	
 	int no = cek_nomor_valid(argv[1], JML_KANAL*2);
-		
 	if (no == TIDAK_VALID || no == NULL)	{
-		printf("  no sumber TIDAK VALID\r\n");
+		printf("  no kanal TIDAK VALID\r\n");
 		return 2;
 	}
 	
@@ -59,22 +70,38 @@ char set_kanal(int argc, char **argv)		{
 	
 	memcpy((char *) st_env, (char *) ALMT_ENV, (sizeof (struct t_env)));
 	
-	if (argc==4 || argc==2)	{
+	if (argc==4)	{
 		//int no = cek_nomor_valid(argv[1], JML_KANAL);
-		if (strcmp(argv[1], "default") == 0)	{
-			printf("  set_kanal dengan konfig default !\r\n");
-			set_kanal_default();
-			return 0;
-		}
-		else if (strcmp(argv[2], "status") == 0)	{
-			int stx;
-			uprintf("no: %d, [0]: %s, [1]: %s, [2]: %s, [3]: %s\r\n", no, argv[0], argv[1], argv[2], argv[3]);
-			stx = atoi( argv[3] );
-			st_env->kalib[no-1].status = stx;
-			if (stx == sRPM_RH)	{
+		if (strcmp(argv[2], "status") == 0)	{
+			int stx = atoi(argv[3]);
+			uprintf("no: %d, [0]: %s, [1]: %s, [2]: %s, [3]: %s = %d\r\n", no, argv[0], argv[1], argv[2], argv[3], stx);
+			//stx = atoi(argv[3]);
+			//st_env->kalib[no-1].status = ;
+			if ((stx==sRPM) || (strcmp(argv[3],"rpm")==0))	{
+				st_env->kalib[no-1].status = sRPM;
+			} else if ((stx==sRPM_RH) || (strcmp(argv[3],"rpmrh")==0))	{
+				st_env->kalib[no-1].status = sRPM_RH;
 				st_env->kalib[no].status = sRUNNING_HOURS;
+			} else if ((stx==sFLOWx) || (strcmp(argv[3],"flowx")==0))	{
+				st_env->kalib[no-1].status = sFLOWx;
+			} else if ((stx==sPROP) || (strcmp(argv[3],"prop")==0))	{
+				st_env->kalib[no-1].status = sPROP;
+			} else if ((stx==sONOFF) || (strcmp(argv[3],"onoff")==0))	{
+				st_env->kalib[no-1].status = sONOFF;
+			} else if ((stx==sONOFF_RH) || (strcmp(argv[3],"onoffrh")==0))	{
+				st_env->kalib[no-1].status = sONOFF_RH;
+			} else if ((stx==sADC_RH) || (strcmp(argv[3],"adcrh")==0))	{
+				st_env->kalib[no-1].status = sADC_RH;
+			} else if ((stx==sADC_7708) || (strcmp(argv[3],"adc")==0))	{
+				st_env->kalib[no-1].status = sADC_7708;
+			} else {
+				//st_env->kalib[no-1].status = sRPM;
+				st_env->kalib[no-1].status = 0;
 			}
-			uprintf("  status[%d] : %d\r\n", no, st_env->kalib[no-1].status);
+			uprintf("  status[%d] : %d\r\n", no-1, st_env->kalib[no-1].status);
+			if (st_env->kalib[no-1].status==sONOFF_RH)	{
+				printf(">>> RESET MODUL untuk MENGAKTIFKAN ONOFF RH <<<\r\n");
+			}
 		} else	{
 			sprintf(str_kanal, "%s", argv[2]);
 			ret = sscanf(str_kanal, "%f", &m);

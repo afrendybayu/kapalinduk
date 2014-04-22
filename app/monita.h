@@ -51,30 +51,34 @@ typedef enum IAP_STATUS_t {
 
 //IAP_return_t iap_return;
 
-#define  RPM_MAX		10000
-#define  nFLOW_MAX		1000000
+#define  RPM_MAX		3000
+#define  PROP_MAX		250
+#define  nFLOW_MAX		10000000
 
 #define  YA				1
 #define  TIDAK			0
 
-#define  sRPM			0
-#define	 sONOFF			1
-#define	 sPUSHBUTTON	2
-#define	 sFLOW1			3
-#define	 sFLOW2			4
-#define  sFLOWx			5
-#define	 sRPM_RH		6
-#define	 sRUNNING_HOURS	7
+#define  sRPM			1
+#define	 sONOFF			2
+#define	 sPUSHBUTTON	3
+#define	 sFLOW1			4
+#define	 sFLOW2			5
+#define  sFLOWx			6
+#define	 sRPM_RH		7
+#define	 sRUNNING_HOURS	8
+#define	 sONOFF_RH		9
+#define	 sPROP			10
 #define	 nFLOW1			100
 #define	 ssFLOW2		201
 #define	 nFLOW2			202
 #define	 fFLOW			203
 #define	 DAYA			6
-#define  fENERGI		251
-#define	 sADC_ORI		9
+#define	 sADC_RH		230
+#define	 sADC_ORI		240
 #define  sADC_7708		250
+#define  fENERGI		251
 
-#define  FOLDER_SENDED		"terkirim"
+#define  FOLDER_SENDED		"\\terkirim"
 #define	 LIHAT				0
 #define  LIHAT_ISI_SATU		1
 #define  MAX_SEND_FILE_MB	3600
@@ -82,6 +86,8 @@ typedef enum IAP_STATUS_t {
 #define  MAX_DEBUG_TX		2*1024
 
 #define  RTC_MEM_START		100
+
+#define KIRIM_FILE_MULAI_WAKTU	"H-10"
 
 //#define ATA		0
 //#define MMC		1
@@ -190,7 +196,7 @@ struct t2_konter{
 
 unsigned int giliran;
 struct t2_konter konter;
-unsigned char status_konter[JML_KANAL];
+//unsigned char status_konter[JML_KANAL];
 
 struct t_st_hw  {
 	unsigned char init;
@@ -230,6 +236,11 @@ struct t_adc {
 	unsigned int count;
 	unsigned char ambil;
 	unsigned short data[JML_KANAL];
+	time_t rh_on[JML_KANAL];				// untuk mengetahui waktu aktif
+	time_t rh_off[JML_KANAL];				// untuk mengetahui waktu mati
+	unsigned int rh_flag[JML_KANAL];		// untuk mengetahui FSM rh
+	time_t rh[JML_KANAL];					// untuk mengetahui nilai running hours, setelah running, mulai 0 ketika sebelumnya mati
+	time_t rh_x[JML_KANAL];				// untuk mengetahui nilai running hours, total sebelum running lagi
 	//float flt_data[JML_KANAL];
 };
 struct t_adc adc;

@@ -150,18 +150,18 @@ int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 	}
 	
 	if (cmd==READ_FILE_CONTENT)		{				// #define READ_FILE_CONTENT		25
-		//uprintf("==> Modbus READ FILE COntent skywave\r\n");
+		uprintf("==> Modbus READ FILE COntent skywave\r\n");
 		#ifdef PAKAI_FILE_SIMPAN
 			//baca_kirim_file(reg, len, str);
 			baca_kirim_file(reg, len, strmb);
 		#endif
 	}
 	if (cmd==SENDED_FILE)		{				// #define READ_FILE_CONTENT		25
-		//uprintf("==> FILE SENDED\r\n");
+		uprintf("==> hapus file FILE SENDED\r\n");
 		#ifdef PAKAI_FILE_SIMPAN
 			//int kk = proses_file_terkirim(len, str);
 			int kk = proses_file_terkirim(len, strmb);
-			printf("hasil sended : %d\r\n", kk);
+			uprintf(" hasil sended : %d\r\n", kk);
 		#endif
 	}
 	return 10;
@@ -178,7 +178,8 @@ int baca_kirim_file(int no, int len, char *str)		{
 	
 	if (no==0)	{
 		//cari_berkas("H-2", LIHAT);
-		cari_berkas("H-3", path, LIHAT_ISI_SATU);
+		//cari_berkas("H-3", path, LIHAT_ISI_SATU);
+		cari_berkas(KIRIM_FILE_MULAI_WAKTU, path, LIHAT_ISI_SATU);
 		//uprintf("no: %d ---> path: %s\r\n", no, path, strlen(nf));
 		
 		if (res = f_open(&fd2, path, FA_OPEN_EXISTING | FA_READ)) {
@@ -206,8 +207,9 @@ int baca_kirim_file(int no, int len, char *str)		{
 		//f_read(&fd2, &respon[30], fd2.fsize, &ufile);
 		f_read(&fd2, &outmb[30], fd2.fsize, &ufile);
 
-		#if 0
 		uprintf("namafile: %s : %d\r\n", nf, ufile);
+		#if 0
+		
 		int kk,ll, h=0;
 		for (kk=0; kk<fd2.fsize; kk++)	{
 			uprintf(" %02x", respon[30+kk]);
@@ -271,7 +273,7 @@ int proses_file_terkirim(int len, char *str)	{
 	char nf[32], path[64], pch[64];
 	int x = (int) (str[2]<<8 | str[3]);
 	memcpy(nf, &str[4], x);
-	//uprintf("nama file SENDED: %s\r\n", nf);
+	uprintf("nama file dikirim: %s\r\n", nf);
 	
 	FIL fd2;
 	FRESULT res;
@@ -281,10 +283,12 @@ int proses_file_terkirim(int len, char *str)	{
 	sprintf(path, "\\%s\\%s", pch, nf);
 	
 	res = f_opendir(&dir, FOLDER_SENDED);		// masuk ke folder \\SENDED\\ //
+	uprintf("buka folder %s: %d, %d\r\n", FOLDER_SENDED, res );
 	if (res != FR_OK)	{
+		f_opendir(&dir, "\\");		// masuk ke folder \\SENDED\\ //
 		res = f_mkdir(FOLDER_SENDED);
 		//if (res != FR_OK)	return 1;
-		
+		uprintf("BUKA file %s GAGAL, bikin dulu !!\r\n", FOLDER_SENDED);
 		res = f_opendir(&dir, FOLDER_SENDED);
 		if (res != FR_OK)	return 2;
 		
@@ -299,12 +303,24 @@ int proses_file_terkirim(int len, char *str)	{
 		#endif
 	}
 	
-	sprintf(pch, "\\%s\\%s", FOLDER_SENDED, nf);
+	sprintf(pch, "%s\\%s", FOLDER_SENDED, nf);
 	//uprintf("path: %s, ke: %s\r\n", path, pch);
 	res = f_rename(path, pch);
 	uprintf(" File %s sudah terkirim & dipindah ke %s: %d\r\n", nf, pch, res);
 	
-	return 0;
+	int kk=1;
+	while(res == 8) 	{
+		sprintf(pch, "\\%s\\dob%d_%s", FOLDER_SENDED, kk, nf);
+		//uprintf("file %s dobel ke %s !!!\r\n", path, pch);
+		res = f_rename(path, pch);
+		uprintf(" >>>>> File DOBEL %s sudah terkirim & dipindah ke %s: %d\r\n", nf, pch, res);
+		kk++;
+		//vTaskDelay(1000);
+		//res = 0;
+	}
+	//f_chdir("\\");
+	
+	return res;
 }
 
 #endif
@@ -394,6 +410,8 @@ int tulis_reg_mb(int reg, int index, int jml, char* str)	{	// WRITE_MULTIPLE_REG
 	}
 	
 	float *fl;
+	struct tm aaa;
+	unsigned int wx = (unsigned int) now_to_time(1,aaa);		// epoch
 	for (i=0; i<njml; i++)	{
 		tmpFl = (str[7+i*4]<<24) | (str[8+i*4]<<16) | (str[9+i*4]<<8) | (str[10+i*4]) ;
 		fl = (float *)&tmpFl;
@@ -401,12 +419,19 @@ int tulis_reg_mb(int reg, int index, int jml, char* str)	{	// WRITE_MULTIPLE_REG
 
 		data_f[index+i] = *fl;
 		if (index+i==24)	{			// waktu epoch !!!
+			unsigned int wm = (unsigned int) data_f[index+i] + (60*60*7);
+			
+			//uprintf("epoch : %ld\r\n", wx);
+		
 			//uprintf(">>>>> sync waktu modem[%d] : %.0f\r\n", index+i, data_f[index+i]);
-			if (st_hw.uuwaktu>2)	{
-				uprintf("+++++ update waktu modem[%d] : %.0f !!!\r\n", index+i, data_f[index+i]);
-				sync_waktu_modem(data_f[index+i]);
+			#if 0
+			if (st_hw.uuwaktu>2)	
+			{
+				uprintf("+++++ update waktu modem[%d] : %.0f, %ld, epoch monita: %ld !!!\r\n", index+i, data_f[index+i], wm, wx);
+				sync_waktu_modem(wm);
 				st_hw.uuwaktu=0;
 			}
+			#endif
 		}
 	}
 	

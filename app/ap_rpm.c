@@ -3,13 +3,49 @@
 #include "task.h"
 #include "ap_rpm.h"
 #include "monita.h"
+#include "hardware.h"
 #include "math.h"
 #include <time.h>
 
 extern unsigned int giliran;
 //extern volatile float data_f[];
 extern struct t2_konter konter;
-extern unsigned char status_konter[];
+//extern unsigned char status_konter[];
+
+
+void cek_input_onoff(void)	{
+	struct t_env *env2;
+	env2 = (char *) ALMT_ENV;
+	int i=0, ww=0, zzz;
+	
+	for (i=0; i<JML_KANAL; i++)	{
+		ww = env2->kalib[i].status;
+		if ( (ww==sONOFF) || (ww==sPUSHBUTTON)  || (ww==sONOFF_RH) || (ww==sFLOW1) || (ww==sFLOW2) || (ww==ssFLOW2) )	{
+			switch (i)	{
+				case 0: zzz = iKonter_1; break;
+				case 1: zzz = iKonter_2; break;
+				case 2: zzz = iKonter_3; break;
+				case 3: zzz = iKonter_4; break;
+				case 4: zzz = iKonter_5; break;
+				case 5: zzz = iKonter_6; break;
+				case 6: zzz = iKonter_7; break;
+				case 7: zzz = iKonter_8; break;
+				case 8: zzz = iKonter_9; break;
+				case 9: zzz = iKonter_10; break;
+			}
+			if (i>=6) {
+				konter.t_konter[i].onoff = PORT0_INPUT(zzz);
+			} else {
+				konter.t_konter[i].onoff = PORT2_INPUT(zzz);
+			}
+			/*
+			if (i==2)	{
+				uprintf("kanal 3: %d\r\n", konter.t_konter[i].onoff);
+			}
+			//*/
+		}
+	}
+}
 
 void set_konter_rpm(int st, unsigned int period)		{
 	//new_period = T1TC;
@@ -51,22 +87,23 @@ void reset_konter(void)	{
 		konter.t_konter[i].rh_flag = 0;
 		konter.t_konter[i].rh = 0;
 		
-		status_konter[i] = 0;
+		//status_konter[i] = 0;
 	}
 
 }
 
 void hitung_rpm(void)	{	
-	//uprintf("%s() masuk ..., hit: %d, %d\r\n", __FUNCTION__, data_putaran[0], data_hit[0]);
+	//uprintf("%s() masuk ..., hit: %d, %d\r\n", __FUNCTION__, data_putaran[3], data_hit[3]);
 	//uprintf("%s() masuk ..., hit: %d %d\r\n", __FUNCTION__, konter.t_konter[0].hit, konter.t_konter[1].hit);
-	//struct t_env *env2;
-	//env2 = (char *) ALMT_ENV;
+
 	struct t_env *st_env;
 	st_env = ALMT_ENV;
 	int i;
 	
-	char status = st_env->kalib[i].status;
-	if (status==sRPM || status == sRPM_RH)		{
+	//printf("giliran: %d\r\n", giliran);
+	
+	char status = st_env->kalib[giliran].status;
+	if (status==sPROP || status==sRPM || status == sRPM_RH)		{
 		
 		//portENTER_CRITICAL();
 		
@@ -92,21 +129,6 @@ void hitung_rpm(void)	{
 	}
 	giliran++;
 	if (giliran == JML_KANAL) giliran = 0;
-	
-	#if 0
-	//portENTER_CRITICAL();
-	for (i=0; i<KANALNYA; i++)
-	{
-		if (konter.t_konter[i].hit_lama == konter.t_konter[i].hit)
-		{
-			konter.t_konter[i].beda = 0;
-		}
-		
-		konter.t_konter[i].hit_lama = konter.t_konter[i].hit; 
-	}
-	//portEXIT_CRITICAL();
-	#endif
-	
 }
 
 #if 0
@@ -148,10 +170,15 @@ time_t now_to_time(int now, struct tm waktu)	{
 void hitung_running_hours(int i)		{
 	time_t t;
 	t = konter.t_konter[i].rh_off - konter.t_konter[i].rh_on;
+	//printf("t: %d, off: %d, on: %d\r\n", t, konter.t_konter[i].rh_off, konter.t_konter[i].rh_on);
 	konter.t_konter[i].rh = t;
 	data_f[i] = konter.t_konter[i].rh_x + t;
 	*(&MEM_RTC0+RTC_MEM_START+i+1) = *( (int*) &data_f[i]);
+	//printf("rh[%d]: %.0f, rh[%d]: %.0f\r\n", 3, data_f[2], 10, data_f[9]);
+	//data_f[28] = konter.t_konter[i].rh_x + t;
 }
+
+//int cobasini;// = 0;
 
 void data_frek_rpm (void) {
 	//qsprintf("%s() masuk ...\r\n", __FUNCTION__);
@@ -167,12 +194,13 @@ void data_frek_rpm (void) {
 		status = st_env->kalib[i].status;
 		
 		if (status==sRPM || status==sRPM_RH)		{
-			
+			//*
 			if (data_putaran[i])	{
 				// cari frekuensi
 				temp_f = (float) 1000000000.00 / data_putaran[i]; // beda msh dlm nS
 				// rpm
 				temp_rpm = temp_f * 60;		// ganti ke rps * 60;
+				
 			}
 			else	{
 				temp_f = 0;
@@ -189,18 +217,44 @@ void data_frek_rpm (void) {
 			//data_f[i*2] = (float) (temp_rpm*st_env->kalib[i].m)+st_env->kalib[i].C;
 			
 			fl2 = (float) (temp_rpm*st_env->kalib[i].m)+st_env->kalib[i].C;
-			if (fl2<RPM_MAX)	data_f[i] = fl2;
+			if (fl2>RPM_MAX)	fl2 = 0;
+			else	data_f[i] = fl2;
 			#endif
 			
 			#ifdef PAKAI_RTC
 			//*(&MEM_RTC0+(i*2+1)) = (int) data_f[i*2+1];	// konter.t_konter[i].hit;
 			//*(&MEM_RTC0+RTC_MEM_START+i+1) = 0;
 			#endif
+			//*/
+		}
+		else if (status==sPROP)		{
+			
+			//*
+			if (data_putaran[i])	{
+				// cari frekuensi
+				temp_f = (float) 1000000000.00 / data_putaran[i]; // beda msh dlm nS
+				// rpm
+				temp_rpm = temp_f * 60;		// ganti ke rps * 60;
+			}
+			else	{
+				temp_f = 0;
+				temp_rpm = 0;
+			}
+			
+
+			#if 1
+			fl2 = (float) (temp_rpm*st_env->kalib[i].m)+st_env->kalib[i].C;
+			//printf("kanal: %d, rpm: %.2f, fl: %.2f\r\n", i+1, temp_rpm, fl2);
+			if (fl2>PROP_MAX)	fl2 = 0;
+			else	data_f[i] = fl2;
+			#endif
+
 		}
 		else if (status==sFLOWx)	{
+			//*
 			data_f[i] = (konter.t_konter[i].hit*st_env->kalib[i].m)+st_env->kalib[i].C;
 			
-			#if 0
+			#if 1
 			if (data_f[i]>nFLOW_MAX) {		// reset setelah 10juta, 7 digit
 			//if (data_f[(i*2)+1]>1000) {		// tes saja, reset setelah 10juta, 7 digit
 				data_f[i] = 0;
@@ -213,8 +267,46 @@ void data_frek_rpm (void) {
 			//*(&MEM_RTC0+(i*2))   = data_f[i*2];		// konter.t_konter[i].onoff;
 			//*(&MEM_RTC0+(i*2+1)) = data_f[i*2+1];		// konter.t_konter[i].hit;
 			#endif
+			//*/
+		}
+		else if (status==sONOFF)	{
+			//data_f[i] = konter.t_konter[i].onoff;
+		}
+		else if (status==sONOFF_RH)	{
+			//cobasini++;
+			//uprintf("cobasin1: %d --- %d [%d]\r\n", konter.t_konter[i].onoff,cobasini, (konter.t_konter[i].onoff>0)?1:0);
+			//uprintf("cobasin2: %d --- %d [%d]\r\n", konter.t_konter[i].onoff,cobasini, (konter.t_konter[i].onoff>0)?1:0);
+			//data_f[29] = konter.t_konter[i].onoff;
+			
+			struct tm w;
+			time_t t;
+			//*
+			t = now_to_time(1, w);
+			//printf("       now_to_time: %d\r\n", t);
+			int fx = konter.t_konter[i].rh_flag;
+			if (konter.t_konter[i].onoff>0 && fx==0)	{		// rpm mutar dari mati
+				konter.t_konter[i].rh_on = t;		// waktu mulai
+				konter.t_konter[i].rh_flag = 1;
+				//uprintf("----------> flag: 1  >>> %ld  -- %ld !!\r\n", konter.t_konter[i].rh, konter.t_konter[i].rh_x);
+			}
+			if (fx==1)	{		// rpm jalan
+				konter.t_konter[i].rh_off = t;		// waktu berhenti
+				hitung_running_hours(i);
+				//uprintf("----------> flag: 1x >>> %ld  -- %ld !!\r\n", konter.t_konter[i].rh, konter.t_konter[i].rh_x);
+			}
+			if (data_f[i-1]==0 && fx==1)		{			// rpm mati, simpan dulu
+				konter.t_konter[i].rh_x += konter.t_konter[i].rh;
+				konter.t_konter[i].rh_flag = 2;
+				//uprintf("===========> flag: 2  >>> %ld  -- %ld !!\r\n", konter.t_konter[i].rh, konter.t_konter[i].rh_x);
+			}
+			if (fx==2)	{
+				konter.t_konter[i].rh_flag = 0;
+			}
+			//printf("rh[%d]: %.0f\r\n", i+1, data_f[i]);
+			//*/
 		}
 		else if (status==sRUNNING_HOURS)	{
+		/*
 			struct tm w;
 			time_t t;
 			
@@ -238,6 +330,7 @@ void data_frek_rpm (void) {
 			if (fx==2)	{
 				konter.t_konter[i].rh_flag = 0;
 			}
+		//*/
 		}
 		
 		

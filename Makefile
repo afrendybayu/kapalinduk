@@ -219,7 +219,7 @@ $(THUMB_OBJS) : %.o : %.c Makefile FreeRTOSConfig.h
 $(ARM_OBJS) : %.o : %.c Makefile FreeRTOSConfig.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
-bersihbersih:
+bersihbersih: clean
 clean :
 	rm $(NAMA_FILE).elf
 	rm $(NAMA_FILE).hex
