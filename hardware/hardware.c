@@ -120,6 +120,9 @@ void init_hardware()	{
 	#if 1
 	//gpio_int_init();
 	#endif
+	
+	FIO0CLR = POWER_5V;
+	FIO1CLR = POWER_24V;
 }
 
 int init_konter_onoff(unsigned int aaa, unsigned char status) {
