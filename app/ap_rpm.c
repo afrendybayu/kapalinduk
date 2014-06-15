@@ -33,7 +33,7 @@ void cek_input_onoff(void)	{
 				case 8: zzz = iKonter_9; break;
 				case 9: zzz = iKonter_10; break;
 			}
-			if (i>=6) {
+			if (i>=5) {
 				konter.t_konter[i].onoff = PORT0_INPUT(zzz);
 			} else {
 				konter.t_konter[i].onoff = PORT2_INPUT(zzz);
@@ -270,7 +270,7 @@ void data_frek_rpm (void) {
 			//*/
 		}
 		else if (status==sONOFF)	{
-			//data_f[i] = konter.t_konter[i].onoff;
+			data_f[i] = konter.t_konter[i].onoff;
 		}
 		else if (status==sONOFF_RH)	{
 			//cobasini++;
