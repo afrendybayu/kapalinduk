@@ -98,13 +98,18 @@ char s[30];
 		//vSerialPutString2(xPort2, "tes2\r\n", 6);
 		xGotChar = xSerialGetChar2( xPort2, &ch, 10 );
 		if( xGotChar == pdTRUE )		{
-			//printf("%02x ", (char) ch);
-			//printf("%c ", (char) ch);
-			strmb[nmb] = (char) ch;
-			nmb++;
-			//strSer2[nmb+1] = '\0';
-			//sedot_mod(ch);
-			flag_ms=1;
+			if ((nmb==0) && ((char)ch==0xff))	{
+				//printf("nmb: %d, ch: %02x, mask sini !!", nmb, (char)ch);
+			} 
+			else {
+				//printf("%02x ", (char) ch);
+				//printf("%c ", (char) ch);
+				strmb[nmb] = (char) ch;
+				nmb++;
+				//strSer2[nmb+1] = '\0';
+				//sedot_mod(ch);
+				flag_ms=1;
+			}
 		}
 		else {
 			// sedot data respon (sendiri), clear buffer
@@ -153,6 +158,7 @@ int proses_mod(int mbn, char *mbstr)	{
 		
 	//if (p_env3->almtSlave != mbstr[0])	{
 	if (p_env3->almtSlave != strmb[0])	{
+		//printf("0: %02x\r\n", strmb[0]);
 		return 1;
 	}
 	

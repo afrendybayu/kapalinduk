@@ -63,19 +63,18 @@ static int init_mmc_awal(void)
 	uprintf("... spi .. OK\r\n");
 	vTaskDelay(10);
 	loop = tes_mmc_awal();
-	if (loop != 0)
-	{
+	if (loop != 0)	{
 		uprintf("...");
 	   //	init_spi(20000);
 		init_spi_mmc(2);	// high speed
 		loop = init_mmc();
-		if (loop > 100 || loop == 0) 	{	
-			uprintf("MMC .. failed");
+		if (loop > 100 || loop == 0) 	{
+			uprintf("\r\nMMC .. failed");
 			
 			return -1;
 		}
 		else		{
-			uprintf("SDC .. OK");
+			uprintf("\r\nSDC .. OK");
 			get_cid_csd();
 			
 			return 0;
