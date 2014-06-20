@@ -100,7 +100,7 @@ void rtcWrite(struct tm *newTime);
 			#ifdef PAKAI_SERIAL_2_P0
 			
 				#define TXDE2	BIT(25)		// P3.25
-				//#define RXDE2	BIT(23)		--> Pull down ke GND
+				#define RXDE2	BIT(12)		// --> Pull down ke GND
 				#define setup_gpio_485_2()	do		{	\
 								FIO3DIR = TXDE2;		\
 							} while (0)
@@ -120,6 +120,7 @@ void rtcWrite(struct tm *newTime);
 							} while(0)
 				#define enaTX2_485()		FIO3SET = TXDE2;
 				#define disTX2_485()		FIO3CLR = TXDE2;
+				#define enaRX2_485()		FIO2CLR = RXDE2;
 			#endif
 		#endif
 		

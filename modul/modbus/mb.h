@@ -1,4 +1,7 @@
 
+#ifndef __MB_H__
+#define __MB_H__
+
 #include "monita.h"
 
 #define jml_st_mb10H		(8)
@@ -16,6 +19,8 @@
 #define READ_FILE_CONTENT		0x25
 #define SENDED_FILE				0x26
 
+//char strmb[MAX_RX_MB]		__attribute__ ((section (".usbram1")));
+//char outmb[MAX_RX_MB]		__attribute__ ((section (".usbram1")));
 
 int kirim_respon_mb(int jml, char *s, int timeout)	;
 int cek_crc_mod(int nstr, unsigned char *x);
@@ -31,4 +36,6 @@ unsigned short crc_ccitt_0xffff(int len, char *data);
 #ifdef PAKAI_FILE_SIMPAN
 int baca_kirim_file(int reg, int len, char *str);
 int proses_file_terkirim(int len, char *str);
+#endif
+
 #endif
