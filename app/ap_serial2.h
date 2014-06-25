@@ -17,6 +17,8 @@
 
 #define comSTACK_SIZE				configMINIMAL_STACK_SIZE
 
+
+
 static xComPortHandle xPort2;
 xTaskHandle *hdl_serial2;
 

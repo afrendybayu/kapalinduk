@@ -122,8 +122,16 @@ unsigned char koleksi_adc7708()	{
 	if (adc.cur_kanal>JML_KANAL_ADC) adc.cur_kanal = 0;
 	//uprintf("%s ambil adc: %d\r\n", __FUNCTION__, adc.cur_kanal);
 	
-	unsigned ch = (adc.cur_kanal << 4);
-	set_adc_kontrolx(ch | unipolar | rADC2560);
+	//unsigned ch = (adc.cur_kanal << 4);
+	unsigned char cadc;
+	
+	
+	if (adc.cur_kanal>=8)
+		cadc = ((adc.cur_kanal+6) << 4) | unipolar | rADC2560;		// REFIN 0-2.56V
+	else
+		cadc = (adc.cur_kanal << 4) | unipolar | rADC2560;			// REFIN 0-2.56V
+	
+	set_adc_kontrolx(cadc);
 	//uprintf("adc kontrol : 0x%02x\r\n", cek_adc_kontrolx());
 	return 1;
 }

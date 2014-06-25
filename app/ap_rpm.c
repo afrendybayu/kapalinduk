@@ -33,7 +33,7 @@ void cek_input_onoff(void)	{
 				case 8: zzz = iKonter_9; break;
 				case 9: zzz = iKonter_10; break;
 			}
-			if (i>=6) {
+			if (i>=5) {
 				konter.t_konter[i].onoff = PORT0_INPUT(zzz);
 			} else {
 				konter.t_konter[i].onoff = PORT2_INPUT(zzz);
@@ -270,7 +270,7 @@ void data_frek_rpm (void) {
 			//*/
 		}
 		else if (status==sONOFF)	{
-			//data_f[i] = konter.t_konter[i].onoff;
+			data_f[i] = konter.t_konter[i].onoff;
 		}
 		else if (status==sONOFF_RH)	{
 			//cobasini++;
@@ -294,7 +294,7 @@ void data_frek_rpm (void) {
 				hitung_running_hours(i);
 				//uprintf("----------> flag: 1x >>> %ld  -- %ld !!\r\n", konter.t_konter[i].rh, konter.t_konter[i].rh_x);
 			}
-			if (data_f[i-1]==0 && fx==1)		{			// rpm mati, simpan dulu
+			if (konter.t_konter[i].onoff==0 && fx==1)		{			// rpm mati, simpan dulu
 				konter.t_konter[i].rh_x += konter.t_konter[i].rh;
 				konter.t_konter[i].rh_flag = 2;
 				//uprintf("===========> flag: 2  >>> %ld  -- %ld !!\r\n", konter.t_konter[i].rh, konter.t_konter[i].rh_x);
@@ -302,7 +302,7 @@ void data_frek_rpm (void) {
 			if (fx==2)	{
 				konter.t_konter[i].rh_flag = 0;
 			}
-			//printf("rh[%d]: %.0f\r\n", i+1, data_f[i]);
+			//printf("rh[%d]: %.0f, fx: %d, onoff: %d\r\n", i+1, data_f[i], fx, konter.t_konter[i].onoff);
 			//*/
 		}
 		else if (status==sRUNNING_HOURS)	{
