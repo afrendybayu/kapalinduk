@@ -393,11 +393,14 @@ short tes_mmc_awal(void)	{
    	uprintf("%s(): 2 ..\r\n", __FUNCTION__);
    	cs_mmc(); 
    	komand_mmc(0x00, 0x00, 0x95); 
-  	while(1)	{
+  	while(1)	
+  	{
    		//for (t = 0; t < 20; t++)
-   		for (t = 0; t < 20; t++)   		{
+   		for (t = 0; t < 20; t++)   		
+   		{
    			resp_mmc = mmc_respon2();
-   			if (resp_mmc == 0x01) 			{
+   			if (resp_mmc == 0x01) 			
+   			{
    				uncs_mmc();
    				return coba;
    			}
@@ -427,25 +430,30 @@ short init_mmc(void)	{
 	char resp_mmc;
    
    uncs_mmc();
-    for (t=0; t<10; t++)   {
+    for (t=0; t<10; t++)   
+    {
 		kirim_word_mmc(0x55);
     }
     cs_mmc();  			
     //komand_mmc(0x01,0x00ffc000,0xff);
     komand_mmc(0x01,0x00,0xff);		
-    while(1)   {
-   	for (t = 0; t < 200; t++)   	{
-   		resp_mmc = mmc_respon2();
-   		if (resp_mmc == 0x00)  		{
-   			uncs_mmc();
-   			return coba;
-   		}
-   	} 
+    while(1)   
+    {
+		for (t = 0; t < 200; t++)   	
+		{
+			resp_mmc = mmc_respon2();
+			if (resp_mmc == 0x00)  		
+			{
+				uncs_mmc();
+				return coba;
+			}
+		} 
 
    	//komand_mmc(0x01,0x00ffc000,0xff);
    	komand_mmc(0x01,0x00,0xff);	
 		coba++;
-		if (coba > 100) 	{
+		if (coba > 100) 	
+		{
 		   uncs_mmc();
 		   return 0;	//fail
 		}

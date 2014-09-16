@@ -347,15 +347,17 @@ char s[30];
 	#endif
 	
 	#ifdef PAKAI_SDCARD
-		st_hw.sdc = 0;
+		DSTATUS disk_stat;
+		st_hw.sdc = 0;  
 		//disk_initialize(SDC);
-		disk_initialize(0);
+		disk_stat = disk_initialize(0);
 		set_fs_mount();
 		cek_fs_free();
 		//mount_disk(0);		// 0: SDCARD
 		//uprintf("Cek Memori SDCARD: ...");
 		//cek_free_cluster();
-		st_hw.sdc = 1;
+		if (!disk_stat) st_hw.sdc = 1;  //sd card checking,
+		else st_hw.sdc = 0;
 	#endif
 	
 	#ifdef configUSE_IDLE_HOOK
@@ -415,7 +417,7 @@ char s[30];
 			st_hw.mm = 0;
 			st_hw.uuwaktu++;
 			#ifdef PAKAI_FILE_SIMPAN
-			simpan_file_data();
+			simpan_file_data();  //ini dia jep
 			#endif
 		}
 		

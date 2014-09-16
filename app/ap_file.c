@@ -449,6 +449,11 @@ void sendHexFile(int nilai, int jml, FIL fp)	{
 }
 
 void simpan_file_data()		{
+	if (!st_hw.sdc) //checking either sd card active or not
+	return;
+	
+	else
+	{
 	FIL filx;
 	FRESULT res;
 	DIR dir;
@@ -536,11 +541,13 @@ void simpan_file_data()		{
 		//uprintf("%s", isi);
 		f_puts(isi, &filx);
 	#else
-		f_write(&filx, isi, (st_file->jml*4+6), &oo);
+		//f_write(&filx, isi, (st_file->jml*4+6), &oo); // disini 4 diganti 2???
+		f_write(&filx, isi, (st_file->jml*2+6), &oo); // disini 4 diganti 2???
 	#endif
 	
 	//f_sync(&filx);
 	f_close(&filx);
+	}
 }
 
 void tulis_konfig_file(char *s, FIL* fp)	{
