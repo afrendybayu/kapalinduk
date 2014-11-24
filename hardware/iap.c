@@ -426,6 +426,10 @@ void load_data_rtc()	{
 				konter.t_konter[i].rh_x = (int ) data_f[i];		// total sebelumnya
 				//uprintf("RUNHOUR[%d] : %d  --> ", i+1, konter.t_konter[i].rh_x);
 			}
+			if (status==sRPM_RH)		{
+				konter.t_konter[i].rh_x = (int ) data_f[i];		// total sebelumnya
+				//uprintf("RUNHOUR[%d] : %d  --> ", i+1, konter.t_konter[i].rh_x);
+			}
 			if (status==sFLOWx)		{
 				konter.t_konter[i].hit = (int) ( (kf-st_env->kalib[i].C)/st_env->kalib[i].m );
 				//uprintf("HIT[%d] : %d  --> ", i+1, konter.t_konter[i].hit);

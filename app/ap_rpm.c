@@ -367,10 +367,7 @@ void data_frek_rpm (void) {
 		//*/
 		}
 		
-		
-		if (status==sRPM_RH)	{		// cek rpm dulu, pake persamaan di atas. Lalu konversi ke 
-			
-		}
+
 		
 		#if 0
 		else if (status==sONOFF || status==sFLOW1 || status==sFLOW2 || status==ssFLOW2) {		// OnOff
