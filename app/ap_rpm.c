@@ -55,7 +55,6 @@ void set_konter_rpm(int st, unsigned int period)		{
 	}	else	{	// sudah overflow
 		konter.t_konter[st].beda = (period +
 			(0xFFFFFFFF - konter.t_konter[st].last_period)) * 50;	// 1 clock 50 nanosecond
-
 	}
 	konter.t_konter[st].hit++;
 	konter.t_konter[st].last_period = period;
@@ -194,6 +193,7 @@ void data_frek_rpm (void) {
 		status = st_env->kalib[i].status;
 		
 		if (status==sRPM || status==sRPM_RH)		{
+		//if (status==sRPM)		{
 			//*
 			if (data_putaran[i])	{
 				// cari frekuensi
@@ -217,8 +217,41 @@ void data_frek_rpm (void) {
 			//data_f[i*2] = (float) (temp_rpm*st_env->kalib[i].m)+st_env->kalib[i].C;
 			
 			fl2 = (float) (temp_rpm*st_env->kalib[i].m)+st_env->kalib[i].C;
-			if (fl2>RPM_MAX)	fl2 = 0;
-			else	data_f[i] = fl2;
+			
+			if (status==sRPM)	{
+				if (fl2>RPM_MAX)	fl2 = 0;
+				else	data_f[i] = fl2;
+			}
+			if (status==sRPM_RH)	{
+				//if (fl2>RPM_MAX)	fl2 = 0;
+				//else	data_f[i] = fl2;
+				//printf("tes: %.2f\r\n", fl2);
+				
+				struct tm w;
+				time_t t;
+				//*
+				t = now_to_time(1, w);
+				//printf("       now_to_time: %d\r\n", t);
+				int fx = konter.t_konter[i].rh_flag;
+				if (fl2>0 && fx==0)	{		// rpm mutar dari mati
+					konter.t_konter[i].rh_on = t;		// waktu mulai
+					konter.t_konter[i].rh_flag = 1;
+					//uprintf("----------> flag: 1  >>> %ld  -- %ld !!\r\n", konter.t_konter[i].rh, konter.t_konter[i].rh_x);
+				}
+				if (fx==1)	{		// rpm jalan
+					konter.t_konter[i].rh_off = t;		// waktu berhenti
+					hitung_running_hours(i);
+					//uprintf("----------> flag: 1x >>> %ld  -- %ld !!\r\n", konter.t_konter[i].rh, konter.t_konter[i].rh_x);
+				}
+				if (fl2==0 && fx==1)		{			// rpm mati, simpan dulu
+					konter.t_konter[i].rh_x += konter.t_konter[i].rh;
+					konter.t_konter[i].rh_flag = 2;
+					//uprintf("===========> flag: 2  >>> %ld  -- %ld !!\r\n", konter.t_konter[i].rh, konter.t_konter[i].rh_x);
+				}
+				if (fx==2)	{
+					konter.t_konter[i].rh_flag = 0;
+				}
+			}
 			#endif
 			
 			#ifdef PAKAI_RTC
@@ -305,6 +338,7 @@ void data_frek_rpm (void) {
 			//printf("rh[%d]: %.0f, fx: %d, onoff: %d\r\n", i+1, data_f[i], fx, konter.t_konter[i].onoff);
 			//*/
 		}
+		
 		else if (status==sRUNNING_HOURS)	{
 		/*
 			struct tm w;
@@ -333,6 +367,10 @@ void data_frek_rpm (void) {
 		//*/
 		}
 		
+		
+		if (status==sRPM_RH)	{		// cek rpm dulu, pake persamaan di atas. Lalu konversi ke 
+			
+		}
 		
 		#if 0
 		else if (status==sONOFF || status==sFLOW1 || status==sFLOW2 || status==ssFLOW2) {		// OnOff

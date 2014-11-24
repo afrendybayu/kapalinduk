@@ -449,6 +449,7 @@ void sendHexFile(int nilai, int jml, FIL fp)	{
 }
 
 void simpan_file_data()		{
+	//if (st_hw.sdc==0) return;
 	FIL filx;
 	FRESULT res;
 	DIR dir;
