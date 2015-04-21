@@ -97,7 +97,9 @@ typedef enum IAP_STATUS_t {
 
 #define TIDAK_VALID			0xFFFF
 #define PER_SUMBER			10
-#define JML_SUMBER			 4
+//#define PER_ASTM			85
+#define PER_ASTM			91
+#define JML_SUMBER			 6
 #define SUMBER_PER_SEKTOR	32
 
 //#define ANGKA_PENTING	1
@@ -142,6 +144,11 @@ volatile float data_f [ JML_TITIK_DATA ];
 #define ALMT_CRON		(ALMT_SEKTOR_19+1024*2)
 #define ALMT_FILE		(ALMT_SEKTOR_19+1024*3)
 
+#if 1
+#define SEKTOR_ASTM		18
+#define ALMT_VALUE_ASTM	(ALMT_SEKTOR_18)
+#endif
+
 enum t_struct{ 
 	DATA,
 	ENV,
@@ -157,6 +164,7 @@ enum t_struct st_struct;
 #define SEKTOR_TEMP		21
 #define ALMT_SKTR_TEMP	ALMT_SEKTOR_21
 #define JML_KOPI_TEMP	1024
+#define JML_KOPI_ASTM	512
 #define ALMT_ENV_TMP		(ALMT_SEKTOR_21)
 #define ALMT_DATA_TMP		(ALMT_SEKTOR_21)
 #define ALMT_SUMBER_TMP		(ALMT_SEKTOR_21+1024*1)
@@ -164,7 +172,7 @@ enum t_struct st_struct;
 #define ALMT_FILE_TMP		(ALMT_SEKTOR_21+1024*3)
 
 
-#define JUM_GPIO	10
+#define JUM_DIGITAL	12
 #define JML_KANAL	10
 
 #define uchr		unsigned char
@@ -191,7 +199,7 @@ typedef struct {
 struct t2_konter{
 	unsigned int global_hit;
 	unsigned int ovflow;		// overflow count untuk Timer 1
-	ts_konter t_konter[JML_KANAL];
+	ts_konter t_konter[JUM_DIGITAL];
 };
 
 unsigned int giliran;
@@ -260,6 +268,13 @@ struct t_data {
 };
 //struct t_data st_data[JML_TITIK_DATA];
 
+struct t_astm
+	{
+	//float press;
+	//float temp;
+	float koef;
+	};
+
 #ifdef PAKAI_CRON
 struct t_cron {
 	char 	mnt[20];
@@ -298,7 +313,7 @@ struct t_env {
 	unsigned char GW1;
 	unsigned char GW2;
 	unsigned char GW3;
-	struct t_kalib kalib[JML_KANAL*2];
+	struct t_kalib kalib[JUM_DIGITAL*2];
 	int magic1;
 	int magic2;
 	int mmc_serial;

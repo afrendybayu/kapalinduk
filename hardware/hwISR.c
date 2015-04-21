@@ -70,6 +70,23 @@ void gpio_ISR_Handler( void )	{
 	new_period = T1TC;
 	//cek sumber
 
+
+	if (IO0_INT_STAT_R & iKonter_12) {
+		t = 11; zz = env2->kalib[t].status; 
+		if ((zz==sPROP) || (zz==sRPM) || (zz==sFLOWx)) {
+			set_konter_rpm(t, new_period);
+		} 
+		IO0_INT_CLR = iKonter_12;
+	} 
+
+	if (IO0_INT_STAT_R & iKonter_11) {
+		t = 10; zz = env2->kalib[t].status; 
+		if ((zz==sPROP) || (zz==sRPM) || (zz==sFLOWx)) {
+			set_konter_rpm(t, new_period);
+		} 
+		IO0_INT_CLR = iKonter_11;
+	} 
+
 	#if 0
 	if (IO0_INT_STAT_F & iKonter_10)	{
 		t = 9;	zz = status_konter[t];

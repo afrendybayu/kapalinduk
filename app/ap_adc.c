@@ -16,8 +16,8 @@ void hitung_running_hours_adc(int i)		{
 	t = adc.rh_off[i] - adc.rh_on[i];
 	//printf("t: %d, off: %d, on: %d\r\n", t, konter.t_konter[i].rh_off, konter.t_konter[i].rh_on);
 	adc.rh[i] = t;
-	data_f[JML_KANAL+i] = adc.rh_x[i] + t;
-	*(&MEM_RTC0+RTC_MEM_START+i+JML_KANAL+1) = *( (int*) &data_f[JML_KANAL+i]);
+	data_f[JUM_DIGITAL+i] = adc.rh_x[i] + t;
+	*(&MEM_RTC0+RTC_MEM_START+i+JUM_DIGITAL+1) = *( (int*) &data_f[JUM_DIGITAL+i]);
 	//printf("rh[%d]: %.0f, rh[%d]: %.0f\r\n", 3, data_f[2], 10, data_f[9]);
 	//data_f[28] = konter.t_konter[i].rh_x + t;
 }
@@ -29,14 +29,14 @@ void data_adc()	{
 	struct t_env *st_env;
 	st_env = ALMT_ENV;
 	
-	for (i=0; i<JML_KANAL_ADC; i++)		{
+	for (i=0; i<JUM_DIGITAL; i++)		{
 		tf = (float) (adc.data[i] * faktor_pengali_420 / 0xffff);
-		tf = st_env->kalib[JML_KANAL+i].m * tf + st_env->kalib[JML_KANAL+i].C;
+		tf = st_env->kalib[JUM_DIGITAL+i].m * tf + st_env->kalib[JML_KANAL+i].C;
 		
-		if (st_env->kalib[JML_KANAL_ADC+i].status == sADC_7708)	{
+		if (st_env->kalib[JUM_DIGITAL+i].status == sADC_7708)	{
 			data_f[JML_KANAL+i] = tf;	
 		}
-		else if (st_env->kalib[JML_KANAL_ADC+i].status == sADC_RH)	{
+		else if (st_env->kalib[JUM_DIGITAL+i].status == sADC_RH)	{
 			//uprintf("data[%d] : %.2f\r\n", JML_KANAL+i+1, tf);
 			struct tm w;
 			time_t t;

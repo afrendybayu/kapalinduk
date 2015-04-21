@@ -139,6 +139,8 @@ int init_konter_onoff(unsigned int aaa, unsigned char status) {
 		if (aaa==7) {	IO0_INT_EN_F &= ~iKonter_8;		bbb = 8;	}
 		if (aaa==8) {	IO0_INT_EN_F &= ~iKonter_9;		bbb = 9;	}
 		if (aaa==9) {	IO0_INT_EN_F &= ~iKonter_10;	bbb = 10;	}
+		if (aaa==10) {	IO0_INT_EN_F &= ~iKonter_11;	bbb = 11;	}
+		if (aaa==11) {	IO0_INT_EN_F &= ~iKonter_12;	bbb = 12;	}
 	}
 	return bbb;
 }
@@ -239,12 +241,14 @@ void gpio_int_init()	{
 	// setup GPIO direction as input & interrupt
 	FIO2DIR &= ~(iKonter_1 | iKonter_2 | iKonter_3 | iKonter_4 | iKonter_5);
 	FIO0DIR &= ~(iKonter_6 | iKonter_7 | iKonter_8 | iKonter_9 | iKonter_10);
+	FIO0DIR &= ~(iKonter_11 | iKonter_12);
 	
 	// enable rising edge interrupt
 	// inverse input	--> input MPU rising edge, masuk inverter falling edge
 	
 	IO2_INT_EN_R |= iKonter_1 | iKonter_2 | iKonter_3 | iKonter_4 | iKonter_5;
 	IO0_INT_EN_R |= iKonter_6 | iKonter_7 | iKonter_8 | iKonter_9 | iKonter_10;
+	IO0_INT_EN_R |= iKonter_11 | iKonter_12;
 	
 	#ifdef PAKAI_ADC_7708
 	//FIO2DIR		 &= ~(RDY_AD7708);
