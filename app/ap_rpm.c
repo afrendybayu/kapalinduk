@@ -18,7 +18,7 @@ void cek_input_onoff(void)	{
 	env2 = (char *) ALMT_ENV;
 	int i=0, ww=0, zzz;
 	
-	for (i=0; i<JML_KANAL; i++)	{
+	for (i=0; i<JUM_DIGITAL; i++)	{
 		ww = env2->kalib[i].status;
 		if ( (ww==sONOFF) || (ww==sPUSHBUTTON)  || (ww==sONOFF_RH) || (ww==sFLOW1) || (ww==sFLOW2) || (ww==ssFLOW2) )	{
 			switch (i)	{
@@ -32,6 +32,8 @@ void cek_input_onoff(void)	{
 				case 7: zzz = iKonter_8; break;
 				case 8: zzz = iKonter_9; break;
 				case 9: zzz = iKonter_10; break;
+				case 10: zzz = iKonter_11; break;
+				case 11: zzz = iKonter_12; break;
 			}
 			if (i>=5) {
 				konter.t_konter[i].onoff = PORT0_INPUT(zzz);
@@ -50,11 +52,15 @@ void cek_input_onoff(void)	{
 void set_konter_rpm(int st, unsigned int period)		{
 	//new_period = T1TC;
 	if (period > konter.t_konter[st].last_period)	{
-		konter.t_konter[st].beda = (period -
-			konter.t_konter[st].last_period) * 50;	// 1 clock 50 nanosecond
+		konter.t_konter[st].beda = (period - konter.t_konter[st].last_period) * 50;	// 1 clock 50 nanosecond
 	}	else	{	// sudah overflow
+<<<<<<< HEAD
 		konter.t_konter[st].beda = (period +
 			(0xFFFFFFFF - konter.t_konter[st].last_period)) * 50;	// 1 clock 50 nanosecond
+=======
+		konter.t_konter[st].beda = (period + (0xFFFFFFFF - konter.t_konter[st].last_period)) * 50;	// 1 clock 50 nanosecond
+
+>>>>>>> cdeae9af3b32d46f332d577696bc50d501ece592
 	}
 	konter.t_konter[st].hit++;
 	konter.t_konter[st].last_period = period;
@@ -72,7 +78,7 @@ void reset_konter(void)	{
 	konter.ovflow = 0;
 	giliran = 0;
 	
-	for (i=0; i<JML_KANAL; i++)		{
+	for (i=0; i<JUM_DIGITAL; i++)		{
 		konter.t_konter[i].last_period = 0;
 		konter.t_konter[i].beda = 0;
 		konter.t_konter[i].hit = 0;
@@ -106,11 +112,14 @@ void hitung_rpm(void)	{
 		
 		//portENTER_CRITICAL();
 		
-		if (konter.t_konter[giliran].hit_lama == konter.t_konter[giliran].hit)		{
+		if (konter.t_konter[giliran].hit_lama == konter.t_konter[giliran].hit)		
+		{
 			//konter.t_konter[giliran].beda = 0;		
 			data_putaran[giliran] = 0;
 			
-		}	else	{
+		}	
+		else	
+		{
 			/* didapatkan frekuensi (HZ) putaran */
 			//temp_rpm = konter.t_konter[i].beda; // beda msh dlm nS
 			
@@ -127,7 +136,7 @@ void hitung_rpm(void)	{
 		//portEXIT_CRITICAL();
 	}
 	giliran++;
-	if (giliran == JML_KANAL) giliran = 0;
+	if (giliran == JUM_DIGITAL) giliran = 0;
 }
 
 #if 0
@@ -189,7 +198,7 @@ void data_frek_rpm (void) {
 	struct t_env *st_env;
 	st_env = ALMT_ENV;
 	
-	for (i=0; i<JML_KANAL; i++)	{
+	for (i=0; i<JUM_DIGITAL; i++)	{
 		status = st_env->kalib[i].status;
 		
 		if (status==sRPM || status==sRPM_RH)		{
@@ -286,7 +295,7 @@ void data_frek_rpm (void) {
 		else if (status==sFLOWx)	{
 			//*
 			data_f[i] = (konter.t_konter[i].hit*st_env->kalib[i].m)+st_env->kalib[i].C;
-			
+			// dsini nanti di tambahkan perkalian dengan nilai ASTM
 			#if 1
 			if (data_f[i]>nFLOW_MAX) {		// reset setelah 10juta, 7 digit
 			//if (data_f[(i*2)+1]>1000) {		// tes saja, reset setelah 10juta, 7 digit

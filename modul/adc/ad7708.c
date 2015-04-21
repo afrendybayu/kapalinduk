@@ -119,7 +119,8 @@ unsigned char setup_ad7708()	{
 unsigned char koleksi_adc7708()	{
 	adc.cur_kanal++;
 	//if (adc.cur_kanal>(JML_KANAL_ADC-1)) adc.cur_kanal = 0;
-	if (adc.cur_kanal>JML_KANAL_ADC) adc.cur_kanal = 0;
+	if (adc.cur_kanal>JML_KANAL_ADC) 
+		adc.cur_kanal = 0;
 	//uprintf("%s ambil adc: %d\r\n", __FUNCTION__, adc.cur_kanal);
 	
 	//unsigned ch = (adc.cur_kanal << 4);

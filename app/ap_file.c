@@ -14,7 +14,7 @@
 
 #ifdef PAKAI_FILE_SIMPAN
 
-char* strcmd_conf[]  = {"env", "kanal", "sumber", "data", "files", NULL};
+char* strcmd_conf[]  = {"env", "kanal", "sumber", "data", "files","astm", NULL};
 char* strcmd_env[]   = {"nama", "sn", "idslave", "debug1", "debug2", NULL};
 char* strcmd_kanal[] = {"kalib", "status", NULL};
 char* strcmd_smbr[]  = {"nama", "ip", "alamat", "stack", NULL};
@@ -22,7 +22,7 @@ char* strcmd_data[]  = {"nama", "id", "satuan", "status", "batas", "formula", NU
 char* strcmd_files[] = {"jumlah", "urut", NULL};
 
 enum xcmd_conf	{
-	CONF_ENV, CONF_KANAL, CONF_SUMBER, CONF_DATA, CONF_FILES
+	CONF_ENV, CONF_KANAL, CONF_SUMBER, CONF_DATA, CONF_FILES, CONF_ASTM
 } cmd_conf		__attribute__ ((section (".usbram1")));
 
 enum xcmd_conf_env	{
@@ -281,6 +281,43 @@ int parsing_cfg_data(int i, char *str)	{
 	vPortFree (st_data);
 }
 
+int parsing_cfg_astm(int i, char *str)
+{
+	int nx;
+	int nox, lok;
+	char *pch;
+	
+	pch = strchr(str, ':') + 1;		//if (pch==NULL)	return 1;
+	pch = strtok(pch, "\r\n");		//if (pch==NULL)	return 2;
+	
+	struct t_astm *st_astm;
+	int a,b;
+	//float P,T,Coef;
+	float Coef;
+
+	st_astm = pvPortMalloc(PER_ASTM * sizeof (struct t_astm) );
+	if (st_astm == NULL)	{
+		printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
+		vPortFree (st_astm);
+		return 3;
+	}
+
+	
+	//sscanf(str, "%d: %f %f %f",&nx, &P, &T, &C);
+	sscanf(str, "%d: %f",&nx,&Coef);
+	nx--;
+	nox = nx % PER_ASTM;
+	lok = (int) (nx/PER_ASTM);
+	memcpy((char *) st_astm, (char *) ALMT_VALUE_ASTM+(lok*JML_KOPI_ASTM), (PER_ASTM * sizeof (struct t_astm)));
+	//st_astm[nox].press = P;
+	//st_astm[nox].temp = T;
+	st_astm[nox].koef = Coef;
+	
+	simpan_st_rom(SEKTOR_ASTM, lok, 1, (unsigned short *) st_astm, 1);
+	vPortFree (st_astm);
+	
+	}
+
 int parsing_cfg_files(int i, char *str)	{
 	int nx, num;
 	char tstr[32], *pch;
@@ -371,7 +408,14 @@ int parsing_cmd_setting_subutama(char *str)	{
 			}
 		}
 	}
-	//printf ("----- %d/%d, %s", st_conf.cmd, jmlIs, str);
+	else if (st_conf.cmd==CONF_ASTM)	
+	{
+			pch = strstr (str, ':');
+			if (pch != NULL)	
+			{
+				parsing_cfg_astm(i, str);
+			}
+	}
 	return 0;
 }
 

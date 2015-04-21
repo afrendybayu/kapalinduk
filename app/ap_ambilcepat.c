@@ -85,13 +85,13 @@ int ch;
 		
 		vTaskDelay(1);
 		loopac++;
-		if (loopac>=100)	{
+		if (loopac>=100)	{ 
 			hitung_rpm();
 			cek_input_onoff();
 			loopac = 0;
 			#if 1
 			ff++;
-			if (ff>10)	{
+			if (ff>JUM_DIGITAL)	{
 				data_frek_rpm();
 				//uprintf(" waktu: %ld, fl: %d, on: %ld, rh: %ld, data_f[2]: %.0f\r\n", now_to_time(1, a), \
 				//	konter.t_konter[2].rh_flag, konter.t_konter[2].rh_on, konter.t_konter[2].rh, data_f[2]);

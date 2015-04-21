@@ -172,6 +172,8 @@ SDC_SOURCE= \
 		$(APP)/ap_file.c				\
 		$(CMD)/sh_file.c				\
 		
+ASTM_SOURCE = \
+		$(APP)/ap_astm.c		\
 
 RELAY_SOURCE=	\
 		$(CMD)/sh_relay.c	\
@@ -198,7 +200,11 @@ THUMB_SOURCE += $(MODBUS_SOURCE)
 THUMB_SOURCE += $(RTC_SOURCE)
 THUMB_SOURCE += $(SDC_SOURCE)
 THUMB_SOURCE += $(ADC_SOURCE)
+<<<<<<< HEAD
 THUMB_SOURCE += $(SERIAL3_SOURCE)
+=======
+THUMB_SOURCE += $(ASTM_SOURCE)
+>>>>>>> cdeae9af3b32d46f332d577696bc50d501ece592
 
 ARM_SOURCE	+=  $(SERIAL_SOURCE_ISR)
 ARM_SOURCE	+=  $(ADC_SOURCE_ISR)

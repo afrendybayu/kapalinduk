@@ -240,6 +240,9 @@ void rtcWrite(struct tm *newTime);
 		#define iKonter_8		BIT(26)	// P026
 		#define iKonter_9		BIT(27)	// P027
 		#define iKonter_10		BIT(28)	// P028
+		
+		#define iKonter_11		BIT(21)	// P021
+		#define iKonter_12		BIT(22)	// P022
 
 		
 		#define POWER_5V		BIT(19)	// P019

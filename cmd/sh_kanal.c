@@ -14,7 +14,7 @@ void cek_kanal()	{
 	int i;
 	
 	uprintf("\r\n  Info setting kanal Konter\r\n");
-	for (i=0; i<JML_KANAL; i++)		{
+	for (i=0; i<JUM_DIGITAL; i++)		{
 		uprintf("    Kanal %2d. m: %8.3f, C: %8.3f, status: %d\r\n", \
 			i+1, st_env->kalib[i].m, st_env->kalib[i].C, st_env->kalib[i].status);
 	}
@@ -22,7 +22,7 @@ void cek_kanal()	{
 	uprintf("  Info setting kanal analog 4-20mA\r\n");
 	for (i=0; i<JML_KANAL; i++)		{
 		uprintf("    Kanal %2d. m: %8.3f, C: %8.3f, status: %d\r\n", \
-			(i+JML_KANAL+1), st_env->kalib[i+JML_KANAL].m, st_env->kalib[i+JML_KANAL].C, st_env->kalib[i+JML_KANAL].status);
+			(i+JUM_DIGITAL+1), st_env->kalib[i+JUM_DIGITAL].m, st_env->kalib[i+JUM_DIGITAL].C, st_env->kalib[i+JUM_DIGITAL].status);
 	}
 	info_kanal();
 }
