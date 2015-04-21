@@ -151,7 +151,7 @@ void vUART3_ISR_Handler( void )
 								character in the Tx queue, send it now. */
 			if( xQueueReceiveFromISR( xCharsForTx3, &cChar, &xHigherPriorityTaskWoken ) == pdTRUE )
 			{
-				U2THR = cChar;
+				U3THR = cChar;
 			}
 			else
 			{

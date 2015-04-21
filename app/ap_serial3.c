@@ -85,26 +85,25 @@ char s[30];
 	vTaskDelay(100);
 	init_banner3();
 	
-	vTaskDelay(500);
-	st_hw.init++;
 	//nSer2 = 0;
 	int loop2 = 0;
 	//disTX3_485();
 	enaTX3_485();
 	enaRX3_485();
-	printf("sampe sini 111\r\n");
+
+	
+	st_hw.init++;
+	vTaskDelay(10000);
 	do {
 		vTaskDelay(100);
-		vSerialPutString3(xPort3, "xerial3\r\n", 6);
 	} while(st_hw.init != uxTaskGetNumberOfTasks());
 		
-	printf("sampe sini 222\r\n");
+
 	for( ;; )	{
 		//printd2(10, "serial 2: %d\r\n", loop2++);
-		printf("sampe sini 3333\r\n");
 		//printd3(10, "___serial 3\r\n");
 		vSerialPutString3(xPort3, "tes3\r\n", 6);
-		//vTaskDelay(1000);
+		vTaskDelay(1000);
 		/*
 		xGotChar = xSerialGetChar3( xPort3, &ch, 10 );
 		if( xGotChar == pdTRUE )		{

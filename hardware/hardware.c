@@ -59,15 +59,17 @@ void setup_hardware()	{
 		setup_serial0_P0();
 	#endif
 	
-	#ifdef PAKAI_SERIAL_3
-		#ifdef PAKAI_SERIAL_3_P4
-			setup_serial3_P4();
-		#endif
-	#endif
+	
 
 	#ifdef PAKAI_SERIAL_2			
 		#ifdef PAKAI_SERIAL_2_P0
 			setup_serial2_P0();
+		#endif
+	#endif
+	
+	#ifdef PAKAI_SERIAL_3
+		#ifdef PAKAI_SERIAL_3_P4
+			setup_serial3_P4();
 		#endif
 	#endif
 

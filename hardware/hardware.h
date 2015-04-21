@@ -28,8 +28,8 @@ void rtcWrite(struct tm *newTime);
 			#define LED_UTAMA	BIT(18)
 			
 			#define setup_led_utama()	do {	\
-						FIO1DIR = LED_UTAMA;	\
-						FIO1CLR = LED_UTAMA;	\
+						FIO1DIR |= LED_UTAMA;	\
+						FIO1CLR |= LED_UTAMA;	\
 					} while(0)
 			#define toogle_led_utama()	FIO1PIN ^= LED_UTAMA;
 		#endif
@@ -58,26 +58,26 @@ void rtcWrite(struct tm *newTime);
 			#define RLY_7	BIT(14)
 			#define RLY_8	BIT(15)			
 			
-			#define cRelay1()		FIO1CLR = RLY_1
-			#define cRelay2()		FIO1CLR = RLY_2
-			#define cRelay3()		FIO1CLR = RLY_3
-			#define cRelay4()		FIO1CLR = RLY_4
-			#define cRelay5()		FIO1CLR = RLY_5
-			#define cRelay6()		FIO1CLR = RLY_6
-			#define cRelay7()		FIO1CLR = RLY_7
-			#define cRelay8()		FIO1CLR = RLY_8
+			#define cRelay1()		FIO1CLR |= RLY_1
+			#define cRelay2()		FIO1CLR |= RLY_2
+			#define cRelay3()		FIO1CLR |= RLY_3
+			#define cRelay4()		FIO1CLR |= RLY_4
+			#define cRelay5()		FIO1CLR |= RLY_5
+			#define cRelay6()		FIO1CLR |= RLY_6
+			#define cRelay7()		FIO1CLR |= RLY_7
+			#define cRelay8()		FIO1CLR |= RLY_8
 			
-			#define sRelay1()		FIO1SET = RLY_1
-			#define sRelay2()		FIO1SET = RLY_2
-			#define sRelay3()		FIO1SET = RLY_3
-			#define sRelay4()		FIO1SET = RLY_4
-			#define sRelay5()		FIO1SET = RLY_5
-			#define sRelay6()		FIO1SET = RLY_6
-			#define sRelay7()		FIO1SET = RLY_7
-			#define sRelay8()		FIO1SET = RLY_8
+			#define sRelay1()		FIO1SET |= RLY_1
+			#define sRelay2()		FIO1SET |= RLY_2
+			#define sRelay3()		FIO1SET |= RLY_3
+			#define sRelay4()		FIO1SET |= RLY_4
+			#define sRelay5()		FIO1SET |= RLY_5
+			#define sRelay6()		FIO1SET |= RLY_6
+			#define sRelay7()		FIO1SET |= RLY_7
+			#define sRelay8()		FIO1SET |= RLY_8
 
 			#define setup_relay()		do {	\
-						FIO1DIR   = FIO1DIR | RLY_1 | RLY_2 | RLY_3 | RLY_4;		\
+						FIO1DIR  |= FIO1DIR | RLY_1 | RLY_2 | RLY_3 | RLY_4;		\
 						FIO1DIR  |= FIO1DIR | RLY_5 | RLY_6 | RLY_7 | RLY_8;		\
 					} while(0)	
 		#endif
@@ -101,13 +101,13 @@ void rtcWrite(struct tm *newTime);
 				#define TXDE3	BIT(17)		// P1.17
 				#define RXDE3	BIT(29)		// P1.29 --> Pull down ke GND
 				
-				#define enaTX3_485()		FIO1SET = TXDE3;
-				#define disTX3_485()		FIO1CLR = TXDE3;
-				#define enaRX3_485()		FIO1CLR = RXDE3;
+				#define enaTX3_485()		FIO1SET |= TXDE3;
+				#define disTX3_485()		FIO1CLR |= TXDE3;
+				#define enaRX3_485()		FIO1CLR |= RXDE3;
 				
 				#define setup_gpio_485_3()	do		{	\
-								FIO1DIR = TXDE3;		\
-								FIO1DIR = RXDE3;		\
+								FIO1DIR |= TXDE3;		\
+								FIO1DIR |= RXDE3;		\
 							} while (0)
 				
 				//	TXD3: P4.28, RXD3: P4.29
@@ -132,13 +132,13 @@ void rtcWrite(struct tm *newTime);
 				#define TXDE2	BIT(25)		// P3.25
 				#define RXDE2	BIT(12)		// --> Pull down ke GND
 				
-				#define enaTX2_485()		FIO3SET = TXDE2;
-				#define disTX2_485()		FIO3CLR = TXDE2;
-				#define enaRX2_485()		FIO2CLR = RXDE2;
+				#define enaTX2_485()		FIO3SET |= TXDE2;
+				#define disTX2_485()		FIO3CLR |= TXDE2;
+				#define enaRX2_485()		FIO2CLR |= RXDE2;
 				
 				#define setup_gpio_485_2()	do		{	\
-								FIO3DIR = TXDE2;		\
-								FIO2DIR = RXDE2;		\
+								FIO3DIR |= TXDE2;		\
+								FIO2DIR |= RXDE2;		\
 							} while (0)
 				
 				//	TXD2: P0.10, RXD2: P0.11
