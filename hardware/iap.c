@@ -685,7 +685,7 @@ char simpan_st_rom(int sektor, int st, int flag, unsigned short *pdata, int part
 		}
 		#endif
 	}
-
+	#if 0
 	else if (sektor==SEKTOR_ASTM)		
 	{
 		if (flag==1)
@@ -698,6 +698,7 @@ char simpan_st_rom(int sektor, int st, int flag, unsigned short *pdata, int part
 			simpan_rom(sektor, ALMT_VALUE_ASTM+(st*ALMT_VALUE_ASTM), (unsigned short *) pdata, hitung_ram(cek_jml_struct(ASTM)*PER_ASTM) );
 		}
 	}
+	#endif
 	
 	return 0;
 }

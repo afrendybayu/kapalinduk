@@ -159,7 +159,7 @@ enum t_struct{
 	SUMBER,
 	CRON,
 	BERKAS
-}; 
+	}; 
 enum t_struct st_struct;
 
 #define SEKTOR_DATA		20
