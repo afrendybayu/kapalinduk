@@ -681,6 +681,10 @@ char simpan_st_rom(int sektor, int st, int flag, unsigned short *pdata, int part
 		}
 		#endif
 	}
+
+	else if (sektor==SEKTOR_ASTM)		
+	{
+	}
 	
 	return 0;
 }
