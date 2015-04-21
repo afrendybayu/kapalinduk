@@ -260,7 +260,7 @@ signed portBASE_TYPE xSerialPutChar3( xComPortHandle pxPort3, signed portCHAR cO
 			{
 				xQueueReceive( Qtx3, &cOutChar, serNO_BLOCK );
 				*plTHREEmpty3 = pdFALSE;
-				U2THR = cOutChar;
+				U3THR = cOutChar;
 			}
 			#endif
 		}

@@ -197,7 +197,7 @@ void cmd_shell()	{
 	
 	tinysh_add_command(&reset_cmd);
 	tinysh_add_command(&task_list_cmd);
-	tinysh_add_command(&cek_stack_cmd);
+//	tinysh_add_command(&cek_stack_cmd);
 //	tinysh_add_command(&task_run_time_cmd);
 	tinysh_add_command(&idle_tick_cmd);
 	

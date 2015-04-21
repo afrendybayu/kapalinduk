@@ -6,11 +6,18 @@
 #include "tinysh/tinysh.h"
 #endif
 
+#ifdef PAKAI_SERIAL2
+#include "../app/ap_serial2.h"
+extern xTaskHandle *hdl_serial2;
+#endif
+
 //#include "sh_serial.h"
 #include "sh_rtos.h"
 
 extern xTaskHandle *hdl_shell;
 extern xTaskHandle *hdl_led;
+
+
 
 void task_list()	{
 #if INCLUDE_vTaskSuspend==0
@@ -31,11 +38,16 @@ const char * const pcHeader = "Task          State  Priority  Stack	#\r\n*******
 void cek_memory_stack()		{
 #if 0
 	printf("\r\n");
+	printf("Jumlah Task: %d\r\n",uxTaskGetNumberOfTasks());
 	printf("  Jml min stack space task shell : %d\r\n", uxTaskGetStackHighWaterMark( hdl_shell ));
 	printf("  Jml min stack space task LED   : %d\r\n", uxTaskGetStackHighWaterMark( hdl_led ));
 	
 	#ifdef PAKAI_SERIAL_2
-	//printf("  Jml min stack space task LED   : %d\r\n", uxTaskGetStackHighWaterMark( &hdl_led );
+	//printf("  Jml min stack space task LED   : %d\r\n", uxTaskGetStackHighWaterMark( hdl_serial2 ));
+	#endif
+	
+	#ifdef PAKAI_SERIAL_3
+	//printf("  Jml min stack space task LED   : %d\r\n", uxTaskGetStackHighWaterMark( hdl_serial3 ));
 	#endif
 #endif
 }

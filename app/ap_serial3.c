@@ -32,8 +32,8 @@ static xComPortHandle xPort3;//	__attribute__ ((section (".usbram1")));
 //extern char strmb[];
 
 //int parsing_mod(unsigned char *x);
-//char strmb3[MAX_RX_MB]		__attribute__ ((section (".usbram1")));
-//char outmb3[MAX_RX_MB]		__attribute__ ((section (".usbram1")));
+char strmb3[MAX_RX_MB3]		__attribute__ ((section (".usbram1")));
+char outmb3[MAX_RX_MB3]		__attribute__ ((section (".usbram1")));
 
 #if 0
 static xQueueHandle xPrintQueue2;
@@ -89,17 +89,22 @@ char s[30];
 	st_hw.init++;
 	//nSer2 = 0;
 	int loop2 = 0;
-	disTX3_485();
+	//disTX3_485();
+	enaTX3_485();
 	enaRX3_485();
-	
+	printf("sampe sini 111\r\n");
 	do {
 		vTaskDelay(100);
+		vSerialPutString3(xPort3, "xerial3\r\n", 6);
 	} while(st_hw.init != uxTaskGetNumberOfTasks());
 		
+	printf("sampe sini 222\r\n");
 	for( ;; )	{
 		//printd2(10, "serial 2: %d\r\n", loop2++);
+		printf("sampe sini 3333\r\n");
+		//printd3(10, "___serial 3\r\n");
 		vSerialPutString3(xPort3, "tes3\r\n", 6);
-		vTaskDelay(1000);
+		//vTaskDelay(1000);
 		/*
 		xGotChar = xSerialGetChar3( xPort3, &ch, 10 );
 		if( xGotChar == pdTRUE )		{
@@ -163,22 +168,23 @@ int proses_mod3(int mbn, char *mbstr)	{
 	p_env3 = (char *) ALMT_ENV;
 		
 	//if (p_env3->almtSlave != mbstr[0])	{
-	if (p_env3->almtSlave != strmb[0])	{
+	if (p_env3->almtSlave != strmb3[0])	{
 		//printf("0: %02x\r\n", strmb[0]);
 		return 1;
 	}
 	
 	//cmd = mbstr[1];
-	cmd = strmb[1];
+	cmd = strmb3[1];
 	if (cmd==READ_FILE_CONTENT && mbn>8)	return 3;		// kiriman sendiri
 	
+	/*
 	if (cmd>=READ_FILE_CONTENT)
 		//hsl = cek_crc_ccitt_0xffff(mbn, mbstr);		// modbus-serial dari skywave data file
-		hsl = cek_crc_ccitt_0xffff(mbn, strmb);			//
+		hsl = cek_crc_ccitt_0xffff(mbn, strmb3);			//
 	else
 		//hsl = cek_crc_mod(mbn, mbstr);				// modbus murni
-		hsl = cek_crc_mod(mbn, strmb);
-	
+		hsl = cek_crc_mod(mbn, strmb3);
+	//*/
 	
 	
 	if (hsl==1 && mbn>=8)	{				// 8: min panjang modbus REQUEST
@@ -190,16 +196,16 @@ int proses_mod3(int mbn, char *mbstr)	{
 		jml = (int) (mbstr[4]<<8 | mbstr[5]);
 		#endif
 		
-		cmd = strmb[1];
-		reg = (int) (strmb[2]<<8 | strmb[3]);
-		jml = (int) (strmb[4]<<8 | strmb[5]);
+		cmd = strmb3[1];
+		reg = (int) (strmb3[2]<<8 | strmb3[3]);
+		jml = (int) (strmb3[4]<<8 | strmb3[5]);
 		
 		//printf("++++ cmd: 0x%02x, reg: 0x%02x, jml: %d\r\n", cmd, reg, jml);
 		//cmd = parsing_mod(strSer2);
 		if (cmd>0)	{
 			//printf("__PROSES DATA KITA !!\r\n");
 			//return respon_modbus(cmd, reg, jml, mbstr, mbn);
-			return respon_modbus(cmd, reg, jml, strmb, mbn);
+			return respon_modbus(cmd, reg, jml, strmb3, mbn);
 		}
 	}
 	return 2;
@@ -212,9 +218,9 @@ void vAltStartCom3( unsigned portBASE_TYPE uxPriority, unsigned long ulBaudRate 
 	//xPrintQueue2 = xQueueCreate( uxQueueSize, uxQueueLength );
 	/* Initialise the com port then spawn the Rx and Tx tasks. */
 	xSerialPortInit3( ulBaudRate, configMINIMAL_STACK_SIZE );
-	
+	qsprintf("masuk thread serial 3\r\n");
 	/* The Tx task is spawned with a lower priority than the Rx task. */
-	//xTaskCreate( vComTask3, ( signed char * ) "Serial3", comSTACK_SIZE * ST_SER3, NULL, uxPriority, ( xTaskHandle * ) hdl_serial2 );
+	xTaskCreate( vComTask3, ( signed char * ) "Serial3", comSTACK_SIZE * ST_SER3, NULL, uxPriority, ( xTaskHandle * ) hdl_serial3 );
 }
 
 void init_banner3()		{

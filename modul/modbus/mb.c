@@ -8,11 +8,11 @@
 #ifdef PAKAI_MODBUS
 
 extern volatile float data_f[];
-//extern char strmb[];
-//extern char outmb[];
+extern char strmb[];
+extern char outmb[];
 
 
-
+#ifdef PAKAI_SERIAL_2
 int cek_crc_mod(int nstr, unsigned char *x)	{
 	unsigned char lo, hi;
 
@@ -31,6 +31,7 @@ int cek_crc_mod(int nstr, unsigned char *x)	{
 	}
 	return 0;
 }
+#endif
 
 unsigned short update_bad_crc(unsigned short bad_crc, unsigned short ch) 	{ 
 	const unsigned int Poly16=0x1021;
@@ -65,6 +66,7 @@ unsigned short crc_ccitt_0xffff(int len, char *data)	{
 	return bad_crc;
 }
 
+#ifdef PAKAI_SERIAL_2
 unsigned short cek_crc_ccitt_0xffff(int len, char *data)	{
 	unsigned short bad_crc=0xFFFF; 
 	unsigned char lo, hi;
@@ -85,7 +87,7 @@ unsigned short cek_crc_ccitt_0xffff(int len, char *data)	{
 	}
 	return 0;
 }
-
+#endif
 
 unsigned int CRC16(unsigned int crc, unsigned int data)		{
 	const unsigned int Poly16=0xA001;
@@ -117,6 +119,7 @@ int kirim_respon_mb(int jml, char *s, int timeout, int serial)		{
 }
 
 int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
+#ifdef PAKAI_SERIAL_2
 	//uprintf("-->%s, cmd: 0x%02x=%d, reg: %04x=%d, jml: %d\r\n\r\n", __FUNCTION__, cmd, cmd, reg, reg, jml);
 	int i=0, j, index=0;
 	char ketemu=0;
@@ -171,10 +174,14 @@ int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 		#endif
 	}
 	return 10;
+#endif
 }
 
 #ifdef PAKAI_FILE_SIMPAN
+
+
 int baca_kirim_file(int no, int len, char *str)		{
+#ifdef PAKAI_SERIAL_2
 	char path[64], nf[32];
 	unsigned long int size, i;
 	int res, lenTot=0, lenPar=0, nFilemulai=0, ufile=0, nmx=0;
@@ -273,7 +280,9 @@ int baca_kirim_file(int no, int len, char *str)		{
 	//hapus_folder_kosong();
 	
 	//vPortFree (respon);
+#endif
 }
+
 
 int proses_file_terkirim(int len, char *str)	{
 	char nf[32], path[64], pch[64];
@@ -332,6 +341,7 @@ int proses_file_terkirim(int len, char *str)	{
 #endif
 
 int baca_reg_mb(int index, int jml)	{			// READ_HOLDING_REG
+#ifdef PAKAI_SERIAL_2
 	int i, nX, j=0, njml=0;
 	char *respon; 
 	
@@ -400,9 +410,11 @@ int baca_reg_mb(int index, int jml)	{			// READ_HOLDING_REG
 	
 	//vPortFree (respon);
 	return nX;
+#endif 
 }
 
 int tulis_reg_mb(int reg, int index, int jml, char* str)	{	// WRITE_MULTIPLE_REG: 16
+#ifdef PAKAI_SERIAL_2
 	int i, j, tmpFl, njml;
 	char *respon; 
 	
@@ -495,6 +507,7 @@ int tulis_reg_mb(int reg, int index, int jml, char* str)	{	// WRITE_MULTIPLE_REG
 	
 	//vPortFree (respon);
 	return jml_st_mb10H;
+#endif
 }
 
 

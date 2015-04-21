@@ -85,7 +85,7 @@
 #define BOARD_SANTER		"Santer"
 #define BOARD_SANTER_v1_0
 //#define BOARD_SANTER_versi	"v1.2"
-#define BOARD_SANTER_versi	"v1.3A"
+#define BOARD_SANTER_versi	"v1.4"
 
 #define PAKAI_LED_UTAMA
 #define PAKAI_SHELL
@@ -101,7 +101,7 @@
 
 //#define PAKAI_RELAY
 
-#define PAKAI_SERIAL_2
+//#define PAKAI_SERIAL_2
 #ifdef  PAKAI_SERIAL_2
 	//#define PAKAI_SERIAL_2_P0		115200
 	#define PAKAI_SERIAL_2_P0		9600
@@ -114,7 +114,7 @@
 #ifdef  PAKAI_SERIAL_3
 	//#define PAKAI_SERIAL_3_P4		115200
 	#define PAKAI_SERIAL_3_P4		9600
-	#define ST_SER3					10
+	#define ST_SER3					15
 	#define PAKAI_MODBUS					// fungsi2 modbus di ap_utils.h
 	//#define MODBUS_RTU_MASTER
 #endif

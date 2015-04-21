@@ -23,5 +23,5 @@ static xComPortHandle xPort3;
 xTaskHandle *hdl_serial3;
 
 void vAltStartCom3( unsigned portBASE_TYPE uxPriority, unsigned long ulBaudRate );
-int proses_mod(int mbn, char *mbstr);
+int proses_mod3(int mbn, char *mbstr);
 void init_banner3()	;
