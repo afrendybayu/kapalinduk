@@ -349,6 +349,7 @@ struct t_env {
 	int		prioDebug;
 	int		prioDebug2;
 	int		jmlfile;
+	unsigned char almtMaster;
 };
 //struct t_env st_env;
 

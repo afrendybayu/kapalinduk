@@ -14,12 +14,12 @@
 
 #ifdef PAKAI_FILE_SIMPAN
 
-char* strcmd_conf[]  = {"env", "kanal", "sumber", "data", "files","astm", NULL};
-char* strcmd_env[]   = {"nama", "sn", "idslave", "debug1", "debug2", NULL};
-char* strcmd_kanal[] = {"kalib", "status", NULL};
-char* strcmd_smbr[]  = {"nama", "ip", "alamat", "stack", NULL};
-char* strcmd_data[]  = {"nama", "id", "satuan", "status", "batas", "formula", NULL};
-char* strcmd_files[] = {"jumlah", "urut", NULL};
+char* strcmd_conf[]		__attribute__ ((section (".usbram1"))) = {"env", "kanal", "sumber", "data", "files","astm", NULL};
+char* strcmd_env[]		__attribute__ ((section (".usbram1"))) = {"nama", "sn", "idslave", "debug1", "debug2", NULL};
+char* strcmd_kanal[]	__attribute__ ((section (".usbram1"))) = {"kalib", "status", NULL};
+char* strcmd_smbr[]		__attribute__ ((section (".usbram1"))) = {"nama", "ip", "alamat", "stack", NULL};
+char* strcmd_data[]		__attribute__ ((section (".usbram1"))) = {"nama", "id", "satuan", "status", "batas", "formula", NULL};
+char* strcmd_files[]	__attribute__ ((section (".usbram1"))) = {"jumlah", "urut", NULL};
 
 enum xcmd_conf	{
 	CONF_ENV, CONF_KANAL, CONF_SUMBER, CONF_DATA, CONF_FILES, CONF_ASTM

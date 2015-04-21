@@ -27,11 +27,11 @@ void cek_sumber(int argc, char **argv)		{
 	st_sumber = (char *) ALMT_SUMBER;
 
 	uprintf("\r\n  Cek Sumber\r\n  ******************************\r\n");
-	uprintf (" no |        Nama       |        IP       | Almt | Stack |      Keterangan     |\r\n");
+	uprintf (" no |        Nama       |        IP       | Almt | Stack | Status |     Keterangan     |\r\n");
 	for (i=0; i<JML_SUMBER; i++)	{
-		printf(" %2d | %-17s | %3d.%3d.%3d.%3d | %4d |  %3d  | %-19s |\r\n", i+1, st_sumber[i].nama, \
+		printf(" %2d | %-17s | %3d.%3d.%3d.%3d | %4d |  %3d  | %-6s | %-19s |\r\n", i+1, st_sumber[i].nama, \
 			st_sumber[i].IP0, st_sumber[i].IP1, st_sumber[i].IP2, st_sumber[i].IP3,	\
-			st_sumber[i].alamat, st_sumber[i].stack, st_sumber[i].ket);
+			st_sumber[i].alamat, st_sumber[i].stack, (st_sumber[i].status)?"Aktif":"Mati", st_sumber[i].ket);
 	}
 }
 
@@ -174,6 +174,7 @@ void set_sumber_default()		{
 		st_sumber[i].IP2 = 1;
 		st_sumber[i].IP3 = 250;
 		st_sumber[i].stack  = 0;
+		st_sumber[i].status  = 0;
 		st_sumber[i].alamat = 0;
 		st_sumber[i].tipe = 0;
 		strcpy(st_sumber[i].ket, "---");

@@ -107,7 +107,7 @@
 	#define PAKAI_SERIAL_2_P0		9600
 	#define ST_SER2					15
 	#define PAKAI_MODBUS					// fungsi2 modbus di ap_utils.h
-	#define MODBUS_RTU_SLAVE		
+	#define MODBUS_RTU_SLAVE		"Serial2"	
 #endif
 
 #define PAKAI_SERIAL_3
@@ -116,7 +116,7 @@
 	#define PAKAI_SERIAL_3_P4		9600
 	#define ST_SER3					15
 	#define PAKAI_MODBUS					// fungsi2 modbus di ap_utils.h
-	//#define MODBUS_RTU_MASTER
+	#define MODBUS_RTU_MASTER		"Serial3"
 #endif
 
 

@@ -38,9 +38,14 @@ void cek_env(int argc, char **argv)	{
 	uprintf("    Webclient: [%d] : %s\r\n", st_env->statusWebClient, (st_env->statusWebClient?"Aktif":"Mati"));
 	#endif
 	#ifdef MODBUS_RTU_SLAVE
-	uprintf("  Konfigurasi Modbus RTU Slave\r\n");
-	uprintf("    ID Device: %dd = %#02x\r\n", st_env->almtSlave, st_env->almtSlave);
+	uprintf("  Konfigurasi Modbus RTU Slave %s\r\n", MODBUS_RTU_SLAVE);
+	uprintf("    ID Device: %dd = %#02X\r\n", st_env->almtSlave, st_env->almtSlave);
 	uprintf("    BaudRate : %d\r\n", PAKAI_SERIAL_2_P0);
+	#endif
+	#ifdef MODBUS_RTU_MASTER
+	uprintf("  Konfigurasi Modbus RTU Master %s\r\n", MODBUS_RTU_MASTER);
+	uprintf("    ID Device: %dd = %#02X\r\n", st_env->almtMaster, st_env->almtMaster);
+	uprintf("    BaudRate : %d\r\n", PAKAI_SERIAL_3_P4);
 	#endif
 	//uprintf("  Konfig Cron  : [%d] : %s\r\n", st_env->statusCron, (st_env->statusCron?"Aktif":"Mati"));
 	uprintf("  Konfig Debug1: %d\r\n", st_env->prioDebug);
@@ -150,6 +155,14 @@ char set_env(int argc, char **argv)	{
 			
 		}
 		#endif
+		#ifdef MODBUS_RTU_MASTER
+		else if (strcmp(argv[1], "idmaster") == 0)	{
+			printf("  idMaster\r\n");
+			st_env->almtMaster = atoi( argv[2] );
+			printf("  Alamat ID Master : %d\r\n", st_env->almtMaster);
+			
+		}
+		#endif
 		else if (strcmp(argv[1], "debug1") == 0)	{
 			printf("  Debug prio serial0\r\n");
 			st_env->prioDebug = atoi( argv[2] );
@@ -235,13 +248,14 @@ void set_env_default()		{
 	st_env->netTot = 10;
 	strcpy(st_env->passwd, "monita");
 	strcpy(st_env->madein, "Afrendy Bayu");
-	strcpy(st_env->nohp, "082114722505");
+	strcpy(st_env->nohp, "08111136880");
 	st_env->statusCron = 0;
 	st_env->almtSlave = 1;
 	st_env->statusSlave = 0;
 	st_env->prioDebug  = 10;
 	st_env->prioDebug2 = 20;
 	st_env->jmlfile = 0;
+	st_env->almtMaster = 1;
 	
 	simpan_st_rom(SEKTOR_ENV, ENV, 0, (unsigned short *) st_env, 0);
 	//simpan_struct_block_rom(SEKTOR_ENV, ENV, 1, (char *) &st_env);
