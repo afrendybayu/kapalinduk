@@ -54,13 +54,7 @@ void set_konter_rpm(int st, unsigned int period)		{
 	if (period > konter.t_konter[st].last_period)	{
 		konter.t_konter[st].beda = (period - konter.t_konter[st].last_period) * 50;	// 1 clock 50 nanosecond
 	}	else	{	// sudah overflow
-<<<<<<< HEAD
-		konter.t_konter[st].beda = (period +
-			(0xFFFFFFFF - konter.t_konter[st].last_period)) * 50;	// 1 clock 50 nanosecond
-=======
 		konter.t_konter[st].beda = (period + (0xFFFFFFFF - konter.t_konter[st].last_period)) * 50;	// 1 clock 50 nanosecond
-
->>>>>>> cdeae9af3b32d46f332d577696bc50d501ece592
 	}
 	konter.t_konter[st].hit++;
 	konter.t_konter[st].last_period = period;
