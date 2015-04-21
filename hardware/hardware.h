@@ -111,7 +111,7 @@ void rtcWrite(struct tm *newTime);
 							} while (0)
 				
 				//	TXD3: P4.28, RXD3: P4.29
-				#define setup_serial3_P4()	do 	{	\		
+				#define setup_serial3_P4()	do 	{	\
 											PCONP |= BIT(25);	\
 											PCLKSEL1 &= ~(BIT(18) | BIT(19));	\
 											PCLKSEL1 |= BIT(18);	\
@@ -142,7 +142,7 @@ void rtcWrite(struct tm *newTime);
 							} while (0)
 				
 				//	TXD2: P0.10, RXD2: P0.11
-				#define setup_serial2_P0()	do 	{	\		
+				#define setup_serial2_P0()	do 	{	\
 											PCONP |= BIT(24);	\
 											PCLKSEL1 &= ~(BIT(16) | BIT(17));	\
 											PCLKSEL1 |= BIT(16);	\
@@ -204,7 +204,7 @@ void rtcWrite(struct tm *newTime);
 			#define setup_spi1_p0()	do {	\
 						PCONP		|= BIT(8);				\
 						PINSEL0 	|= BIT(15) | BIT(17) | BIT(19);	\
-						PCLKSEL0	|= BIT(16) | BIT(17);	\	
+						PCLKSEL0	|= BIT(16) | BIT(17);	\
 					} while(0)
 					// PCONP defaultnya AKTIF
 					// PINSEL SPI : SCK1 | MISO1 | MOSI1

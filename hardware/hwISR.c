@@ -14,6 +14,8 @@ void timer1_ISR_Handler( void );
 void gpio_ISR_Wrapper( void ) __attribute__ ((naked));
 void gpio_ISR_Handler( void );
 
+//extern char strmb[];
+//extern char outmb[];
 
 extern struct t2_konter konter;
 //extern unsigned char status_konter[];

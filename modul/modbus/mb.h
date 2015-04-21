@@ -22,7 +22,11 @@
 //char strmb[MAX_RX_MB]		__attribute__ ((section (".usbram1")));
 //char outmb[MAX_RX_MB]		__attribute__ ((section (".usbram1")));
 
-int kirim_respon_mb(int jml, char *s, int timeout)	;
+//char strmb[MAX_RX_MB];
+//char outmb[MAX_RX_MB];
+
+
+int kirim_respon_mb(int jml, char *s, int timeout, int serial)	;
 int cek_crc_mod(int nstr, unsigned char *x);
 unsigned int CRC16(unsigned int crc, unsigned int data)	;
 int respon_modbus(int cmd, int reg, int jml, char *str, int len);

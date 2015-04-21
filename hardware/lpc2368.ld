@@ -49,7 +49,7 @@ SECTIONS
 	. = ALIGN(32 / 8);
 	_bss_end__ = . ; __bss_end__ = . ; __end__ = . ;
 
-	.usbram (NOLOAD):
+	.usbram1 (NOLOAD):
 	{
 		__usbram_beg__ = .;
 		*(.usbram1)

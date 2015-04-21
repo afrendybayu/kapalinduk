@@ -82,7 +82,7 @@ typedef enum IAP_STATUS_t {
 #define	 LIHAT				0
 #define  LIHAT_ISI_SATU		1
 #define  MAX_SEND_FILE_MB	3600
-#define  MAX_RX_MB			4*1024
+#define  MAX_RX_MB			1*1024
 #define  MAX_DEBUG_TX		2*1024
 
 #define  RTC_MEM_START		100
@@ -110,6 +110,9 @@ typedef enum IAP_STATUS_t {
 #endif
 
 volatile float data_f [ JML_TITIK_DATA ];
+
+char strmb[MAX_RX_MB];//		__attribute__ ((section (".usbram1")));
+char outmb[MAX_RX_MB];//		__attribute__ ((section (".usbram1")));
 
 
 // 32 KB

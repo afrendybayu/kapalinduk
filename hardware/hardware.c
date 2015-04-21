@@ -113,6 +113,12 @@ void init_hardware()	{
 		
 	#endif
 	
+	#ifdef PAKAI_SERIAL_3
+		qsprintf("init serial 3\r\n");
+		vAltStartCom3( mainCOM_TEST_PRIORITY, PAKAI_SERIAL_3_P4 );
+		
+	#endif
+	
 	#ifdef PAKAI_SDCARD
 		
 	#endif 

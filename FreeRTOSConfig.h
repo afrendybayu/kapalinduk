@@ -114,8 +114,8 @@
 #ifdef  PAKAI_SERIAL_3
 	//#define PAKAI_SERIAL_3_P4		115200
 	#define PAKAI_SERIAL_3_P4		9600
-	//#define ST_SER2					15
-	//#define PAKAI_MODBUS					// fungsi2 modbus di ap_utils.h
+	#define ST_SER3					10
+	#define PAKAI_MODBUS					// fungsi2 modbus di ap_utils.h
 	//#define MODBUS_RTU_MASTER
 #endif
 

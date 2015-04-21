@@ -8,8 +8,10 @@
 #ifdef PAKAI_MODBUS
 
 extern volatile float data_f[];
-extern char strmb[];
-extern char outmb[];
+//extern char strmb[];
+//extern char outmb[];
+
+
 
 int cek_crc_mod(int nstr, unsigned char *x)	{
 	unsigned char lo, hi;
@@ -98,15 +100,19 @@ unsigned int CRC16(unsigned int crc, unsigned int data)		{
 	return(crc);
 }
 
-int kirim_respon_mb(int jml, char *s, int timeout)		{
+int kirim_respon_mb(int jml, char *s, int timeout, int serial)		{
 	int i, k=0;
 	
-	enaTX2_485();
-	for (i=0; i<jml; i++)	{
-		k += xSerialPutChar2 (0, outmb[i], 10);
+	#ifdef PAKAI_SERIAL_2_P0
+	if (serial==2)	{
+		enaTX2_485();
+		for (i=0; i<jml; i++)	{
+			k += xSerialPutChar2 (0, outmb[i], 10);
+		}
+		vTaskDelay(timeout);
+		disTX2_485();
 	}
-	vTaskDelay(timeout);
-	disTX2_485();
+	#endif
 	return k;
 }
 
@@ -261,7 +267,7 @@ int baca_kirim_file(int no, int len, char *str)		{
 		}
 	#endif
 	
-	kirim_respon_mb(nmx, outmb, 3000);
+	kirim_respon_mb(nmx, outmb, 3000, 2);
 	vTaskDelay(100);
 	f_close(&fd2);
 	//hapus_folder_kosong();
@@ -383,7 +389,7 @@ int baca_reg_mb(int index, int jml)	{			// READ_HOLDING_REG
 	#endif
 	
 	
-	kirim_respon_mb(nX, outmb, 100);
+	kirim_respon_mb(nX, outmb, 100, 2);
 	
 	#if 0
 	enaTX2_485();
@@ -475,7 +481,7 @@ int tulis_reg_mb(int reg, int index, int jml, char* str)	{	// WRITE_MULTIPLE_REG
 	printf("\r\n\r\n");
 	#endif
 	
-	kirim_respon_mb(jml_st_mb10H, outmb, 100);
+	kirim_respon_mb(jml_st_mb10H, outmb, 100, 2);
 	
 	#if 0
 	enaTX2_485();

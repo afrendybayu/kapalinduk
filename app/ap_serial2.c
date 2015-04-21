@@ -29,9 +29,13 @@ static xComPortHandle xPort2;
 //void sedot_mod(int ch);
 //int proses_mod_cmd();
 
+extern char strmb[];
+extern char outmb[];
+//char strmb[MAX_RX_MB]		__attribute__ ((section (".usbram1")));
+//char outmb[MAX_RX_MB]		__attribute__ ((section (".usbram1")));
+
+
 //int parsing_mod(unsigned char *x);
-char strmb[MAX_RX_MB]		__attribute__ ((section (".usbram1")));
-char outmb[MAX_RX_MB]		__attribute__ ((section (".usbram1")));
 
 #if 0
 static xQueueHandle xPrintQueue2;
