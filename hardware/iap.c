@@ -684,6 +684,15 @@ char simpan_st_rom(int sektor, int st, int flag, unsigned short *pdata, int part
 
 	else if (sektor==SEKTOR_ASTM)		
 	{
+		if (flag==1)
+		{
+			printf("kopi sektor astm\r\n");
+			kopikan_sektor_tmp(alamat_sektor(SEKTOR_ASTM));
+			hapuskan_sektor(sektor);		// hapus sektor
+		}
+		if (part==0)	{					// set_data default
+			simpan_rom(sektor, ALMT_VALUE_ASTM+(st*ALMT_VALUE_ASTM), (unsigned short *) pdata, hitung_ram(cek_jml_struct(ASTM)*PER_ASTM) );
+		}
 	}
 	
 	return 0;

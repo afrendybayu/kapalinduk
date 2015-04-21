@@ -99,6 +99,7 @@ typedef enum IAP_STATUS_t {
 #define PER_SUMBER			10
 //#define PER_ASTM			85
 #define PER_ASTM			91
+#define BLOK_ASTM			21
 #define JML_SUMBER			 6
 #define SUMBER_PER_SEKTOR	32
 
