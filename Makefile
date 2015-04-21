@@ -144,6 +144,8 @@ SERIAL_SOURCE=	\
 SERIAL2_SOURCE= \
 		$(APP)/ap_serial2.c	\
 
+
+
 RTC_SOURCE= \
 		$(CMD)/sh_rtc.c		\
 
