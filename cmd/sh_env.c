@@ -195,7 +195,7 @@ void set_env_default()		{
 	st_env->GW2 = 1;
 	st_env->GW3 = 1;
 	
-	for (i=0; i<(JML_KANAL); i++)	{
+	for (i=0; i<(JUM_DIGITAL); i++)	{
 		st_env->kalib[i].m = 1;
 		st_env->kalib[i].C = 0;
 		st_env->kalib[i].status = sRPM;
@@ -204,9 +204,9 @@ void set_env_default()		{
 	}
 	
 	for (i=0; i<(JML_KANAL); i++)	{
-		st_env->kalib[i+JML_KANAL].m = 1;
-		st_env->kalib[i+JML_KANAL].C = 0;
-		st_env->kalib[i+JML_KANAL].status = sADC_7708;
+		st_env->kalib[i+JUM_DIGITAL].m = 1;
+		st_env->kalib[i+JUM_DIGITAL].C = 0;
+		st_env->kalib[i+JUM_DIGITAL].status = sADC_7708;
 		//strcpy(env.kalib[i].ket, "----");
 		//printf("%d", sADC_7708);
 	}
