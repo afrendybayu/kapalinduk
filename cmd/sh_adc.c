@@ -18,7 +18,7 @@ void cek_adc(void)	{
 	uprintf(" Ch | Kuantisasi |  Tegangan  |   Data   |\r\n********************************\r\n");
 	for (i=0; i<JML_KANAL_ADC; i++ ) {
 		uprintf(" %2d | %10d | %7.5f V | %.2f V\r\n", \
-			i+1, adc.data[i], (float) (adc.data[i] * faktor_pengali_420 / 0xffff), data_f[JML_KANAL+i]);
+			i+1, adc.data[i], (float) (adc.data[i] * faktor_pengali_420 / 0xffff), data_f[JUM_DIGITAL+i]);
 	}
 }
 
