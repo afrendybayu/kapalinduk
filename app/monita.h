@@ -179,6 +179,7 @@ enum t_struct st_struct;
 
 #define JUM_DIGITAL	12
 #define JML_KANAL	10
+#define TOT_ANDIG	22
 
 #define uchr		unsigned char
 //#define uint		unsigned int
@@ -318,7 +319,7 @@ struct t_env {
 	unsigned char GW1;
 	unsigned char GW2;
 	unsigned char GW3;
-	struct t_kalib kalib[JUM_DIGITAL*2];
+	struct t_kalib kalib[TOT_ANDIG];
 	int magic1;
 	int magic2;
 	int mmc_serial;

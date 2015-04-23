@@ -53,7 +53,7 @@ char set_kanal(int argc, char **argv)		{
 		return 0;
 	}
 	
-	int no = cek_nomor_valid(argv[1], JML_KANAL*2);
+	int no = cek_nomor_valid(argv[1], TOT_ANDIG);
 	if (no == TIDAK_VALID || no == NULL)	{
 		printf("  no kanal TIDAK VALID\r\n");
 		return 2;
@@ -145,7 +145,7 @@ void set_kanal_default()		{
 		return;
 	}
 	
-	for (i=0; i<(JML_KANAL*2); i++)	{
+	for (i=0; i<(TOT_ANDIG); i++)	{
 		st_env->kalib[i].m = 1;
 		st_env->kalib[i].C = 0;
 		st_env->kalib[i].status = sRPM;
