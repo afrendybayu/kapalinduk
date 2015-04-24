@@ -176,6 +176,10 @@ void set_sumber_default()		{
 		st_sumber[i].stack  = 0;
 		st_sumber[i].alamat = 0;
 		st_sumber[i].tipe = 0;
+		st_sumber[i].idSrc = 0;
+		st_sumber[i].RegSrc = 0;
+		st_sumber[i].RegDest = 0;
+		st_sumber[i].jmlReg = 0;
 		strcpy(st_sumber[i].ket, "---");
 	}
 	

@@ -294,7 +294,7 @@ struct t_cron {
 #endif 
 
 struct t_sumber {
-	char nama[32];
+	char nama[16];
 	char alamat;		/* untuk alamat modbus Power meter atau stack board (jika ada) */
 	unsigned char IP0;			// klo sumber berupa modul monita 
 	unsigned char IP1;
@@ -304,6 +304,10 @@ struct t_sumber {
 	char stack;			// jika modul berisi BANYAK_SUMBER : adc, pm, dll
 	char status;		// tidak aktif, timeout, dll
 	char tipe;			// 0:PM_710, 1:PM_810, 2:KTA, 3:MICOM
+	unsigned char idSrc;
+	unsigned int RegSrc;
+	unsigned int RegDest;
+	unsigned int jmlReg;
 	char ket[32];
 };
 //struct t_sumber st_sumber[JML_SUMBER];

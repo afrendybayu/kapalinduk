@@ -101,7 +101,7 @@
 
 //#define PAKAI_RELAY
 
-//#define PAKAI_SERIAL_2
+#define PAKAI_SERIAL_2
 #ifdef  PAKAI_SERIAL_2
 	//#define PAKAI_SERIAL_2_P0		115200
 	#define PAKAI_SERIAL_2_P0		9600

@@ -102,7 +102,7 @@ char s[30];
 	for( ;; )	{
 		//printd2(10, "serial 2: %d\r\n", loop2++);
 		//printd3(10, "___serial 3\r\n");
-		vSerialPutString3(xPort3, "tes3\r\n", 6);
+		//vSerialPutString3(xPort3, "tes3\r\n", 6);
 		vTaskDelay(1000);
 		/*
 		xGotChar = xSerialGetChar3( xPort3, &ch, 10 );
