@@ -249,6 +249,16 @@ void cmd_shell()	{
 	tinysh_add_command(&set_file_cmd);
 	tinysh_add_command(&upload_file_cmd);
 	#endif
+	
+	/*
+	#ifdef PAKAI_SERIAL_2
+	tinysh_add_command(&cek_serial2_cmd);
+	#endif
+	
+	#ifdef PAKAI_SERIAL_3
+	tinysh_add_command(&cek_serial3_cmd);
+	#endif
+	//*/
 
 #endif
 }

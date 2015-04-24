@@ -23,7 +23,7 @@
 
 #ifdef PAKAI_SERIAL_2
 
-static xComPortHandle xPort2;
+static xComPortHandle xPort2	__attribute__ ((section (".usbram1")));;
 //extern volatile struct t_st_hw st_hw;
 
 //void sedot_mod(int ch);
@@ -31,7 +31,7 @@ static xComPortHandle xPort2;
 
 //extern char strmb[];
 //extern char outmb[];
-char strmb[MAX_RX_MB]		__attribute__ ((section (".usbram1")));
+char strmb[MAX_RX_MB3]		__attribute__ ((section (".usbram1")));
 char outmb[MAX_RX_MB]		__attribute__ ((section (".usbram1")));
 
 
