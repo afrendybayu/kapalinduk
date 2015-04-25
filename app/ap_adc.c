@@ -31,10 +31,10 @@ void data_adc()	{
 	
 	for (i=0; i<JUM_DIGITAL; i++)		{
 		tf = (float) (adc.data[i] * faktor_pengali_420 / 0xffff);
-		tf = st_env->kalib[JUM_DIGITAL+i].m * tf + st_env->kalib[JML_KANAL+i].C;
+		tf = st_env->kalib[JUM_DIGITAL+i].m * tf + st_env->kalib[JUM_DIGITAL+i].C;
 		
 		if (st_env->kalib[JUM_DIGITAL+i].status == sADC_7708)	{
-			data_f[JML_KANAL+i] = tf;	
+			data_f[JUM_DIGITAL+i] = tf;	
 		}
 		else if (st_env->kalib[JUM_DIGITAL+i].status == sADC_RH)	{
 			//uprintf("data[%d] : %.2f\r\n", JML_KANAL+i+1, tf);

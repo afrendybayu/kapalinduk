@@ -65,6 +65,8 @@ int ch;
 	int ww=0;
 	
 	gpio_int_init();
+	int bunga;
+	bunga = 1000/JUM_DIGITAL;
 	
 	for( ;; )	{
 		
@@ -85,7 +87,7 @@ int ch;
 		
 		vTaskDelay(1);
 		loopac++;
-		if (loopac>=100)	{ 
+		if (loopac>=bunga)	{ 
 			hitung_rpm();
 			cek_input_onoff();
 			loopac = 0;
