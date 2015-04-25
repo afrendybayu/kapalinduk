@@ -35,6 +35,8 @@ int baca_reg_mb(int reg, int pjg);
 unsigned short cek_crc_ccitt_0xffff(int len, char *data);
 unsigned short update_bad_crc(unsigned short bad_crc, unsigned short ch);
 unsigned short crc_ccitt_0xffff(int len, char *data);
+int get_crc_mod(int nstr, unsigned char *x);
+int parsing_mb_cmd(char*s, char* cmd, int* dest);
 //int tulis_single_mb(int reg, int index, char* str);
 
 #ifdef PAKAI_FILE_SIMPAN

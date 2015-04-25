@@ -120,7 +120,7 @@ void vSerialISRCreateQueues3(	unsigned portBASE_TYPE uxQueueLength, xQueueHandle
 	//portENTER_CRITICAL();
 	
 	xRxedChars3 = xQueueCreate( uxQueueLength + 1, ( unsigned portBASE_TYPE ) sizeof( signed portCHAR ) );
-	//xRxedChars2 = xQueueCreate( 8, ( unsigned portBASE_TYPE ) sizeof( signed portCHAR ) );
+	//xRxedChars3 = xQueueCreate( 8, ( unsigned portBASE_TYPE ) sizeof( signed portCHAR ) );
 	xCharsForTx3 = xQueueCreate( uxQueueLength + 1, ( unsigned portBASE_TYPE ) sizeof( signed portCHAR ) );
 
 	/* Pass back a reference to the queues so the serial API file can 

@@ -52,6 +52,7 @@ void cek_env(int argc, char **argv)	{
 	//uprintf("  Konfig Cron  : [%d] : %s\r\n", st_env->statusCron, (st_env->statusCron?"Aktif":"Mati"));
 	uprintf("  Konfig Debug1: %d\r\n", st_env->prioDebug);
 	uprintf("  Konfig Debug2: %d\r\n", st_env->prioDebug2);
+	uprintf("  Memory space: %d\r\n", xPortGetFreeHeapSize());
 }
 
 
@@ -168,7 +169,13 @@ char set_env(int argc, char **argv)	{
 			st_env->prioDebug2 = atoi( argv[2] );
 			printf("  Nomor batas prioritas debug2 : %d\r\n", st_env->prioDebug2);
 			
-		}	
+		}
+		else if (strcmp(argv[1], "idmaster") == 0)	{
+			printf("  idMaster\r\n");
+			st_env->almtMaster = atoi( argv[2] );
+			printf("  Alamat ID Master : %d\r\n", st_env->almtMaster);
+			
+		}
 	}
 	
 	//simpan_struct_block_rom(SEKTOR_ENV, ENV, 0, (char *) st_env);

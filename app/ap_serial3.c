@@ -23,6 +23,10 @@
 
 #ifdef PAKAI_SERIAL_3
 
+enum xcmd_conf	{
+	MB_REST, MB_REQ, MB_RESP, 
+} cmd_mb_state		__attribute__ ((section (".usbram1")));
+
 static xComPortHandle xPort3;//	__attribute__ ((section (".usbram1")));
 //extern volatile struct t_st_hw st_hw;
 
@@ -35,18 +39,19 @@ static xComPortHandle xPort3;//	__attribute__ ((section (".usbram1")));
 char strmb3[MAX_RX_MB3]		__attribute__ ((section (".usbram1")));
 char outmb3[MAX_RX_MB3]		__attribute__ ((section (".usbram1")));
 
+
 #if 0
-static xQueueHandle xPrintQueue2;
+static xQueueHandle xPrintQueue3;
 
 // qsprintf : custom printf yg dapat menyimpan data ke queue
-void qsprintf2(char *fmt, ...) {
+void qsprintf3(char *fmt, ...) {
 	//uprintf("---> KIRIM : ");
 	char str_buffer[256];
 	int lg=0;
 	va_list args;
 	va_start(args, fmt);
 	lg = vsprintf(str_buffer, fmt, args);
-	lg = xQueueSend( xPrintQueue2, ( void * ) str_buffer, ( portTickType ) 0 );
+	lg = xQueueSend( xPrintQueue3, ( void * ) str_buffer, ( portTickType ) 0 );
 	va_end(args);
 
 }
@@ -69,7 +74,17 @@ void printd3(int prio, const char *format, ...)	{
 	}
 }
 
-
+int cmd_modbus(int gg)	{
+	struct t_sumber *st_sumber;
+	//st_sumber = (char *) ALMT_SUMBER;
+	//if (gg==0)	printf("========================\r\n");
+	printf(" CMD Sumber %d\r\n",gg);
+	if (st_sumber[gg].status==1)	{
+		printf("----> REQ MODBUS %s\r\n", st_sumber[gg].form);
+	}
+	
+	return gg;
+}
 
 static portTASK_FUNCTION( vComTask3, pvParameters )		{
 signed char cExpectedByte, cByteRxed;
@@ -79,6 +94,7 @@ int ch;
 char s[30];
 	//char strmb[MAX_RX_MB];
 	int  nmb = 0, balas = 0;
+	char mb_state = MB_REST;
 	char flag_ms = 0;
 	/* Just to stop compiler warnings. */
 	( void ) pvParameters;
@@ -86,6 +102,7 @@ char s[30];
 	init_banner3();
 	
 	//nSer2 = 0;
+	int mbgilir;	mbgilir=0;
 	int loop2 = 0;
 	//disTX3_485();
 	enaTX3_485();
@@ -103,46 +120,68 @@ char s[30];
 		//printd2(10, "serial 2: %d\r\n", loop2++);
 		//printd3(10, "___serial 3\r\n");
 		//vSerialPutString3(xPort3, "tes3\r\n", 6);
-		vTaskDelay(1000);
-		/*
-		xGotChar = xSerialGetChar3( xPort3, &ch, 10 );
-		if( xGotChar == pdTRUE )		{
-			if ((nmb==0) && ((char)ch==0xff))	{
-				//printf("nmb: %d, ch: %02x, mask sini !!", nmb, (char)ch);
-			} 
-			else {
-				//printf("%02x ", (char) ch);
-				//printf("%c ", (char) ch);
-				strmb3[nmb] = (char) ch;
-				nmb++;
-				//strSer2[nmb+1] = '\0';
-				//sedot_mod(ch);
-				flag_ms=1;
-			}
+		if (mb_state==MB_REST)	{
+			printf(">>> MB_REST: %d   ", mbgilir);
+			//if (mbgilir=0)	
+			vTaskDelay(2000);
+			//else 			vTaskDelay(1000);
+			mb_state = MB_REQ;
 		}
-		else {
-			// sedot data respon (sendiri), clear buffer
-			if ( (balas==nmb) && (balas>0) )	{			
-				//printf("Reset MB2 !!!\r\n");
-				nmb = 0;
+		else if (mb_state==MB_REQ)	{
+			cmd_modbus(mbgilir);
+			printf(">>> MB_REQ: %d  ", mbgilir);
+			mbgilir++;
+			if (mbgilir>=JML_SUMBER)	mbgilir=0;
+			mb_state = MB_RESP;
+		}
+		else if (mb_state==MB_RESP)	{
+			printf(">>> MB_RESP: %d\r\n", mbgilir);
+			/*
+			xGotChar = xSerialGetChar3( xPort3, &ch, 10 );
+			if( xGotChar == pdTRUE )		{
+				if ((nmb==0) && ((char)ch==0xff))	{
+					//printf("nmb: %d, ch: %02x, mask sini !!", nmb, (char)ch);
+				} 
+				else {
+					//printf("%02x ", (char) ch);
+					//printf("%c ", (char) ch);
+					strmb3[nmb] = (char) ch;
+					nmb++;
+					//strSer2[nmb+1] = '\0';
+					//sedot_mod(ch);
+					flag_ms=1;
+				}
+			}
+			else {
+				// sedot data respon (sendiri), clear buffer
+				if ( (balas==nmb) && (balas>0) )	{			
+					//printf("Reset MB2 !!!\r\n");
+					nmb = 0;
+					flag_ms = 0;
+					balas = 0;
+				}
+				
+				if (flag_ms==1 && nmb>4)	{
+					balas = proses_mod3(nmb, strmb3);
+					//printf("--==> BALAS MB: %d\r\n", balas);
+					nmb = 0;
+				}
+				if (balas==0)	{
+					nmb = 0;
+				}
+				//
+				#if 0
 				flag_ms = 0;
-				balas = 0;
+				nmb = 0;
+				#endif
 			}
 			
-			if (flag_ms==1 && nmb>4)	{
-				balas = proses_mod3(nmb, strmb3);
-				//printf("--==> BALAS MB: %d\r\n", balas);
-				nmb = 0;
-			}
-			if (balas==0)	{
-				nmb = 0;
-			}
-			//
-			#if 0
-			flag_ms = 0;
-			nmb = 0;
-			#endif
+			//*/
+			mb_state = MB_REST;
 		}
+		
+		/*
+		
 		//*/
 	}
 }
@@ -224,8 +263,8 @@ void vAltStartCom3( unsigned portBASE_TYPE uxPriority, unsigned long ulBaudRate 
 
 void init_banner3()		{
 	printf("Task vComTask3 Init\r\n");
-	//printd2(10, "masuk task RS485_2\r\n");
-	//vSerialPutString2(xPort2, "vSerialPutString2\r\n", 6);
+	//printd3(10, "masuk task RS485_2\r\n");
+	//vSerialPutString3(xPort3, "vSerialPutString2\r\n", 6);
 }
 
 #endif

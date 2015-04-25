@@ -33,6 +33,29 @@ int cek_crc_mod(int nstr, unsigned char *x)	{
 }
 #endif
 
+int get_crc_mod(int nstr, unsigned char *x)	{
+	#if 0
+	int k;
+	printf("masuk %s\r\nCmd modbus: ", __FUNCTION__);
+	for(k=0; k<6; k++)	{
+		printf("%02X ", x[k]);
+	}
+	printf("\r\n");
+	#endif
+
+	unsigned int i, Crc = 0xFFFF;
+	for (i=0; i<nstr; i++) {
+		Crc = CRC16 (Crc, x[i]);
+	}
+	#if 0
+	//unsigned char lo, hi;
+	//hi = ((Crc&0xFF00)>>8);	lo = (Crc&0xFF);
+	//printf("hi: %02X, lo: %02X\r\n", hi, lo);
+	#endif
+	return Crc;
+	
+}
+
 unsigned short update_bad_crc(unsigned short bad_crc, unsigned short ch) 	{ 
 	const unsigned int Poly16=0x1021;
     unsigned short i, xor_flag;
@@ -510,5 +533,56 @@ int tulis_reg_mb(int reg, int index, int jml, char* str)	{	// WRITE_MULTIPLE_REG
 #endif
 }
 
+int parsing_mb_cmd(char*s, char* cmd, int* dest)	{
+	int i, n, k;
+	char *p;	p = (void*) s;
+	for (i=0; p[i]; p[i]==';' ? i++ : *p++);
+	if (strlen(s)>0)	i++;
+	//printf("p: %d. jml space: %d\r\n", strlen(s), i);
+	
+	int *buf;
+	buf = (int*) malloc(i*sizeof(int));
+	if (buf==NULL) exit (1);
+	
+	p=(void*) s;	k=0;
+	do {
+		if (k==0)	buf[k] = atoi(s);
+		else 		buf[k] = atoi(s+1);
+		s=strchr(s+1,';');
+		k++;
+	} while(s!=NULL);
 
+	#if 0
+	for (k=0; k<i; k++)	{
+		printf("isi buf[%d]: %d\r\n", k, buf[k]);
+	}
+	#endif
+	*dest = buf[6];
+	
+	unsigned int tmp;
+	cmd[0] = buf[1];
+	cmd[1] = buf[4]?WRITE_MULTIPLE_REG:READ_HOLDING_REG;
+	
+	tmp = buf[2]>40000?(buf[2]-40000-buf[3]):buf[2];
+	cmd[2] = (tmp >> 8) & 0xFF;
+	cmd[3] = tmp & 0xFF;
+	cmd[4] = (buf[5] >> 8) & 0xFF;
+	cmd[5] = buf[5] & 0xFF;
+	
+	int crc = get_crc_mod(6,cmd);
+	cmd[6] = (crc >> 8) & 0xFF;
+	cmd[7] = crc & 0xFF;
+	//printf("crc: %04X\r\n",crc);
+	
+	free(buf);
+	
+	//cmd = mbcmd;
+	#if 0
+	printf("Cmd modbus: ");
+	for(k=0; k<8; k++)	{
+		printf("%02X ", cmd[k]);
+	}
+	printf("\r\n");
+	#endif
+}
 #endif

@@ -308,6 +308,8 @@ struct t_sumber {
 	unsigned int RegSrc;
 	unsigned int RegDest;
 	unsigned int jmlReg;
+	char form[32];
+	char validForm;
 	char ket[32];
 };
 //struct t_sumber st_sumber[JML_SUMBER];
