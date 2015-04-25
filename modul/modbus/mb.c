@@ -10,6 +10,9 @@
 extern volatile float data_f[];
 extern char strmb[];
 extern char outmb[];
+extern char strmb3[];
+extern char outmb3[];
+
 
 
 #ifdef PAKAI_SERIAL_2
@@ -128,7 +131,7 @@ unsigned int CRC16(unsigned int crc, unsigned int data)		{
 int kirim_respon_mb(int jml, char *s, int timeout, int serial)		{
 	int i, k=0;
 	
-	#ifdef PAKAI_SERIAL_2_P0
+	#ifdef PAKAI_SERIAL_2
 	if (serial==2)	{
 		enaTX2_485();
 		for (i=0; i<jml; i++)	{
@@ -138,8 +141,27 @@ int kirim_respon_mb(int jml, char *s, int timeout, int serial)		{
 		disTX2_485();
 	}
 	#endif
+	
+	#ifdef PAKAI_SERIAL_3
+	if (serial==3)	{
+		printf("_____%s_____\r\n", __FUNCTION__);
+		enaTX3_485();
+		for (i=0; i<jml; i++)	{
+			k += xSerialPutChar3 (0, s[i], 10);
+			
+			#if 0
+			k++;
+			printf("%02X ", s[i]);
+			#endif
+		}
+		//vSerialPutString3(1, "tes3\r\n", 6);
+		vTaskDelay(timeout);
+		disTX3_485();
+	}
+	#endif
 	return k;
 }
+
 
 int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 #ifdef PAKAI_SERIAL_2
@@ -541,8 +563,13 @@ int parsing_mb_cmd(char*s, char* cmd, int* dest)	{
 	//printf("p: %d. jml space: %d\r\n", strlen(s), i);
 	
 	int *buf;
-	buf = (int*) malloc(i*sizeof(int));
-	if (buf==NULL) exit (1);
+	//buf = (int*) malloc(i*sizeof(int));
+	buf = pvPortMalloc( i * sizeof (int) );
+	if (buf == NULL)	{
+		printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
+		vPortFree(buf);
+		return -1;
+	}
 	
 	p=(void*) s;	k=0;
 	do {
@@ -551,15 +578,17 @@ int parsing_mb_cmd(char*s, char* cmd, int* dest)	{
 		s=strchr(s+1,';');
 		k++;
 	} while(s!=NULL);
-
+	
 	#if 0
 	for (k=0; k<i; k++)	{
 		printf("isi buf[%d]: %d\r\n", k, buf[k]);
 	}
 	#endif
-	*dest = buf[6];
+	
+	//*dest = buf[6];
 	
 	unsigned int tmp;
+	//*
 	cmd[0] = buf[1];
 	cmd[1] = buf[4]?WRITE_MULTIPLE_REG:READ_HOLDING_REG;
 	
@@ -569,12 +598,40 @@ int parsing_mb_cmd(char*s, char* cmd, int* dest)	{
 	cmd[4] = (buf[5] >> 8) & 0xFF;
 	cmd[5] = buf[5] & 0xFF;
 	
-	int crc = get_crc_mod(6,cmd);
-	cmd[6] = (crc >> 8) & 0xFF;
-	cmd[7] = crc & 0xFF;
-	//printf("crc: %04X\r\n",crc);
+	#if 0
+	for (k=0; k<6; k++)	{
+		printf("%02X", cmd[k]);
+	}
+	#endif
 	
-	free(buf);
+	int crc = get_crc_mod(6,cmd);
+	cmd[6] = crc & 0xFF;
+	cmd[7] = (crc >> 8) & 0xFF;
+	
+	//printf("crc: %04X\r\n",crc);
+	//*/
+	/*
+	outmb3[0] = buf[1];
+	outmb3[1] = buf[4]?WRITE_MULTIPLE_REG:READ_HOLDING_REG;
+	
+	tmp = buf[2]>40000?(buf[2]-40000-buf[3]):buf[2];
+	outmb3[2] = (tmp >> 8) & 0xFF;
+	outmb3[3] = tmp & 0xFF;
+	outmb3[4] = (buf[5] >> 8) & 0xFF;
+	outmb3[5] = buf[5] & 0xFF;
+	
+	#if 0
+	for (k=0; k<6; k++)	{
+		printf("%02X", cmd[k]);
+	}
+	#endif
+	
+	int crc = get_crc_mod(6,outmb3);
+	outmb3[6] = (crc >> 8) & 0xFF;
+	outmb3[7] = crc & 0xFF;
+	//*/
+	
+	vPortFree(buf);
 	
 	//cmd = mbcmd;
 	#if 0
@@ -584,5 +641,6 @@ int parsing_mb_cmd(char*s, char* cmd, int* dest)	{
 	}
 	printf("\r\n");
 	#endif
+	return 1;
 }
 #endif

@@ -27,6 +27,12 @@ enum xcmd_conf	{
 	MB_REST, MB_REQ, MB_RESP, 
 } cmd_mb_state		__attribute__ ((section (".usbram1")));
 
+char* strcmd_srcmb[] 	= {" ","NATIVE", "PM810", NULL};
+enum xcmd_conf_files	{
+	NOL, SRC_MB_NATIVE, SRC_MB_PM810
+} cmd_conf_srcmb;
+
+
 static xComPortHandle xPort3;//	__attribute__ ((section (".usbram1")));
 //extern volatile struct t_st_hw st_hw;
 
@@ -76,14 +82,35 @@ void printd3(int prio, const char *format, ...)	{
 
 int cmd_modbus(int gg)	{
 	struct t_sumber *st_sumber;
-	//st_sumber = (char *) ALMT_SUMBER;
-	//if (gg==0)	printf("========================\r\n");
-	printf(" CMD Sumber %d\r\n",gg);
-	if (st_sumber[gg].status==1)	{
-		printf("----> REQ MODBUS %s\r\n", st_sumber[gg].form);
+	st_sumber = (char *) ALMT_SUMBER;
+	int destReg;
+	int k;
+	//char *ss;
+	//if (gg==0)	printf("  ========================\r\n");
+	//printf(" CMD Sumber %d\r\n",gg);
+	//*
+	if (st_sumber[gg].status)	{
+		//printf("----> Smbr[%d]: %d : REQ MODBUS %s : ", gg, st_sumber[gg].status, st_sumber[gg].form);
+		if (atoi(st_sumber[gg].form)==SRC_MB_NATIVE)		{
+			//parsing_mb_cmd(s, &cmd, &dest);
+			parsing_mb_cmd(st_sumber[gg].form,outmb3,&destReg);
+			#if 0
+			printf(" CMD: ");
+			for(k=0; k<8; k++)	{
+				printf("%02X ", outmb3[k]);
+			}
+			printf("\r\n");
+			#endif
+			return kirim_respon_mb(8,outmb3,100,3);
+		}
 	}
+	//*/
 	
-	return gg;
+	return 0;
+}
+
+int reset_giliran_mb(int g)	{
+	
 }
 
 static portTASK_FUNCTION( vComTask3, pvParameters )		{
@@ -108,7 +135,7 @@ char s[30];
 	enaTX3_485();
 	enaRX3_485();
 
-	
+
 	st_hw.init++;
 	vTaskDelay(10000);
 	do {
@@ -117,72 +144,85 @@ char s[30];
 		
 
 	for( ;; )	{
-		//printd2(10, "serial 2: %d\r\n", loop2++);
-		//printd3(10, "___serial 3\r\n");
-		//vSerialPutString3(xPort3, "tes3\r\n", 6);
+		#if 1
 		if (mb_state==MB_REST)	{
-			printf(">>> MB_REST: %d   ", mbgilir);
-			//if (mbgilir=0)	
-			vTaskDelay(2000);
-			//else 			vTaskDelay(1000);
+			//printf("\r\n>>> MB_REST: %d   ", mbgilir);
+			if (mbgilir==0)	vTaskDelay(1000);
+			else 			vTaskDelay(50);
 			mb_state = MB_REQ;
 		}
 		else if (mb_state==MB_REQ)	{
-			cmd_modbus(mbgilir);
-			printf(">>> MB_REQ: %d  ", mbgilir);
-			mbgilir++;
-			if (mbgilir>=JML_SUMBER)	mbgilir=0;
-			mb_state = MB_RESP;
+			//printf(">>> MB_REQ: %d  ", mbgilir);
+			int rsp = cmd_modbus(mbgilir);
+			if (rsp>0)	mb_state = MB_RESP;
+			else 	{
+				mb_state = MB_REST;
+				mbgilir++;
+				if (mbgilir>=JML_SUMBER)	mbgilir=0;
+			}
 		}
 		else if (mb_state==MB_RESP)	{
-			printf(">>> MB_RESP: %d\r\n", mbgilir);
-			/*
-			xGotChar = xSerialGetChar3( xPort3, &ch, 10 );
+		#endif
+			//printf(">>> MB_RESP: %d\r\n", mbgilir);
+			//*
+			xGotChar = xSerialGetChar3( xPort3, &ch, 1000 );
+			printf("x%02x ", (char) ch);
+			#if 0
 			if( xGotChar == pdTRUE )		{
 				if ((nmb==0) && ((char)ch==0xff))	{
 					//printf("nmb: %d, ch: %02x, mask sini !!", nmb, (char)ch);
+					printf("kk %02x ", (char) ch);
 				} 
 				else {
-					//printf("%02x ", (char) ch);
+					printf("x%02x ", (char) ch);
 					//printf("%c ", (char) ch);
 					strmb3[nmb] = (char) ch;
 					nmb++;
 					//strSer2[nmb+1] = '\0';
 					//sedot_mod(ch);
 					flag_ms=1;
+					
 				}
+				//mb_state=MB_RESP;
 			}
 			else {
+				
 				// sedot data respon (sendiri), clear buffer
 				if ( (balas==nmb) && (balas>0) )	{			
 					//printf("Reset MB2 !!!\r\n");
 					nmb = 0;
 					flag_ms = 0;
 					balas = 0;
+					
 				}
 				
 				if (flag_ms==1 && nmb>4)	{
-					balas = proses_mod3(nmb, strmb3);
+					printf("hasil: %d\r\n", nmb);
+					printf("x%02x ", (char) ch);
+					//balas = proses_mod3(nmb, strmb3);
 					//printf("--==> BALAS MB: %d\r\n", balas);
 					nmb = 0;
+					//mb_state = MB_REST;
 				}
+				#if 0
 				if (balas==0)	{
 					nmb = 0;
 				}
 				//
-				#if 0
+				
 				flag_ms = 0;
 				nmb = 0;
 				#endif
 			}
-			
+			#endif
 			//*/
-			mb_state = MB_REST;
+
+			mbgilir++;
+			if (mbgilir>=JML_SUMBER)	mbgilir=0;
+			//
 		}
 		
-		/*
 		
-		//*/
 	}
 }
 
