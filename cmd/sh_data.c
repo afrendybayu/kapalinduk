@@ -23,12 +23,57 @@ void cek_data(int argc, char **argv)	{
 		uprintf("\r\n    Cek data sumber: %d\r\n******************************************************\r\n", smb);
 		uprintf ("  NO |   ID   |        Nama       |    Nilai    | Satuan |\r\n");
 		smb--;
+		
 		st_data = ALMT_DATA + smb*JML_KOPI_TEMP;
-		for (j=0; j<PER_SUMBER; j++)	{
-			//printf("%d --> 0x%08X\r\n", i*PER_SUMBER+j, ALMT_DATA + i*JML_KOPI_TEMP);
-			uprintf(" %3d | %6d | %-17s | %11.2f | %-6s | %d\r\n", 	\
-				j+1, st_data[j].id, st_data[j].nama, data_f[smb*PER_SUMBER+j], st_data[j].satuan, smb*PER_SUMBER+j);
+			for (j=0; j<PER_SUMBER; j++)	
+			{
+				//printf("%d --> 0x%08X\r\n", i*PER_SUMBER+j, ALMT_DATA + i*JML_KOPI_TEMP);
+				uprintf(" %3d | %6d | %-17s | %11.2f | %-6s | %d\r\n", 	\
+					j+1, st_data[j].id, st_data[j].nama, data_f[smb*PER_SUMBER+j], st_data[j].satuan, smb*PER_SUMBER+j);
+			}
+
+		
+		#if 0		
+		if (smb == 0)
+		{
+			st_data = ALMT_DATA + smb*JML_KOPI_TEMP;
+			for (j=0; j<PER_SUMBER; j++)	
+			{
+				//printf("%d --> 0x%08X\r\n", i*PER_SUMBER+j, ALMT_DATA + i*JML_KOPI_TEMP);
+				uprintf(" %3d | %6d | %-17s | %11.2f | %-6s | %d\r\n", 	\
+					j+1, st_data[j].id, st_data[j].nama, data_f[smb*PER_SUMBER+j], st_data[j].satuan, smb*PER_SUMBER+j);
+			}
+	
+			st_data = ALMT_DATA + (smb+1)*JML_KOPI_TEMP;
+			for (j=0; j<2; j++)	
+			{
+				//printf("%d --> 0x%08X\r\n", i*PER_SUMBER+j, ALMT_DATA + i*JML_KOPI_TEMP);
+				uprintf(" %3d | %6d | %-17s | %11.2f | %-6s | %d\r\n", 	\
+					j+11, st_data[j].id, st_data[j].nama, data_f[(smb+1)*PER_SUMBER+j], st_data[j].satuan, (smb+1)*PER_SUMBER+j);
+			}
+			
 		}
+
+		if (smb == 1)
+		{
+			st_data = ALMT_DATA + smb*JML_KOPI_TEMP;
+			for (j=0; j<(PER_SUMBER-2); j++)	
+			{
+				//printf("%d --> 0x%08X\r\n", i*PER_SUMBER+j, ALMT_DATA + i*JML_KOPI_TEMP);
+				uprintf(" %3d | %6d | %-17s | %11.2f | %-6s | %d\r\n", 	\
+					j+1, st_data[j+2].id, st_data[j+2].nama, data_f[smb*PER_SUMBER+j+2], st_data[j+2].satuan, smb*PER_SUMBER+j+2);
+			}
+			
+			st_data = ALMT_DATA + (smb+1)*JML_KOPI_TEMP;
+			for (j=0; j<2; j++)	
+			{
+				//printf("%d --> 0x%08X\r\n", i*PER_SUMBER+j, ALMT_DATA + i*JML_KOPI_TEMP);
+				uprintf(" %3d | %6d | %-17s | %11.2f | %-6s | %d\r\n", 	\
+					j+9, st_data[j].id, st_data[j].nama, data_f[(smb+1)*PER_SUMBER+j], st_data[j].satuan, (smb+1)*PER_SUMBER+j);
+			}
+			
+		}
+		#endif
 		return;
 	}
 	
