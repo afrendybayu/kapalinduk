@@ -100,7 +100,7 @@ unsigned int CRC16(unsigned int crc, unsigned int data)		{
 
 int kirim_respon_mb(int jml, char *s, int timeout)		{
 	int i, k=0;
-	
+	vTaskDelay(40);
 	enaTX2_485();
 	for (i=0; i<jml; i++)	{
 		k += xSerialPutChar2 (0, outmb[i], 10);
