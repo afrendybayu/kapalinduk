@@ -12,18 +12,20 @@
 extern volatile float data_f[];
 
 void cek_data(int argc, char **argv)	{
-	int i=0, j ;
+	int i=0, j, smb_i ;
 	struct t_data *st_data;
 	if (argc==2)	{
-		int smb = atoi(argv[1]);
-		if (smb==0 || smb>JML_SUMBER)		{
+		int smb_r = atoi(argv[1]);
+		if (smb_r==0 || smb_r>JML_SUMBER)		{
 			printf("\r\n--> Sumber SALAH !!\r\n");
 			return;
 		}
-		uprintf("\r\n    Cek data sumber: %d\r\n******************************************************\r\n", smb);
+		uprintf("\r\n    Cek data sumber: %d\r\n******************************************************\r\n", smb_r);
 		uprintf ("  NO |   ID   |        Nama       |    Nilai    | Satuan |\r\n");
-		smb--;
+		//smb--;
+		smb_i = smb_r-1;
 		
+		#if 0
 		st_data = ALMT_DATA + smb*JML_KOPI_TEMP;
 			for (j=0; j<PER_SUMBER; j++)	
 			{
@@ -31,29 +33,48 @@ void cek_data(int argc, char **argv)	{
 				uprintf(" %3d | %6d | %-17s | %11.2f | %-6s | %d\r\n", 	\
 					j+1, st_data[j].id, st_data[j].nama, data_f[smb*PER_SUMBER+j], st_data[j].satuan, smb*PER_SUMBER+j);
 			}
-
+		#endif
 		
-		#if 0		
-		if (smb == 0)
+		#if 1		
+		if (smb_i == 0)
 		{
-			st_data = ALMT_DATA + smb*JML_KOPI_TEMP;
+			st_data = ALMT_DATA + smb_i*JML_KOPI_TEMP;
 			for (j=0; j<PER_SUMBER; j++)	
 			{
 				//printf("%d --> 0x%08X\r\n", i*PER_SUMBER+j, ALMT_DATA + i*JML_KOPI_TEMP);
 				uprintf(" %3d | %6d | %-17s | %11.2f | %-6s | %d\r\n", 	\
-					j+1, st_data[j].id, st_data[j].nama, data_f[smb*PER_SUMBER+j], st_data[j].satuan, smb*PER_SUMBER+j);
+					j+1, st_data[j].id, st_data[j].nama, data_f[smb_i*PER_SUMBER+j], st_data[j].satuan, smb_i*PER_SUMBER+j);
 			}
 	
-			st_data = ALMT_DATA + (smb+1)*JML_KOPI_TEMP;
+			st_data = ALMT_DATA + smb_r*JML_KOPI_TEMP;
 			for (j=0; j<2; j++)	
 			{
 				//printf("%d --> 0x%08X\r\n", i*PER_SUMBER+j, ALMT_DATA + i*JML_KOPI_TEMP);
 				uprintf(" %3d | %6d | %-17s | %11.2f | %-6s | %d\r\n", 	\
-					j+11, st_data[j].id, st_data[j].nama, data_f[(smb+1)*PER_SUMBER+j], st_data[j].satuan, (smb+1)*PER_SUMBER+j);
+					j+11, st_data[j].id, st_data[j].nama, data_f[smb_r*PER_SUMBER+j], st_data[j].satuan, smb_r*PER_SUMBER+j);
 			}
 			
 		}
-
+		
+		else
+		{
+			st_data = ALMT_DATA + smb_i*JML_KOPI_TEMP;
+			for (j=0; j<(PER_SUMBER-2); j++) // dari 0 sampai 7
+				{
+				uprintf(" %3d | %6d | %-17s | %11.2f | %-6s | %d\r\n", 	\
+					j+1, st_data[j+2].id, st_data[j+2].nama, data_f[smb_i*PER_SUMBER+j+2], st_data[j+2].satuan, smb_i*PER_SUMBER+j+2);
+					
+				}
+			st_data = ALMT_DATA + (smb_r)*JML_KOPI_TEMP;
+			for (j=0; j<2; j++)	
+			{
+				//printf("%d --> 0x%08X\r\n", i*PER_SUMBER+j, ALMT_DATA + i*JML_KOPI_TEMP);
+				uprintf(" %3d | %6d | %-17s | %11.2f | %-6s | %d\r\n", 	\
+					j+9, st_data[j].id, st_data[j].nama, data_f[smb_r*PER_SUMBER+j], st_data[j].satuan, smb_r*PER_SUMBER+j);
+			}
+		}
+		
+		#if 0
 		if (smb == 1)
 		{
 			st_data = ALMT_DATA + smb*JML_KOPI_TEMP;
@@ -73,6 +94,8 @@ void cek_data(int argc, char **argv)	{
 			}
 			
 		}
+		#endif
+		
 		#endif
 		return;
 	}
