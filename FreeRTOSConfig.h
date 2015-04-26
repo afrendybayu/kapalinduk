@@ -110,6 +110,14 @@
 	#define MODBUS_RTU_SLAVE		
 #endif
 
+#define PAKAI_SERIAL_3
+#ifdef  PAKAI_SERIAL_3
+	//#define PAKAI_SERIAL_3_P4		115200
+	#define PAKAI_SERIAL_3_P4		9600
+	#define ST_SER3					15
+	#define PAKAI_MODBUS					// fungsi2 modbus di ap_utils.h
+	#define MODBUS_RTU_MASTER
+#endif
 
 #define PAKAI_SPI_SSP1
 #ifdef  PAKAI_SPI_SSP1

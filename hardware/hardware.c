@@ -59,17 +59,18 @@ void setup_hardware()	{
 		setup_serial0_P0();
 	#endif
 	
-	#ifdef PAKAI_SERIAL_3
-		#ifdef PAKAI_SERIAL_3_P0
-			setup_serial3_P0();
-		#endif
-	#endif
-
 	#ifdef PAKAI_SERIAL_2			
 		#ifdef PAKAI_SERIAL_2_P0
 			setup_serial2_P0();
 		#endif
 	#endif
+
+	#ifdef PAKAI_SERIAL_3
+		#ifdef PAKAI_SERIAL_3_P4
+			setup_serial3_P4();
+		#endif
+	#endif
+
 
 	#ifdef PAKAI_ADC_7708
 		//setup_eint1();
@@ -110,7 +111,11 @@ void init_hardware()	{
 	#ifdef PAKAI_SERIAL_2	
 		//qsprintf("init serial 2\r\n");
 		vAltStartCom2( mainCOM_TEST_PRIORITY, PAKAI_SERIAL_2_P0 );
-		
+	#endif
+	
+	#ifdef PAKAI_SERIAL_3
+		//qsprintf("init serial 3\r\n");
+		vAltStartCom3( mainCOM_TEST_PRIORITY, PAKAI_SERIAL_3_P4 );
 	#endif
 	
 	#ifdef PAKAI_SDCARD

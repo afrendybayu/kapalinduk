@@ -96,6 +96,36 @@ void rtcWrite(struct tm *newTime);
 					} while(0)
 		#endif
 		
+		#ifdef PAKAI_SERIAL_3
+			#ifdef PAKAI_SERIAL_3_P4
+				#define TXDE3	BIT(17)		// P1.17
+				#define RXDE3	BIT(29)		// P1.29 --> Pull down ke GND
+				
+				#define enaTX3_485()		FIO1SET |= TXDE3;
+				#define disTX3_485()		FIO1CLR |= TXDE3;
+				#define enaRX3_485()		FIO1CLR |= RXDE3;
+				
+				#define setup_gpio_485_3()	do		{	\
+								FIO1DIR |= TXDE3;		\
+								FIO1DIR |= RXDE3;		\
+							} while (0)
+				
+				//	TXD3: P4.28, RXD3: P4.29
+				#define setup_serial3_P4()	do 	{	\
+											PCONP |= BIT(25);	\
+											PCLKSEL1 &= ~(BIT(18) | BIT(19));	\
+											PCLKSEL1 |= BIT(18);	\
+											PINSEL9 |= (BIT(27) | BIT(26) | BIT(25) | BIT(24));	\
+											setup_gpio_485_3();		\
+							} while(0)
+						// PCONP uart2, pclk=cclk, 
+
+				#define init_serial3_P4()	do {				\
+							} while(0)
+				
+			#endif
+		#endif
+		
 		#ifdef PAKAI_SERIAL_2
 			#ifdef PAKAI_SERIAL_2_P0
 			

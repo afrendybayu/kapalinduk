@@ -83,6 +83,7 @@ typedef enum IAP_STATUS_t {
 #define  LIHAT_ISI_SATU		1
 #define  MAX_SEND_FILE_MB	3600
 #define  MAX_RX_MB			4*1024
+#define  MAX_RX_MB3			1*1024
 #define  MAX_DEBUG_TX		2*1024
 
 #define  RTC_MEM_START		100
@@ -97,7 +98,7 @@ typedef enum IAP_STATUS_t {
 
 #define TIDAK_VALID			0xFFFF
 #define PER_SUMBER			10
-#define JML_SUMBER			 4
+#define JML_SUMBER			 6
 #define SUMBER_PER_SEKTOR	32
 
 //#define ANGKA_PENTING	1
@@ -142,6 +143,11 @@ volatile float data_f [ JML_TITIK_DATA ];
 #define ALMT_CRON		(ALMT_SEKTOR_19+1024*2)
 #define ALMT_FILE		(ALMT_SEKTOR_19+1024*3)
 
+#if 1
+#define SEKTOR_ASTM		18
+#define ALMT_VALUE_ASTM	(ALMT_SEKTOR_18)
+#endif
+
 enum t_struct{ 
 	DATA,
 	ENV,
@@ -157,6 +163,7 @@ enum t_struct st_struct;
 #define SEKTOR_TEMP		21
 #define ALMT_SKTR_TEMP	ALMT_SEKTOR_21
 #define JML_KOPI_TEMP	1024
+#define JML_KOPI_ASTM	512
 #define ALMT_ENV_TMP		(ALMT_SEKTOR_21)
 #define ALMT_DATA_TMP		(ALMT_SEKTOR_21)
 #define ALMT_SUMBER_TMP		(ALMT_SEKTOR_21+1024*1)
@@ -260,6 +267,13 @@ struct t_data {
 };
 //struct t_data st_data[JML_TITIK_DATA];
 
+struct t_astm
+	{
+	//float press;
+	//float temp;
+	float koef;
+	};
+
 #ifdef PAKAI_CRON
 struct t_cron {
 	char 	mnt[20];
@@ -274,7 +288,7 @@ struct t_cron {
 #endif 
 
 struct t_sumber {
-	char nama[32];
+	char nama[16];
 	char alamat;		/* untuk alamat modbus Power meter atau stack board (jika ada) */
 	unsigned char IP0;			// klo sumber berupa modul monita 
 	unsigned char IP1;
@@ -284,6 +298,12 @@ struct t_sumber {
 	char stack;			// jika modul berisi BANYAK_SUMBER : adc, pm, dll
 	char status;		// tidak aktif, timeout, dll
 	char tipe;			// 0:PM_710, 1:PM_810, 2:KTA, 3:MICOM
+	unsigned char idSrc;
+	unsigned int RegSrc;
+	unsigned int RegDest;
+	unsigned int jmlReg;
+	char form[32];
+	char validForm;
 	char ket[32];
 };
 //struct t_sumber st_sumber[JML_SUMBER];
@@ -329,6 +349,7 @@ struct t_env {
 	int		prioDebug;
 	int		prioDebug2;
 	int		jmlfile;
+	unsigned char almtMaster;
 };
 //struct t_env st_env;
 

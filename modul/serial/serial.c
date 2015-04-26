@@ -125,6 +125,168 @@
 
 /*-----------------------------------------------------------*/
 
+#ifdef PAKAI_SERIAL_3
+
+
+static xQueueHandle Qrx3;
+static xQueueHandle Qtx3;
+static volatile portLONG *plTHREEmpty3;
+
+#define serUART3_VIC_CHANNEL			( ( unsigned portLONG ) 0x0006 )
+#define serUART3_VIC_CHANNEL_BIT		( ( unsigned portLONG ) 0x0040 )
+#define serUART3_VIC_ENABLE				( ( unsigned portLONG ) 0x0020 )
+
+extern void vSerialISRCreateQueues3(	unsigned portBASE_TYPE uxQueueLength, xQueueHandle *pxRxedChars, xQueueHandle *pxCharsForTx, long volatile **pplTHREEmptyFlag );
+
+xComPortHandle xSerialPortInit3( unsigned portLONG ulWantedBaud, unsigned portBASE_TYPE uxQueueLength )	{
+	unsigned portLONG ulDivisor, ulWantedClock;
+	xComPortHandle xReturn = serHANDLE;
+	extern void ( vUART3_ISR_Wrapper )( void );
+	
+	//printf("%s(): ", __FUNCTION__);
+	
+	/* The queues are used in the serial ISR routine, so are created from
+	serialISR.c (which is always compiled to ARM mode. */
+	vSerialISRCreateQueues3( uxQueueLength*8, &Qrx3, &Qtx3, &plTHREEmpty3 );
+	
+	if(
+		( Qrx3 != serINVALID_QUEUE ) &&
+		( Qtx3 != serINVALID_QUEUE ) &&
+		( ulWantedBaud != ( unsigned portLONG ) 0 )
+	  )
+	{
+		//printf(" buf OK\r\n");
+		portENTER_CRITICAL();
+		{
+			/* Setup the baud rate:  Calculate the divisor value. */
+			ulWantedClock = ulWantedBaud * serWANTED_CLOCK_SCALING;
+			ulDivisor = configCPU_CLOCK_HZ / ulWantedClock;
+			/* Set the DLAB bit so we can access the divisor. */
+			U3LCR |= serDLAB;
+			/* Setup the divisor. */
+			U3DLL = ( unsigned portCHAR ) ( ulDivisor & ( unsigned portLONG ) 0xff );
+			ulDivisor >>= 8;
+			U3DLM = ( unsigned portCHAR ) ( ulDivisor & ( unsigned portLONG ) 0xff );
+			/* Turn on the FIFO's and clear the buffers. */
+			U3FCR = ( serFIFO_ON | serCLEAR_FIFO );
+			/* Setup transmission format. */
+			U3LCR = serNO_PARITY | ser1_STOP_BIT | ser8_BIT_CHARS;
+			//#define serUART0_VIC_CHANNEL			( ( unsigned portLONG ) 0x0006 )
+			//#define serUART0_VIC_CHANNEL_BIT		( ( unsigned portLONG ) 0x0040 )
+			//#define serUART0_VIC_ENABLE				( ( unsigned portLONG ) 0x0020 )
+
+			/* Setup the VIC for the UART. */
+			//VICIntSelect &= ~( serUART0_VIC_CHANNEL_BIT );
+			
+			#if 1
+			VICIntSelect &= ~BIT(29);
+			VICVectAddr29 = ( portLONG ) vUART3_ISR_Wrapper;
+			VICVectCntl29 = (serUART3_VIC_ENABLE | 29);
+		
+			/* Enable UART2 interrupts. */
+			U3IER |= serENABLE_INTERRUPTS;
+			
+			VICIntEnable |= BIT(29);
+			#endif
+			
+		}
+		portEXIT_CRITICAL();
+	}
+	else
+	{
+		//printf(" Tidak bisa init !!\r\n");
+		xReturn = ( xComPortHandle ) 0;
+	}
+	return xReturn;
+}
+
+signed portBASE_TYPE xSerialGetChar3( xComPortHandle pxPort3, signed portCHAR *pcRxedChar, portTickType xBlockTime )
+{
+	/* The port handle is not required as this driver only supports UART0. */
+	( void ) pxPort3;
+	/* Get the next character from the buffer.  Return false if no characters
+	are available, or arrive before xBlockTime expires. */
+	if( xQueueReceive( Qrx3, pcRxedChar, xBlockTime ) )
+	{
+		return pdTRUE;
+	}
+	else
+	{
+		return pdFALSE;
+	}
+}
+
+
+signed portBASE_TYPE xSerialPutChar3( xComPortHandle pxPort3, signed portCHAR cOutChar, portTickType xBlockTime )
+{
+	signed portBASE_TYPE xReturn;
+	/* This demo driver only supports one port so the parameter is not used. */
+	( void ) pxPort3;
+	
+	portENTER_CRITICAL();
+	{
+		/* Is there space to write directly to the UART? */
+		if( *plTHREEmpty3 == ( portLONG ) pdTRUE )
+		{
+			//printf2(": kosong\r\n");
+			
+			//* We wrote the character directly to the UART, so was
+			//successful. 
+			*plTHREEmpty3 = pdFALSE;
+			U3THR = cOutChar;
+			xReturn = pdPASS;
+		}
+		else
+		{
+			//printf2("%s(): aktif\r\n", __FUNCTION__);
+			/* We cannot write directly to the UART, so queue the character.
+			Block for a maximum of xBlockTime if there is no space in the
+			queue. */
+			xReturn = xQueueSend( Qtx3, &cOutChar, xBlockTime );
+			
+			/*
+			if (xReturn == pdPASS)
+				printf2("%s(): bs masuk\r\n", __FUNCTION__);
+			else
+				printf2("%s(): masih penuh\r\n", __FUNCTION__);
+			*/
+			
+			#if 1
+			/* Depending on queue sizing and task prioritisation:  While we
+			were blocked waiting to post interrupts were not disabled.  It is
+			possible that the serial ISR has emptied the Tx queue, in which
+			case we need to start the Tx off again. */
+			if( ( *plTHREEmpty3 == ( portLONG ) pdTRUE ) && ( xReturn == pdPASS ) )
+			{
+				xQueueReceive( Qtx3, &cOutChar, serNO_BLOCK );
+				*plTHREEmpty3 = pdFALSE;
+				U3THR = cOutChar;
+			}
+			#endif
+		}
+	}
+	portEXIT_CRITICAL();	
+	return xReturn;
+}
+
+void vSerialPutString3( xComPortHandle pxPort3, const signed char * const pcString, unsigned short usStringLength )	{
+	signed portCHAR *pxNext;
+	/* Send each character in the string, one at a time. */
+	pxNext = ( signed portCHAR * ) pcString;
+	while( *pxNext )
+	{	
+		//xSerialPutChar2 (pxPort2, *pxNext, serNO_BLOCK);
+		xSerialPutChar3 (pxPort3, *pxNext, 256);
+		//xSerialPutChar2( 1, *pxNext, 1000 );	// 100 OK
+		pxNext++;
+	}
+}
+
+
+#endif
+
+
+
 #ifdef PAKAI_SERIAL_2
 
 

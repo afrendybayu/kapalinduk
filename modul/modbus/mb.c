@@ -10,7 +10,11 @@
 extern volatile float data_f[];
 extern char strmb[];
 extern char outmb[];
+extern char strmb3[];
+extern char outmb3[];
 
+
+#ifdef PAKAI_SERIAL_2
 int cek_crc_mod(int nstr, unsigned char *x)	{
 	unsigned char lo, hi;
 
@@ -28,6 +32,30 @@ int cek_crc_mod(int nstr, unsigned char *x)	{
 		return 1;
 	}
 	return 0;
+}
+#endif
+
+int get_crc_mod(int nstr, unsigned char *x)	{
+	#if 0
+	int k;
+	printf("masuk %s\r\nCmd modbus: ", __FUNCTION__);
+	for(k=0; k<6; k++)	{
+		printf("%02X ", x[k]);
+	}
+	printf("\r\n");
+	#endif
+
+	unsigned int i, Crc = 0xFFFF;
+	for (i=0; i<nstr; i++) {
+		Crc = CRC16 (Crc, x[i]);
+	}
+	#if 0
+	//unsigned char lo, hi;
+	//hi = ((Crc&0xFF00)>>8);	lo = (Crc&0xFF);
+	//printf("hi: %02X, lo: %02X\r\n", hi, lo);
+	#endif
+	return Crc;
+	
 }
 
 unsigned short update_bad_crc(unsigned short bad_crc, unsigned short ch) 	{ 
@@ -63,6 +91,7 @@ unsigned short crc_ccitt_0xffff(int len, char *data)	{
 	return bad_crc;
 }
 
+ #ifdef PAKAI_SERIAL_2
 unsigned short cek_crc_ccitt_0xffff(int len, char *data)	{
 	unsigned short bad_crc=0xFFFF; 
 	unsigned char lo, hi;
@@ -83,7 +112,40 @@ unsigned short cek_crc_ccitt_0xffff(int len, char *data)	{
 	}
 	return 0;
 }
+#endif
 
+unsigned char simpan_nilai_mb(int jml, unsigned char *s, int reg)	{
+	int i, j, k, tmpFl=0, ff=0, no=0;
+	float *fl;
+	
+	struct t_data *st_data;
+	
+	
+	//printf("jml: %d, reg: %d\r\n", jml, reg);
+	for(i=0; i<jml; i++)	{
+		for (k=0; k<JML_SUMBER; k++ ) 	{
+			st_data = ALMT_DATA + k*JML_KOPI_TEMP;
+			for (j=0; j<PER_SUMBER; j++)	{
+				if ((reg+i)==st_data[j].id)	{
+					no = k*PER_SUMBER+j;
+					//printf("reg: %d, dataf %d\r\n", reg+i, (k*PER_SUMBER+j));
+					ff=1;
+					break;
+				}
+			}
+			if (ff==1)	break;
+		}
+		ff = 0;
+		
+		//printf("%02x %02x %02x %02x : ", s[i*4+0], s[i*4+1], s[i*4+2], s[i*4+3]);
+		tmpFl = ((s[i*4+0] & 0xFF)<<24) | ((s[i*4+1] & 0xFF)<<16) | ((s[i*4+2] & 0xFF)<<8) | (s[i*4+3] & 0xFF);
+		fl = (float *)&tmpFl;
+		
+		data_f[no] = *fl;
+		
+		//printf("dfloat: %08x %.3f\r\n", tmpFl, *fl);
+	}
+}
 
 unsigned int CRC16(unsigned int crc, unsigned int data)		{
 	const unsigned int Poly16=0xA001;
@@ -98,18 +160,41 @@ unsigned int CRC16(unsigned int crc, unsigned int data)		{
 	return(crc);
 }
 
-int kirim_respon_mb(int jml, char *s, int timeout)		{
+int kirim_respon_mb(int jml, char *s, int timeout, int serial)		{
 	int i, k=0;
-	vTaskDelay(40);
-	enaTX2_485();
-	for (i=0; i<jml; i++)	{
-		k += xSerialPutChar2 (0, outmb[i], 10);
+	vTaskDelay(timeout/2);
+	#ifdef PAKAI_SERIAL_2
+	if (serial==2)	{
+		enaTX2_485();
+		for (i=0; i<jml; i++)	{
+			k += xSerialPutChar2 (0, outmb[i], 10);
+		}
+		vTaskDelay(timeout);
+		disTX2_485();
 	}
-	vTaskDelay(timeout);
-	disTX2_485();
+	#endif
+	
+	#ifdef PAKAI_SERIAL_3
+	if (serial==3)	{
+		//printf("_____%s_____\r\n", __FUNCTION__);
+		enaTX3_485();
+		for (i=0; i<jml; i++)	{
+			k += xSerialPutChar3 (0, s[i], 10);
+			
+			#if 0
+			k++;
+			printf("%02X ", s[i]);
+			#endif
+		}
+		//vSerialPutString3(1, "tes3\r\n", 6);
+		vTaskDelay(timeout);
+		disTX3_485();
+	}
+	#endif
 	return k;
 }
 
+#ifdef PAKAI_SERIAL_2
 int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 	//uprintf("-->%s, cmd: 0x%02x=%d, reg: %04x=%d, jml: %d\r\n\r\n", __FUNCTION__, cmd, cmd, reg, reg, jml);
 	int i=0, j, index=0;
@@ -166,6 +251,8 @@ int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 	}
 	return 10;
 }
+#endif
+
 
 #ifdef PAKAI_FILE_SIMPAN
 int baca_kirim_file(int no, int len, char *str)		{
@@ -261,7 +348,7 @@ int baca_kirim_file(int no, int len, char *str)		{
 		}
 	#endif
 	
-	kirim_respon_mb(nmx, outmb, 3000);
+	kirim_respon_mb(nmx, outmb, 3000, 2);
 	vTaskDelay(100);
 	f_close(&fd2);
 	//hapus_folder_kosong();
@@ -383,7 +470,7 @@ int baca_reg_mb(int index, int jml)	{			// READ_HOLDING_REG
 	#endif
 	
 	
-	kirim_respon_mb(nX, outmb, 100);
+	kirim_respon_mb(nX, outmb, 100, 2);
 	
 	#if 0
 	enaTX2_485();
@@ -475,7 +562,7 @@ int tulis_reg_mb(int reg, int index, int jml, char* str)	{	// WRITE_MULTIPLE_REG
 	printf("\r\n\r\n");
 	#endif
 	
-	kirim_respon_mb(jml_st_mb10H, outmb, 100);
+	kirim_respon_mb(jml_st_mb10H, outmb, 100, 2);
 	
 	#if 0
 	enaTX2_485();
@@ -491,5 +578,93 @@ int tulis_reg_mb(int reg, int index, int jml, char* str)	{	// WRITE_MULTIPLE_REG
 	return jml_st_mb10H;
 }
 
+int parsing_mb_native_cmd(char*s, char* cmd, int* dest)	{
+	int i, n, k;
+	char *p;	p = (void*) s;
+	for (i=0; p[i]; p[i]==';' ? i++ : *p++);
+	if (strlen(s)>0)	i++;
+	//printf("p: %d. jml space: %d\r\n", strlen(s), i);
+	
+	int *buf;
+	//buf = (int*) malloc(i*sizeof(int));
+	buf = pvPortMalloc( i * sizeof (int) );
+	if (buf == NULL)	{
+		printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
+		vPortFree(buf);
+		return -1;
+	}
+	
+	p=(void*) s;	k=0;
+	do {
+		if (k==0)	buf[k] = atoi(s);
+		else 		buf[k] = atoi(s+1);
+		s=strchr(s+1,';');
+		k++;
+	} while(s!=NULL);
+	
+	#if 0
+	for (k=0; k<i; k++)	{
+		printf("isi buf[%d]: %d\r\n", k, buf[k]);
+	}
+	#endif
+	
+	//*dest = buf[6];
+	
+	unsigned int tmp;
+	//*
+	cmd[0] = buf[1];
+	cmd[1] = buf[4]?WRITE_MULTIPLE_REG:READ_HOLDING_REG;
+	
+	tmp = buf[2]>40000?(buf[2]-40000-buf[3]):buf[2];
+	cmd[2] = (tmp >> 8) & 0xFF;
+	cmd[3] = tmp & 0xFF;
+	cmd[4] = (buf[5] >> 8) & 0xFF;
+	cmd[5] = buf[5] & 0xFF;
+	
+	#if 0
+	for (k=0; k<6; k++)	{
+		printf("%02X", cmd[k]);
+	}
+	#endif
+	
+	int crc = get_crc_mod(6,cmd);
+	cmd[6] = crc & 0xFF;
+	cmd[7] = (crc >> 8) & 0xFF;
+	
+	//printf("crc: %04X\r\n",crc);
+	//*/
+	/*
+	outmb3[0] = buf[1];
+	outmb3[1] = buf[4]?WRITE_MULTIPLE_REG:READ_HOLDING_REG;
+	
+	tmp = buf[2]>40000?(buf[2]-40000-buf[3]):buf[2];
+	outmb3[2] = (tmp >> 8) & 0xFF;
+	outmb3[3] = tmp & 0xFF;
+	outmb3[4] = (buf[5] >> 8) & 0xFF;
+	outmb3[5] = buf[5] & 0xFF;
+	
+	#if 0
+	for (k=0; k<6; k++)	{
+		printf("%02X", cmd[k]);
+	}
+	#endif
+	
+	int crc = get_crc_mod(6,outmb3);
+	outmb3[6] = (crc >> 8) & 0xFF;
+	outmb3[7] = crc & 0xFF;
+	//*/
+	
+	vPortFree(buf);
+	
+	//cmd = mbcmd;
+	#if 0
+	printf("Cmd modbus: ");
+	for(k=0; k<8; k++)	{
+		printf("%02X ", cmd[k]);
+	}
+	printf("\r\n");
+	#endif
+	return 1;
+}
 
 #endif
