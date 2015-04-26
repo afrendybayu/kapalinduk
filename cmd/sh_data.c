@@ -65,7 +65,7 @@ void cek_data(int argc, char **argv)	{
 					j+1, st_data[j+2].id, st_data[j+2].nama, data_f[smb_i*PER_SUMBER+j+2], st_data[j+2].satuan, smb_i*PER_SUMBER+j+2);
 					
 				}
-			st_data = ALMT_DATA + (smb_r)*JML_KOPI_TEMP;
+			st_data = ALMT_DATA + smb_r*JML_KOPI_TEMP;
 			for (j=0; j<2; j++)	
 			{
 				//printf("%d --> 0x%08X\r\n", i*PER_SUMBER+j, ALMT_DATA + i*JML_KOPI_TEMP);
