@@ -92,6 +92,39 @@ unsigned short crc_ccitt_0xffff(int len, char *data)	{
 	return bad_crc;
 }
 
+unsigned char simpan_nilai_mb(int jml, unsigned char *s, int reg)	{
+	int i, j, k, tmpFl=0, ff=0, no=0;
+	float *fl;
+	
+	struct t_data *st_data;
+	
+	
+	//printf("jml: %d, reg: %d\r\n", jml, reg);
+	for(i=0; i<jml; i++)	{
+		for (k=0; k<JML_SUMBER; k++ ) 	{
+			st_data = ALMT_DATA + k*JML_KOPI_TEMP;
+			for (j=0; j<PER_SUMBER; j++)	{
+				if ((reg+i)==st_data[j].id)	{
+					no = k*PER_SUMBER+j;
+					//printf("reg: %d, dataf %d\r\n", reg+i, (k*PER_SUMBER+j));
+					ff=1;
+					break;
+				}
+			}
+			if (ff==1)	break;
+		}
+		ff = 0;
+		
+		//printf("%02x %02x %02x %02x : ", s[i*4+0], s[i*4+1], s[i*4+2], s[i*4+3]);
+		tmpFl = ((s[i*4+0] & 0xFF)<<24) | ((s[i*4+1] & 0xFF)<<16) | ((s[i*4+2] & 0xFF)<<8) | (s[i*4+3] & 0xFF);
+		fl = (float *)&tmpFl;
+		
+		data_f[no] = *fl;
+		
+		//printf("dfloat: %08x %.3f\r\n", tmpFl, *fl);
+	}
+}
+
 #ifdef PAKAI_SERIAL_2
 unsigned short cek_crc_ccitt_0xffff(int len, char *data)	{
 	unsigned short bad_crc=0xFFFF; 
@@ -130,7 +163,7 @@ unsigned int CRC16(unsigned int crc, unsigned int data)		{
 
 int kirim_respon_mb(int jml, char *s, int timeout, int serial)		{
 	int i, k=0;
-	
+	vTaskDelay(timeout/2);
 	#ifdef PAKAI_SERIAL_2
 	if (serial==2)	{
 		enaTX2_485();
@@ -144,7 +177,7 @@ int kirim_respon_mb(int jml, char *s, int timeout, int serial)		{
 	
 	#ifdef PAKAI_SERIAL_3
 	if (serial==3)	{
-		printf("_____%s_____\r\n", __FUNCTION__);
+		//printf("_____%s_____\r\n", __FUNCTION__);
 		enaTX3_485();
 		for (i=0; i<jml; i++)	{
 			k += xSerialPutChar3 (0, s[i], 10);
@@ -555,7 +588,7 @@ int tulis_reg_mb(int reg, int index, int jml, char* str)	{	// WRITE_MULTIPLE_REG
 #endif
 }
 
-int parsing_mb_cmd(char*s, char* cmd, int* dest)	{
+int parsing_mb_native_cmd(char*s, char* cmd, int* dest)	{
 	int i, n, k;
 	char *p;	p = (void*) s;
 	for (i=0; p[i]; p[i]==';' ? i++ : *p++);

@@ -93,7 +93,7 @@ int cmd_modbus(int gg)	{
 		//printf("----> Smbr[%d]: %d : REQ MODBUS %s : ", gg, st_sumber[gg].status, st_sumber[gg].form);
 		if (atoi(st_sumber[gg].form)==SRC_MB_NATIVE)		{
 			//parsing_mb_cmd(s, &cmd, &dest);
-			parsing_mb_cmd(st_sumber[gg].form,outmb3,&destReg);
+			parsing_mb_native_cmd(st_sumber[gg].form,outmb3,&destReg);
 			#if 0
 			printf(" CMD: ");
 			for(k=0; k<8; k++)	{
@@ -101,7 +101,7 @@ int cmd_modbus(int gg)	{
 			}
 			printf("\r\n");
 			#endif
-			return kirim_respon_mb(8,outmb3,100,3);
+			return kirim_respon_mb(8,outmb3,50,3);
 		}
 	}
 	//*/
@@ -165,18 +165,21 @@ char s[30];
 		#endif
 			//printf(">>> MB_RESP: %d\r\n", mbgilir);
 			//*
-			xGotChar = xSerialGetChar3( xPort3, &ch, 1000 );
-			printf("x%02x ", (char) ch);
-			#if 0
+			xGotChar = xSerialGetChar3( xPort3, &ch, 100 );
+			//printf("x%02x ", (char) ch);
+			#if 1
 			if( xGotChar == pdTRUE )		{
 				if ((nmb==0) && ((char)ch==0xff))	{
 					//printf("nmb: %d, ch: %02x, mask sini !!", nmb, (char)ch);
-					printf("kk %02x ", (char) ch);
+					//printf("kk %02x ", (char) ch);
 				} 
 				else {
-					printf("x%02x ", (char) ch);
+					//printf("%02x ", (char) ch);
 					//printf("%c ", (char) ch);
-					strmb3[nmb] = (char) ch;
+					//if (nmb>8)	{
+						//nmb=0;
+						strmb3[nmb] = (char) ch;
+					//}
 					nmb++;
 					//strSer2[nmb+1] = '\0';
 					//sedot_mod(ch);
@@ -196,13 +199,13 @@ char s[30];
 					
 				}
 				
-				if (flag_ms==1 && nmb>4)	{
-					printf("hasil: %d\r\n", nmb);
-					printf("x%02x ", (char) ch);
-					//balas = proses_mod3(nmb, strmb3);
+				if (flag_ms==1 && nmb>=8)	{
+					//printf("hasil: %d\r\n", nmb);
+					//printf("x%02x ", (char) ch);
+					balas = proses_mod3(nmb, strmb3);
 					//printf("--==> BALAS MB: %d\r\n", balas);
 					nmb = 0;
-					//mb_state = MB_REST;
+					mb_state = MB_REST;
 				}
 				#if 0
 				if (balas==0)	{
@@ -228,65 +231,29 @@ char s[30];
 
 int proses_mod3(int mbn, char *mbstr)	{
 	int hsl=0, cmd=0, jml=0, reg=0;
-
-	#if 0
-	printf("\r\nJml CMD: %d -->", mbn);
-	int i,mm;
+	int i,mm=(mbn-8);
+	char *ss;
+	ss = &strmb3[8];
 	
-	mm = (mbn>40)?40:mbn;
-	//for (i=0; i<mbn; i++)		{
-	for (i=0; i<mm; i++)		{
+	#if 0
+	printf("\r\nJml Respon: %d -->", mbn);
+	for (i=0; i<(mbn-8); i++)		{
 		//printf(" %02x", mbstr[i]);
-		printf(" %02x", strmb3[i]);
+		printf(" %02x", ss[i]);
 	}
 	printf("\r\n");
 	#endif
 	
-	struct t_env *p_env3;
-	p_env3 = (char *) ALMT_ENV;
-		
-	//if (p_env3->almtSlave != mbstr[0])	{
-	if (p_env3->almtSlave != strmb3[0])	{
-		//printf("0: %02x\r\n", strmb[0]);
-		return 1;
-	}
 	
-	//cmd = mbstr[1];
-	cmd = strmb3[1];
-	if (cmd==READ_FILE_CONTENT && mbn>8)	return 3;		// kiriman sendiri
+	// CEK CRC
+	hsl = get_crc_mod(mm-2, ss);	//printf("hasil : %04x\r\n", hsl);
+	if (((hsl>>8 & 0xFF) != ss[mm-1]) || ((hsl & 0xFF) != ss[mm-2]))	return 1;
 	
-	/*
-	if (cmd>=READ_FILE_CONTENT)
-		//hsl = cek_crc_ccitt_0xffff(mbn, mbstr);		// modbus-serial dari skywave data file
-		hsl = cek_crc_ccitt_0xffff(mbn, strmb3);			//
-	else
-		//hsl = cek_crc_mod(mbn, mbstr);				// modbus murni
-		hsl = cek_crc_mod(mbn, strmb3);
-	//*/
+	//printf("lanjut ....\r\n");
+	if (ss[1]==READ_HOLDING_REG)	simpan_nilai_mb(ss[2]/4, &ss[3], 1031);
 	
+	return 0;
 	
-	if (hsl==1 && mbn>=8)	{				// 8: min panjang modbus REQUEST
-		//printf(" > LULUS < !!!\r\n");
-		
-		#if 0
-		cmd = mbstr3[1];
-		reg = (int) (mbstr[2]<<8 | mbstr[3]);
-		jml = (int) (mbstr[4]<<8 | mbstr[5]);
-		#endif
-		
-		cmd = strmb3[1];
-		reg = (int) (strmb3[2]<<8 | strmb3[3]);
-		jml = (int) (strmb3[4]<<8 | strmb3[5]);
-		
-		//printf("++++ cmd: 0x%02x, reg: 0x%02x, jml: %d\r\n", cmd, reg, jml);
-		//cmd = parsing_mod(strSer2);
-		if (cmd>0)	{
-			//printf("__PROSES DATA KITA !!\r\n");
-			//return respon_modbus(cmd, reg, jml, mbstr, mbn);
-			return respon_modbus(cmd, reg, jml, strmb3, mbn);
-		}
-	}
-	return 2;
 }
 
 
