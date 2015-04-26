@@ -5,7 +5,7 @@
 //#include "sh_serial.h"
 #include "sh_adc.h"
 #include "adc/ad7708.h"
-//#include "monita.h"
+#include "monita.h"
 
 #ifdef PAKAI_ADC_7708
 

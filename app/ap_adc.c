@@ -29,7 +29,7 @@ void data_adc()	{
 	struct t_env *st_env;
 	st_env = ALMT_ENV;
 	
-	for (i=0; i<JUM_DIGITAL; i++)		{
+	for (i=0; i<JML_KANAL; i++)		{
 		tf = (float) (adc.data[i] * faktor_pengali_420 / 0xffff);
 		tf = st_env->kalib[JUM_DIGITAL+i].m * tf + st_env->kalib[JUM_DIGITAL+i].C;
 		
