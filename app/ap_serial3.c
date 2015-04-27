@@ -204,7 +204,7 @@ char s[30];
 				if (flag_ms==1 && nmb>=8)	{
 					printf("hasil: %d\r\n", nmb);
 					//printf("x%02x ", (char) ch);
-					//balas = proses_mod3(nmb, strmb3,dReg);					//printf("--==> BALAS MB: %d\r\n", balas);
+					balas = proses_mod3(nmb, strmb3,dReg);					//printf("--==> BALAS MB: %d\r\n", balas);
 					nmb = 0;
 					mb_state = MB_REST;
 				}
