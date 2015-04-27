@@ -608,7 +608,8 @@ int parsing_mb_native_cmd(char*s, char* cmd, int* dest)	{
 	}
 	#endif
 	
-	//*dest = buf[6];
+	*dest = buf[6];
+	//printf("dest: %d, buf[6]: %d\r\n", *dest, buf[6]);
 	
 	unsigned int tmp;
 	//*
@@ -618,8 +619,10 @@ int parsing_mb_native_cmd(char*s, char* cmd, int* dest)	{
 	tmp = buf[2]>40000?(buf[2]-40000-buf[3]):buf[2];
 	cmd[2] = (tmp >> 8) & 0xFF;
 	cmd[3] = tmp & 0xFF;
-	cmd[4] = (buf[5] >> 8) & 0xFF;
-	cmd[5] = buf[5] & 0xFF;
+	
+	tmp = buf[5]*2;
+	cmd[4] = (tmp >> 8) & 0xFF;
+	cmd[5] = tmp & 0xFF;
 	
 	#if 0
 	for (k=0; k<6; k++)	{

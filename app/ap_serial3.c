@@ -80,7 +80,7 @@ void printd3(int prio, const char *format, ...)	{
 	}
 }
 
-int cmd_modbus(int gg)	{
+int cmd_modbus(int gg, int *dReg)	{
 	struct t_sumber *st_sumber;
 	st_sumber = (char *) ALMT_SUMBER;
 	int destReg;
@@ -101,6 +101,9 @@ int cmd_modbus(int gg)	{
 			}
 			printf("\r\n");
 			#endif
+			
+			*dReg = destReg;
+			//printf("Dest Reg: %d - %d\r\n", *dReg, destReg);
 			return kirim_respon_mb(8,outmb3,50,3);
 		}
 	}
@@ -120,7 +123,7 @@ portBASE_TYPE xGotChar;
 int ch;
 char s[30];
 	//char strmb[MAX_RX_MB];
-	int  nmb = 0, balas = 0;
+	int  nmb = 0, balas = 0, dReg=0;
 	char mb_state = MB_REST;
 	char flag_ms = 0;
 	/* Just to stop compiler warnings. */
@@ -151,8 +154,9 @@ char s[30];
 			mb_state = MB_REQ;
 		}
 		else if (mb_state==MB_REQ)	{
-			//printf(">>> MB_REQ: %d  ", mbgilir);
-			int rsp = cmd_modbus(mbgilir);
+			
+			int rsp = cmd_modbus(mbgilir, &dReg);
+			//printf(">>> MB_REQ: %d dest: %d ", mbgilir, dReg);
 			if (rsp>0)	mb_state = MB_RESP;
 			else 	{
 				mb_state = MB_REST;
@@ -172,7 +176,7 @@ char s[30];
 					//printf("kk %02x ", (char) ch);
 				} 
 				else {
-					printf("%02x ", (char) ch);
+					//printf("%02x ", (char) ch);
 					//printf("%c ", (char) ch);
 					//if (nmb>8)	{
 						//nmb=0;
@@ -198,9 +202,9 @@ char s[30];
 				}
 				
 				if (flag_ms==1 && nmb>=8)	{
-					printf("hasil: %d\r\n", nmb);
+					//printf("hasil: %d\r\n", nmb);
 					//printf("x%02x ", (char) ch);
-					balas = proses_mod3(nmb, strmb3);
+					balas = proses_mod3(nmb, strmb3,dReg);
 					//printf("--==> BALAS MB: %d\r\n", balas);
 					nmb = 0;
 					mb_state = MB_REST;
@@ -230,7 +234,7 @@ char s[30];
 	}
 }
 
-int proses_mod3(int mbn, char *mbstr)	{
+int proses_mod3(int mbn, char *mbstr, int dReg)	{
 	int hsl=0, cmd=0, jml=0, reg=0;
 	int i,mm=(mbn-8);
 	char *ss;
@@ -250,8 +254,8 @@ int proses_mod3(int mbn, char *mbstr)	{
 	hsl = get_crc_mod(mm-2, ss);	//printf("hasil : %04x\r\n", hsl);
 	if (((hsl>>8 & 0xFF) != ss[mm-1]) || ((hsl & 0xFF) != ss[mm-2]))	return 1;
 	
-	//printf("lanjut ....\r\n");
-	if (ss[1]==READ_HOLDING_REG)	simpan_nilai_mb(ss[2]/4, &ss[3], 1031);
+	//printf("lanjut ....dReg: %d\r\n", dReg);
+	if (ss[1]==READ_HOLDING_REG)	simpan_nilai_mb(ss[2]/4, &ss[3], dReg);
 	
 	return 0;
 	
