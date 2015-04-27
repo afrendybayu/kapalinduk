@@ -1,6 +1,6 @@
 
 // Afrendy Bayu
-// Depok, 25 Maret 2013
+// BukitTanjung, 24 April 2015
 // 
 
 /* Scheduler include files. */
@@ -145,13 +145,13 @@ char s[30];
 
 	for( ;; )	{
 		if (mb_state==MB_REST)	{
-			printf("\r\n>>> MB_REST: %d   ", mbgilir);
+			//printf("\r\n>>> MB_REST: %d   ", mbgilir);
 			if (mbgilir==0)	vTaskDelay(1000);
 			else 			vTaskDelay(50);
 			mb_state = MB_REQ;
 		}
 		else if (mb_state==MB_REQ)	{
-			printf(">>> MB_REQ: %d  ", mbgilir);
+			//printf(">>> MB_REQ: %d  ", mbgilir);
 			int rsp = cmd_modbus(mbgilir);
 			if (rsp>0)	mb_state = MB_RESP;
 			else 	{
@@ -172,7 +172,7 @@ char s[30];
 					//printf("kk %02x ", (char) ch);
 				} 
 				else {
-					//printf("%02x ", (char) ch);
+					printf("%02x ", (char) ch);
 					//printf("%c ", (char) ch);
 					//if (nmb>8)	{
 						//nmb=0;
@@ -198,7 +198,7 @@ char s[30];
 				}
 				
 				if (flag_ms==1 && nmb>=8)	{
-					//printf("hasil: %d\r\n", nmb);
+					printf("hasil: %d\r\n", nmb);
 					//printf("x%02x ", (char) ch);
 					balas = proses_mod3(nmb, strmb3);
 					//printf("--==> BALAS MB: %d\r\n", balas);
