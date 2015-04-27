@@ -162,7 +162,8 @@ unsigned int CRC16(unsigned int crc, unsigned int data)		{
 
 int kirim_respon_mb(int jml, char *s, int timeout, int serial)		{
 	int i, k=0;
-	vTaskDelay(timeout/2);
+	//vTaskDelay(timeout/2);
+	vTaskDelay(40);
 	#ifdef PAKAI_SERIAL_2
 	if (serial==2)	{
 		enaTX2_485();

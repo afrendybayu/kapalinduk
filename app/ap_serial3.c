@@ -148,7 +148,7 @@ char s[30];
 
 	for( ;; )	{
 		if (mb_state==MB_REST)	{
-			//printf("\r\n>>> MB_REST: %d   ", mbgilir);
+			printf("\r\n>>> MB_REST: %d   ", mbgilir);
 			if (mbgilir==0)	vTaskDelay(1000);
 			else 			vTaskDelay(50);
 			mb_state = MB_REQ;
@@ -176,7 +176,7 @@ char s[30];
 					//printf("kk %02x ", (char) ch);
 				} 
 				else {
-					//printf("%02x ", (char) ch);
+					printf("%02x ", (char) ch);
 					//printf("%c ", (char) ch);
 					//if (nmb>8)	{
 						//nmb=0;
@@ -202,10 +202,9 @@ char s[30];
 				}
 				
 				if (flag_ms==1 && nmb>=8)	{
-					//printf("hasil: %d\r\n", nmb);
+					printf("hasil: %d\r\n", nmb);
 					//printf("x%02x ", (char) ch);
-					balas = proses_mod3(nmb, strmb3,dReg);
-					//printf("--==> BALAS MB: %d\r\n", balas);
+					//balas = proses_mod3(nmb, strmb3,dReg);					//printf("--==> BALAS MB: %d\r\n", balas);
 					nmb = 0;
 					mb_state = MB_REST;
 				}
@@ -238,6 +237,8 @@ int proses_mod3(int mbn, char *mbstr, int dReg)	{
 	int hsl=0, cmd=0, jml=0, reg=0;
 	int i,mm=(mbn-8);
 	char *ss;
+	
+	if (mbn<=8)	return 0;
 	ss = &strmb3[8];
 	
 	#if 0
@@ -257,7 +258,7 @@ int proses_mod3(int mbn, char *mbstr, int dReg)	{
 	//printf("lanjut ....dReg: %d\r\n", dReg);
 	if (ss[1]==READ_HOLDING_REG)	simpan_nilai_mb(ss[2]/4, &ss[3], dReg);
 	
-	return 0;
+	return 1;
 	
 }
 
