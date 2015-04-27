@@ -258,7 +258,7 @@ int proses_mod3(int mbn, char *mbstr, int dReg)	{
 	//printf("lanjut ....dReg: %d\r\n", dReg);
 	if (ss[1]==READ_HOLDING_REG)	simpan_nilai_mb(ss[2]/4, &ss[3], dReg);
 	
-	return 1;
+	return (mbn-8);
 	
 }
 
