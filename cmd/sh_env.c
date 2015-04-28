@@ -155,6 +155,14 @@ char set_env(int argc, char **argv)	{
 			
 		}
 		#endif
+		#ifdef MODBUS_RTU_MASTER
+		else if (strcmp(argv[1], "idmaster") == 0)	{
+			printf("  idMaster\r\n");
+			st_env->almtMaster = atoi( argv[2] );
+			printf("  Alamat ID Master : %d\r\n", st_env->almtMaster);
+			
+		}
+		#endif
 		else if (strcmp(argv[1], "debug1") == 0)	{
 			printf("  Debug prio serial0\r\n");
 			st_env->prioDebug = atoi( argv[2] );
