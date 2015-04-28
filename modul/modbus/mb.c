@@ -236,14 +236,14 @@ int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 	}
 	
 	if (cmd==READ_FILE_CONTENT)		{				// #define READ_FILE_CONTENT		25
-		uprintf("==> Modbus READ FILE COntent skywave\r\n");
+		//uprintf("==> Modbus READ FILE COntent skywave\r\n");
 		#ifdef PAKAI_FILE_SIMPAN
 			//baca_kirim_file(reg, len, str);
 			baca_kirim_file(reg, len, strmb);
 		#endif
 	}
 	if (cmd==SENDED_FILE)		{				// #define READ_FILE_CONTENT		25
-		uprintf("==> hapus file FILE SENDED\r\n");
+		//uprintf("==> hapus file FILE SENDED\r\n");
 		#ifdef PAKAI_FILE_SIMPAN
 			//int kk = proses_file_terkirim(len, str);
 			int kk = proses_file_terkirim(len, strmb);
