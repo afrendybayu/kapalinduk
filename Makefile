@@ -226,7 +226,7 @@ $(ARM_OBJS) : %.o : %.c Makefile FreeRTOSConfig.h
 bersihbersih: clean
 clean :
 	rm $(NAMA_FILE).elf
-	rm $(NAMA_FILE).hex
+#	rm $(NAMA_FILE).hex
 	rm hasil/$(NAMA_FILE).bin
 	rm hasil/$(NAMA_FILE).map
 	rm $(THUMB_OBJS)

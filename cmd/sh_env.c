@@ -50,6 +50,7 @@ void cek_env(int argc, char **argv)	{
 	//uprintf("  Konfig Cron  : [%d] : %s\r\n", st_env->statusCron, (st_env->statusCron?"Aktif":"Mati"));
 	uprintf("  Konfig Debug1: %d\r\n", st_env->prioDebug);
 	uprintf("  Konfig Debug2: %d\r\n", st_env->prioDebug2);
+	uprintf("  sisa Stack: %d\r\n", );
 }
 
 
@@ -248,13 +249,14 @@ void set_env_default()		{
 	st_env->netTot = 10;
 	strcpy(st_env->passwd, "monita");
 	strcpy(st_env->madein, "Afrendy Bayu");
-	strcpy(st_env->nohp, "082114722505");
+	strcpy(st_env->nohp, "08111136880");
 	st_env->statusCron = 0;
 	st_env->almtSlave = 1;
 	st_env->statusSlave = 0;
 	st_env->prioDebug  = 10;
 	st_env->prioDebug2 = 20;
 	st_env->jmlfile = 0;
+	st_env->almtMaster = 1;
 	
 	simpan_st_rom(SEKTOR_ENV, ENV, 0, (unsigned short *) st_env, 0);
 	//simpan_struct_block_rom(SEKTOR_ENV, ENV, 1, (char *) &st_env);

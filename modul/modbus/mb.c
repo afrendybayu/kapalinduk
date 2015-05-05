@@ -589,6 +589,7 @@ int parsing_mb_native_cmd(char*s, char* cmd, int* dest)	{
 	int *buf;
 	//buf = (int*) malloc(i*sizeof(int));
 	buf = pvPortMalloc( i * sizeof (int) );
+	printf("  %s(): Mallok @ %X\r\n", __FUNCTION__, buf);
 	if (buf == NULL)	{
 		printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
 		vPortFree(buf);
