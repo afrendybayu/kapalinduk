@@ -50,7 +50,7 @@ void cek_env(int argc, char **argv)	{
 	//uprintf("  Konfig Cron  : [%d] : %s\r\n", st_env->statusCron, (st_env->statusCron?"Aktif":"Mati"));
 	uprintf("  Konfig Debug1: %d\r\n", st_env->prioDebug);
 	uprintf("  Konfig Debug2: %d\r\n", st_env->prioDebug2);
-	uprintf("  sisa Stack: %d\r\n", );
+	uprintf("  Memory space: %d\r\n", xPortGetFreeHeapSize());
 }
 
 
