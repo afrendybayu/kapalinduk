@@ -13,7 +13,17 @@
 
 int sync_waktu_modem(unsigned int x)	{
 	uprintf("+++++> %s: %d\r\n", __FUNCTION__, x);
+	struct tm *t;
 	
+	t = localtime (&x);
+	/*
+	t.tm_year = ctime1.year - 1900;		// mulai 1900
+	t.tm_mon = ctime1.month - 1;		// 0-11
+	t.tm_mday = ctime1.dom;				// 1-31
+	t.tm_hour = ctime0.hours;
+	t.tm_min = ctime0.minutes;
+	t.tm_sec = ctime0.seconds;
+	//*/
 }
 
 void hitung_wkt(unsigned int w, int *wx)	{
