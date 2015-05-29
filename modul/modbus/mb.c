@@ -295,7 +295,7 @@ int baca_kirim_file(int no, int len, char *str)		{
 		//f_read(&fd2, &respon[30], fd2.fsize, &ufile);
 		f_read(&fd2, &outmb[30], fd2.fsize, &ufile);
 
-		uprintf("namafile: %s : %d\r\n", nf, ufile);
+		//uprintf("namafile: %s : %d\r\n", nf, ufile);
 		#if 0
 		
 		int kk,ll, h=0;
