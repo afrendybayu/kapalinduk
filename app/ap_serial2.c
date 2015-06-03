@@ -103,7 +103,7 @@ char s[30];
 				//printf("nmb: %d, ch: %02x, mask sini !!", nmb, (char)ch);
 			} 
 			else {
-				//printf("2x%02x ", (char) ch);
+				//printf("%02x ", (char) ch);
 				//printf("%c ", (char) ch);
 				strmb[nmb] = (char) ch;
 				nmb++;
