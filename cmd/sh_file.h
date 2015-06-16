@@ -4,7 +4,7 @@
 
 
 
-#ifdef PAKAI_FILE_SIMPAN
+#ifdef PAKAI_FILE_SIMPAN 
 void set_file_default();
 void cek_file(int argc, char **argv);
 char set_file(int argc, char **argv);
