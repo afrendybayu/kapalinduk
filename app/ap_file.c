@@ -281,13 +281,13 @@ int parsing_cfg_data(int i, char *str)	{
 	vPortFree (st_data);
 }
 
-int parsing_cfg_astm(int i, char *str)
+int parsing_cfg_astm(char *str)
 {
 	int nx;
 	int nox, lok;
 	char *pch;
 	
-	pch = strchr(str, ':') + 1;		//if (pch==NULL)	return 1;
+	pch = strchr(str, '=') + 1;		//if (pch==NULL)	return 1;
 	pch = strtok(pch, "\r\n");		//if (pch==NULL)	return 2;
 	
 	struct t_astm *st_astm;
@@ -304,7 +304,7 @@ int parsing_cfg_astm(int i, char *str)
 
 	
 	//sscanf(str, "%d: %f %f %f",&nx, &P, &T, &C);
-	sscanf(str, "%d: %f",&nx,&Coef);
+	sscanf(str, "d_astm%d = %f",&nx,&Coef);
 	nx--;
 	nox = nx % PER_ASTM;
 	lok = (int) (nx/PER_ASTM);
@@ -410,10 +410,10 @@ int parsing_cmd_setting_subutama(char *str)	{
 	}
 	else if (st_conf.cmd==CONF_ASTM)	
 	{
-			pch = strstr (str, ':');
+			pch = strstr (str, "d_astm");
 			if (pch != NULL)	
 			{
-				parsing_cfg_astm(i, str);
+				parsing_cfg_astm(str);
 			}
 	}
 	return 0;
