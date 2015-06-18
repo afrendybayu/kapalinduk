@@ -313,7 +313,7 @@ int parsing_cfg_astm(char *str)
 	//st_astm[nox].temp = T;
 	st_astm[nox].koef = Coef;
 	
-	simpan_st_rom(SEKTOR_ASTM, lok, 1, (unsigned short *) st_astm, 1);
+	simpan_st_rom(SEKTOR_ASTM, lok, 0, (unsigned short *) st_astm, 0);
 	vPortFree (st_astm);
 	
 	}
