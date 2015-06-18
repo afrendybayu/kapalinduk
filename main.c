@@ -255,17 +255,16 @@ void vLedTask( void *pvParameters )	{
 	const portTickType xFrequency = 500;
 		
 	vTaskDelay(100);
-	uprintf("  task : %s: %d\r\n", __FUNCTION__, uxTaskGetNumberOfTasks());
+	//uprintf("  task : %s: %d\r\n", __FUNCTION__, uxTaskGetNumberOfTasks());
 
 	st_hw.init++;
 	do	{
 		init_led();
 	} while(st_hw.init != uxTaskGetNumberOfTasks());
 	
+	#if 0
 	int lok;
 	lok = 20;
-	
-	#if 0
 	//tes panggil nilai astm --> oke
 	struct t_astm *st_astm;
 	st_astm = pvPortMalloc(PER_ASTM * sizeof (struct t_astm) );
