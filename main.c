@@ -294,7 +294,8 @@ void vLedTask( void *pvParameters )	{
 		#ifdef PAKAI_ADC_7708
 		data_adc();
 		#endif
-	
+		
+		//disini spt nya tempat yg cocok ambil nilai suhu nya.
 		
 		i = 1-i;
 		if (i)	{

@@ -33,6 +33,7 @@ char set_kanal(int argc, char **argv)		{
 	unsigned int kanal;
 	float m;
 	float c;
+	short dens;
 	int ret;
 	
 	printf("\r\n");
@@ -121,9 +122,19 @@ char set_kanal(int argc, char **argv)		{
 				return ;
 			}
 		
-			printf(" Seting kanal %d, m = %f, dan C = %f\r\n", kanal, m, c);
+			sprintf(str_kanal, "%s", argv[4]);
+			ret = sscanf(str_kanal, "%d", &dens);
+		
+			if (ret == NULL) {
+				printf(" Err C !\r\n"); 
+				vPortFree( st_env );
+				return ;
+			}
+		
+			printf(" Seting kanal %d, m = %f, C = %f, Density = %d\r\n", kanal, m, c, dens);
 			st_env->kalib[kanal - 1].m = m;
 			st_env->kalib[kanal - 1].C = c;
+			st_env->kalib[kanal - 1].density = dens;
 			
 		}
 	}
