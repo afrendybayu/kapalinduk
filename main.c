@@ -249,6 +249,7 @@ inline void init_led()		{
 
 void vLedTask( void *pvParameters )	{
 	FIO1SET = LED_UTAMA;
+	short cnt_astm = 0;
 	char a=0, b=1, i=0;
 	char ss[6];
 	portTickType xLastWakeTime;
@@ -283,7 +284,8 @@ void vLedTask( void *pvParameters )	{
 	
 	int q = 0;
 	xLastWakeTime = xTaskGetTickCount();
-	for ( ;; )	{
+	for ( ;; )	{ //every .5 s
+		cnt_astm ++;
 		toogle_led_utama();
 		//printf("testing %.4f\r\n", 12.3455*8.1);
 		//printf("testing %d\r\n", 12);
@@ -296,7 +298,8 @@ void vLedTask( void *pvParameters )	{
 		#endif
 		
 		//disini spt nya tempat yg cocok ambil nilai suhu nya.
-		
+		printf("%d ",cnt_astm);
+		if (cnt_astm == 120) cnt_astm = 0;
 		i = 1-i;
 		if (i)	{
 			stat_ps();

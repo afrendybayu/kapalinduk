@@ -170,6 +170,7 @@ void set_kanal_default()		{
 	for (i=0; i<(JML_KANAL); i++)	{
 		st_env->kalib[i+JUM_DIGITAL].m = 1;
 		st_env->kalib[i+JUM_DIGITAL].C = 0;
+		st_env->kalib[i+JUM_DIGITAL].density = 840;
 		st_env->kalib[i+JUM_DIGITAL].status = sADC_7708;
 		//strcpy(env.kalib[i].ket, "----");
 	}
