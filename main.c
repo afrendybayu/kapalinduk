@@ -298,8 +298,13 @@ void vLedTask( void *pvParameters )	{
 		#endif
 		
 		//disini spt nya tempat yg cocok ambil nilai suhu nya.
-		printf("%d ",cnt_astm);
-		if (cnt_astm == 120) cnt_astm = 0;
+		printf("|%d|%d| ",cnt_astm,astm_aktif);
+		//printf(" |%d|",astm_aktif);
+		if (cnt_astm == 120){ 
+		cnt_astm = 0;
+		astm_aktif = 15;
+		}
+		
 		i = 1-i;
 		if (i)	{
 			stat_ps();

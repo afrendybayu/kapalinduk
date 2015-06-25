@@ -191,6 +191,7 @@ void data_frek_rpm (void) {
 	
 	struct t_env *st_env;
 	st_env = ALMT_ENV;
+	short geser = 1;
 	
 	for (i=0; i<JUM_DIGITAL; i++)	{
 		status = st_env->kalib[i].status;
@@ -288,8 +289,15 @@ void data_frek_rpm (void) {
 		}
 		else if (status==sFLOWx)	{
 			//*
+			printf("%d",i);
 			data_f[i] = (konter.t_konter[i].hit*st_env->kalib[i].m)+st_env->kalib[i].C;
 			// dsini nanti di tambahkan perkalian dengan nilai ASTM
+			#if 1
+			if (astm_aktif){ 
+			astm_aktif = astm_aktif - geser;
+			geser = geser << 1;
+			}
+			#endif
 			#if 1
 			if (data_f[i]>nFLOW_MAX) {		// reset setelah 10juta, 7 digit
 			//if (data_f[(i*2)+1]>1000) {		// tes saja, reset setelah 10juta, 7 digit

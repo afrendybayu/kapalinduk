@@ -15,14 +15,14 @@ void cek_kanal()	{
 	
 	uprintf("\r\n  Info setting kanal Konter\r\n");
 	for (i=0; i<JUM_DIGITAL; i++)		{
-		uprintf("    Kanal %2d. m: %8.3f, C: %8.3f, status: %d\r\n", \
-			i+1, st_env->kalib[i].m, st_env->kalib[i].C, st_env->kalib[i].status);
+		uprintf("    Kanal %2d. m: %8.3f, C: %8.3f, Den: %d, status: %d\r\n", \
+			i+1, st_env->kalib[i].m, st_env->kalib[i].C, st_env->kalib[i].density, st_env->kalib[i].status);
 	}
 	
 	uprintf("  Info setting kanal analog 4-20mA\r\n"); //harus di edit jg dsini ada nilai density nantinya
 	for (i=0; i<JML_KANAL; i++)		{
-		uprintf("    Kanal %2d. m: %8.3f, C: %8.3f, Den: %d, status: %d\r\n", \
-			(i+JUM_DIGITAL+1), st_env->kalib[i+JUM_DIGITAL].m, st_env->kalib[i+JUM_DIGITAL].C, st_env->kalib[i+JUM_DIGITAL].density, st_env->kalib[i+JUM_DIGITAL].status);
+		uprintf("    Kanal %2d. m: %8.3f, C: %8.3f, status: %d\r\n", \
+			(i+JUM_DIGITAL+1), st_env->kalib[i+JUM_DIGITAL].m, st_env->kalib[i+JUM_DIGITAL].C, st_env->kalib[i+JUM_DIGITAL].status);
 	}
 	info_kanal();
 }
@@ -71,7 +71,7 @@ char set_kanal(int argc, char **argv)		{
 	
 	memcpy((char *) st_env, (char *) ALMT_ENV, (sizeof (struct t_env)));
 	
-	if (argc==5)	
+	if (argc==5||argc==4)	
 	{
 		//int no = cek_nomor_valid(argv[1], JML_KANAL);
 		if (strcmp(argv[2], "status") == 0)	{
@@ -163,6 +163,7 @@ void set_kanal_default()		{
 	for (i=0; i<(JUM_DIGITAL); i++)	{
 		st_env->kalib[i].m = 1;
 		st_env->kalib[i].C = 0;
+		st_env->kalib[i].density = 840;
 		st_env->kalib[i].status = sRPM;
 		//strcpy(env.kalib[i].ket, "----");
 	}

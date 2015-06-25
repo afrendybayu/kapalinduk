@@ -50,6 +50,7 @@ typedef enum IAP_STATUS_t {
 } IAP_STATUS_t;
 
 //IAP_return_t iap_return;
+short astm_aktif;
 
 #define  RPM_MAX		3000
 #define  PROP_MAX		250
