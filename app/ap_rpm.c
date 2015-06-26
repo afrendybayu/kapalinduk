@@ -294,17 +294,13 @@ void data_frek_rpm (void) {
 			// dsini nanti di tambahkan perkalian dengan nilai ASTM
 			#if 1
 			if (astm_aktif){ 
-			int a = 1,b;
-			//printf("%d",i);
+			printf("%d",i);
 			astm_aktif = astm_aktif - geser;
 			geser = geser << 1;
-			b = a * st_env->kalib[i].density;
 			//printf("|%11.2f| ",data_f[12]);
 			//printf("|%11.2f| ",data_f[13]);
 			//printf("|%11.2f| ",data_f[14]);
-			uprintf("|%8.3f| "),st_env->kalib[i].m;
-			uprintf("|%11.2f| "),st_env->kalib[i].m;
-			printf("|%8.3f| "),st_env->kalib[i].m;
+			uprintf("|%d| ",st_env->kalib[i].density);
 			}			
 			#endif
 			
