@@ -301,7 +301,7 @@ void vLedTask( void *pvParameters )	{
 		cnt_astm ++;
 		if (cnt_astm == 120){ 
 		cnt_astm = 0;
-		astm_aktif = 15;
+		astm_aktif = 7; // nilai astm_aktif di isi dengan jumlah flowmeter dalam baris binary
 		}
 		//printf("|%d|%d| ",cnt_astm,astm_aktif);
 		#endif

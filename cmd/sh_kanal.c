@@ -128,7 +128,7 @@ char set_kanal(int argc, char **argv)		{
 			ret = sscanf(str_kanal, "%d", &dens);
 		
 			if (ret == NULL) {
-				printf(" Err C !\r\n"); 
+				printf(" Err D !\r\n"); 
 				vPortFree( st_env );
 				return ;
 			}
