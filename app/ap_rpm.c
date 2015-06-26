@@ -298,6 +298,7 @@ void data_frek_rpm (void) {
 			geser = geser << 1;
 			}
 			#endif
+			
 			#if 1
 			if (data_f[i]>nFLOW_MAX) {		// reset setelah 10juta, 7 digit
 			//if (data_f[(i*2)+1]>1000) {		// tes saja, reset setelah 10juta, 7 digit

@@ -285,7 +285,6 @@ void vLedTask( void *pvParameters )	{
 	int q = 0;
 	xLastWakeTime = xTaskGetTickCount();
 	for ( ;; )	{ //every .5 s
-		cnt_astm ++;
 		toogle_led_utama();
 		//printf("testing %.4f\r\n", 12.3455*8.1);
 		//printf("testing %d\r\n", 12);
@@ -297,13 +296,15 @@ void vLedTask( void *pvParameters )	{
 		data_adc();
 		#endif
 		
-		//disini spt nya tempat yg cocok ambil nilai suhu nya.
-		printf("|%d|%d| ",cnt_astm,astm_aktif);
-		//printf(" |%d|",astm_aktif);
+		#if 1
+		//counter untuk astm, periode 1 menit
+		cnt_astm ++;
 		if (cnt_astm == 120){ 
 		cnt_astm = 0;
 		astm_aktif = 15;
 		}
+		//printf("|%d|%d| ",cnt_astm,astm_aktif);
+		#endif
 		
 		i = 1-i;
 		if (i)	{
