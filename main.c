@@ -299,7 +299,7 @@ void vLedTask( void *pvParameters )	{
 		#if 1
 		//counter untuk astm, periode 1 menit
 		cnt_astm ++;
-		if (cnt_astm == 120){ 
+		if (cnt_astm == 10){ 
 		cnt_astm = 0;
 		astm_aktif = 7; // nilai astm_aktif di isi dengan jumlah flowmeter dalam baris binary. ngertos??
 		}

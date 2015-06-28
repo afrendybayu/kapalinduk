@@ -188,7 +188,8 @@ void data_frek_rpm (void) {
 	char status;
 	float temp_f, fl2;
 	float temp_rpm;
-	
+	float coef_astm, suhu;
+	int dens;
 	struct t_env *st_env;
 	st_env = ALMT_ENV;
 	short geser = 1;
@@ -289,7 +290,7 @@ void data_frek_rpm (void) {
 		}
 		else if (status==sFLOWx)	{
 			//*
-			//printf("%d",i);
+			//printf("%d",i); //6,7,8
 			data_f[i] = (konter.t_konter[i].hit*st_env->kalib[i].m)+st_env->kalib[i].C;
 			// dsini nanti di tambahkan perkalian dengan nilai ASTM
 			#if 1
@@ -297,6 +298,12 @@ void data_frek_rpm (void) {
 			//printf("%d",i);
 			astm_aktif = astm_aktif - geser;
 			geser = geser << 1;
+			dens = st_env->kalib[i].density;
+			//suhu = data_f[i+6];
+			suhu = 28.00;
+			printf("suhu0 = %f",suhu);
+			coef_astm = nilai_coep(dens,suhu);
+			printf("coef_astm_%d=%f\n\r", i, coef_astm);
 			//printf("|%11.2f| ",data_f[12]);
 			//printf("|%11.2f| ",data_f[13]);
 			//printf("|%11.2f| ",data_f[14]);
