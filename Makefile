@@ -172,8 +172,8 @@ SDC_SOURCE= \
 		$(APP)/ap_file.c				\
 		$(CMD)/sh_file.c				\
 		
-ASTM_SOURCE = \
-		$(APP)/ap_astm.c		\
+#ASTM_SOURCE = \
+		#$(APP)/ap_astm.c		\
 
 RELAY_SOURCE=	\
 		$(CMD)/sh_relay.c	\
