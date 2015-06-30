@@ -299,11 +299,11 @@ void data_frek_rpm (void) {
 			astm_aktif = astm_aktif - geser;
 			geser = geser << 1;
 			dens = st_env->kalib[i].density;
-			//suhu = data_f[i+6];
-			suhu = 28.00;
+			suhu = data_f[i+6];
 			printf("suhu0 = %f",suhu);
 			coef_astm = nilai_coep(dens,suhu);
 			printf("coef_astm_%d=%f\n\r", i, coef_astm);
+			
 			//printf("|%11.2f| ",data_f[12]);
 			//printf("|%11.2f| ",data_f[13]);
 			//printf("|%11.2f| ",data_f[14]);

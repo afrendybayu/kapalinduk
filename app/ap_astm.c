@@ -34,7 +34,7 @@ int lok_suhu(float cuhu)
 	return poss;
 }
 
-float nilai_coep (int loc_pless, float lappet)
+float nilai_coep (int loc_pless, float temp)
 {
 	int n_ples;
 	float suhux;
@@ -50,9 +50,9 @@ float nilai_coep (int loc_pless, float lappet)
 		return 2;
 	}
 	//printf("  %s(): Mallok @ %X\r\n", __FUNCTION__, st_astm);
-	printf("lappet = %f",lappet);
+	//printf("lappet = %f",lappet);
 
-	suhux = (float) lappet;
+	suhux = temp;
 	printf("temp = %f",suhux);
 	n_suhu = lok_suhu(suhux);
 	printf("nples = %d",loc_pless);
