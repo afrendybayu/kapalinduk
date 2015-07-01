@@ -291,24 +291,16 @@ void data_frek_rpm (void) {
 		}
 		else if (status==sFLOWx)	{
 			//*
-			//printf("%d",i); //6,7,8
 			data_f[i] = (konter.t_konter[i].hit*st_env->kalib[i].m)+st_env->kalib[i].C;
 			// dsini nanti di tambahkan perkalian dengan nilai ASTM
 			#if 1
 			if (astm_aktif){ 
-			//printf("%d",i);
 			astm_aktif = astm_aktif - geser;
 			geser = geser << 1;
 			dens = st_env->kalib[i].density;
-			//suhu = data_f[i+6];
-			//printf("suhu0 = %f",suhu);
 			coef_astm = nilai_coep(dens,i);
+
 			printf("coef_astm_%d=%f\n\r", i, coef_astm);
-			
-			//printf("|%11.2f| ",data_f[12]);
-			//printf("|%11.2f| ",data_f[13]);
-			//printf("|%11.2f| ",data_f[14]);
-			//uprintf("|%d| ",st_env->kalib[i].density);
 			}			
 			#endif
 			
@@ -458,19 +450,12 @@ int lok_suhu(float cuhu)
 	int poss,q;
 	float cuhu_temp;
 	
-	//pless_temp = pless_temp+0.5;
-	//q = (int) pless_temp;
 	
 	cuhu_temp = cuhu-25.00;
-	//printf("suhu = %f",cuhu_temp);
-	//cuhu_temp = cuhu_temp*4 +1;
 	cuhu_temp = cuhu_temp*4;
 	q = (int) cuhu_temp;
-	//w = w+1;
-	//printf("suhu = %d",q);
-	
 	poss = q;
-	//poss = (poss << 8) + w; 
+
 	return poss;
 }
 
@@ -489,24 +474,17 @@ float nilai_coep (int loc_pless, int temp)
 		vPortFree(st_astm);
 		return 2;
 	}
-	//printf("lappet = %f",lappet);
 
 	suhux = data_f[temp+6];
-	//printf("temp = %f",suhux);
 	n_suhu = lok_suhu(suhux);
-	//printf("nples = %d",loc_pless);
 	n_ples = (int) (loc_pless-810)/2;
-	//printf("nples = %d",n_ples);
+	
 	memcpy((char *) st_astm, (char *) ALMT_VALUE_ASTM+(n_ples*JML_KOPI_ASTM), (PER_ASTM * sizeof (struct t_astm)));	
 	cuhu1 = st_astm[n_suhu].koef;
-	//printf("k1 = %f",cuhu1);
 	cuhu2 = st_astm[n_suhu+1].koef;
-	//printf("k2 = %f",cuhu2);
-	//cuhu2 = st_astm;
 	
-	//low_cuhu = ((n_suhu-1) /4) +25;
 	low_cuhu =((float)n_suhu/4) +25.00;
-	//printf("low_suhu = %f",low_cuhu);
+	
 	/*INTERPOLASI*/
 	koep = (((suhux-low_cuhu)*(cuhu2-cuhu1)*4.00)+cuhu1);
 	//printf("koep = %f",koep);
