@@ -188,9 +188,9 @@ void data_frek_rpm (void) {
 	char status;
 	float temp_f, fl2;
 	float temp_rpm;
-	float coef_astm;
-	//float *k_t0, *k_t1;
-	//float *d_t0, *d_t1;
+	float coef_astm;	
+	float liter_astm;
+	float rataan_astm;
 
 	//float suhu;
 	int dens;
@@ -299,13 +299,15 @@ void data_frek_rpm (void) {
 			#if 1
 			if (astm_aktif){ 
 			k_t0[i-6] = k_t1[i-6];
+			d_t0[i-6] = d_t1[i-6];
 			astm_aktif = astm_aktif - geser;
 			geser = geser << 1;
 			dens = st_env->kalib[i].density;
 			coef_astm = nilai_coep(dens,i);
 			k_t1[i-6] = coef_astm;
+			d_t1[i-6] = data_f[i];
 			printf("coef_astm_%d=%f|%f|%f\n\r", i, coef_astm, k_t1[i-6], k_t0[i-6]);
-			//printf("i=%d|before=%f|after=%f\n\r",i ,k_t0[i-6], k_t1[i-6 ]);
+			printf("|%f|%f|\n\r", d_t1[i-6], d_t0[i-6]);
 			}			
 			#endif
 			
@@ -486,7 +488,10 @@ float nilai_coep (int loc_pless, int temp)
 	
 	memcpy((char *) st_astm, (char *) ALMT_VALUE_ASTM+(n_ples*JML_KOPI_ASTM), (PER_ASTM * sizeof (struct t_astm)));	
 	cuhu1 = st_astm[n_suhu].koef;
+	printf("|%f|",cuhu1);
 	cuhu2 = st_astm[n_suhu+1].koef;
+	printf("|%f|",cuhu2);
+
 	
 	low_cuhu =((float)n_suhu/4) +25.00;
 	
