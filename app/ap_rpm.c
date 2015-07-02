@@ -189,6 +189,9 @@ void data_frek_rpm (void) {
 	float temp_f, fl2;
 	float temp_rpm;
 	float coef_astm;
+	//float *k_t0, *k_t1;
+	//float *d_t0, *d_t1;
+
 	//float suhu;
 	int dens;
 	struct t_env *st_env;
@@ -295,12 +298,14 @@ void data_frek_rpm (void) {
 			// dsini nanti di tambahkan perkalian dengan nilai ASTM
 			#if 1
 			if (astm_aktif){ 
+			k_t0[i-6] = k_t1[i-6];
 			astm_aktif = astm_aktif - geser;
 			geser = geser << 1;
 			dens = st_env->kalib[i].density;
 			coef_astm = nilai_coep(dens,i);
-
-			printf("coef_astm_%d=%f\n\r", i, coef_astm);
+			k_t1[i-6] = coef_astm;
+			printf("coef_astm_%d=%f|%f|%f\n\r", i, coef_astm, k_t1[i-6], k_t0[i-6]);
+			//printf("i=%d|before=%f|after=%f\n\r",i ,k_t0[i-6], k_t1[i-6 ]);
 			}			
 			#endif
 			

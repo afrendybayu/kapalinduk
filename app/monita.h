@@ -211,6 +211,10 @@ struct t2_konter{
 
 unsigned int giliran;
 struct t2_konter konter;
+float k_t0[3];
+float k_t1[3];
+//float *d_t0, *d_t1;
+
 //unsigned char status_konter[JML_KANAL];
 
 struct t_st_hw  {
