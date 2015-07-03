@@ -192,7 +192,6 @@ void data_frek_rpm (void) {
 	float liter_astm;
 	float rataan_astm;
 
-	//float suhu;
 	int dens;
 	struct t_env *st_env;
 	st_env = ALMT_ENV;
@@ -302,7 +301,7 @@ void data_frek_rpm (void) {
 			d_t0[i-6] = d_t1[i-6];
 			astm_aktif = astm_aktif - geser;
 			geser = geser << 1;
-			dens = st_env->kalib[i].density;
+			dens = st_env->fuel_den;
 			coef_astm = nilai_coep(dens,i);
 			k_t1[i-6] = coef_astm;
 			d_t1[i-6] = data_f[i];

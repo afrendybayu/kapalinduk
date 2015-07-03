@@ -15,8 +15,8 @@ void cek_kanal()	{
 	
 	uprintf("\r\n  Info setting kanal Konter\r\n");
 	for (i=0; i<JUM_DIGITAL; i++)		{
-		uprintf("    Kanal %2d. m: %8.3f, C: %8.3f, Den: %d, status: %d\r\n", \
-			i+1, st_env->kalib[i].m, st_env->kalib[i].C, st_env->kalib[i].density, st_env->kalib[i].status);
+		uprintf("    Kanal %2d. m: %8.3f, C: %8.3f, status: %d\r\n", \
+			i+1, st_env->kalib[i].m, st_env->kalib[i].C, st_env->kalib[i].status);
 	}
 	
 	uprintf("  Info setting kanal analog 4-20mA\r\n"); //harus di edit jg dsini ada nilai density nantinya
@@ -33,11 +33,11 @@ char set_kanal(int argc, char **argv)		{
 	unsigned int kanal;
 	float m;
 	float c;
-	int dens;
+	//int dens;
 	int ret;
 	
 	printf("\r\n");
-	if (argc>5 || argc==1)		kanal_kitab();
+	if (argc>4 || argc==1)		kanal_kitab();
 	
 	//cek_kanal();
 	sprintf(str_kanal, "%s", argv[1]);
@@ -71,7 +71,7 @@ char set_kanal(int argc, char **argv)		{
 	
 	memcpy((char *) st_env, (char *) ALMT_ENV, (sizeof (struct t_env)));
 	
-	if (argc==5||argc==4)	
+	if (argc==4)	
 	{
 		//int no = cek_nomor_valid(argv[1], JML_KANAL);
 		if (strcmp(argv[2], "status") == 0)	{
@@ -123,7 +123,7 @@ char set_kanal(int argc, char **argv)		{
 				return ;
 			}
 			
-			#if 1
+			#if 0
 			sprintf(str_kanal, "%s", argv[4]);
 			ret = sscanf(str_kanal, "%d", &dens);
 		
@@ -134,11 +134,11 @@ char set_kanal(int argc, char **argv)		{
 			}
 			#endif
 			
-			printf(" Seting kanal %d, m = %f, C = %f, Density = %d\r\n", kanal, m, c, dens);
-			//printf(" Seting kanal %d, m = %f, C = %f\r\n", kanal, m, c);
+			//printf(" Seting kanal %d, m = %f, C = %f, Density = %d\r\n", kanal, m, c, dens);
+			printf(" Seting kanal %d, m = %f, C = %f\r\n", kanal, m, c);
 			st_env->kalib[kanal - 1].m = m;
 			st_env->kalib[kanal - 1].C = c;
-			st_env->kalib[kanal - 1].density = dens;
+			//st_env->kalib[kanal - 1].density = dens;
 			
 		}
 	}
@@ -163,7 +163,7 @@ void set_kanal_default()		{
 	for (i=0; i<(JUM_DIGITAL); i++)	{
 		st_env->kalib[i].m = 1;
 		st_env->kalib[i].C = 0;
-		st_env->kalib[i].density = 840;
+		//st_env->kalib[i].density = 840;
 		st_env->kalib[i].status = sRPM;
 		//strcpy(env.kalib[i].ket, "----");
 	}
@@ -171,7 +171,7 @@ void set_kanal_default()		{
 	for (i=0; i<(JML_KANAL); i++)	{
 		st_env->kalib[i+JUM_DIGITAL].m = 1;
 		st_env->kalib[i+JUM_DIGITAL].C = 0;
-		st_env->kalib[i+JUM_DIGITAL].density = 840;
+		//st_env->kalib[i+JUM_DIGITAL].density = 840;
 		st_env->kalib[i+JUM_DIGITAL].status = sADC_7708;
 		//strcpy(env.kalib[i].ket, "----");
 	}

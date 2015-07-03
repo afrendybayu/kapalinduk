@@ -240,7 +240,7 @@ volatile struct t_st_hw st_hw;
 struct t_kalib {
 	float m;
 	float C;
-	int density;
+	//int density;
 	char status;		// [status lihat define di atas !!!] //
 	char adc;
 };
