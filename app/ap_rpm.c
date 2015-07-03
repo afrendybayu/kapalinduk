@@ -297,6 +297,7 @@ void data_frek_rpm (void) {
 			// dsini nanti di tambahkan perkalian dengan nilai ASTM
 			#if 1
 			if (astm_aktif){ 
+			//printf("|%f|%f|\n\r",astm_f[i],k_t0[i-6]);
 			k_t0[i-6] = k_t1[i-6];
 			d_t0[i-6] = d_t1[i-6];
 			astm_aktif = astm_aktif - geser;
@@ -492,9 +493,9 @@ float nilai_coep (int loc_pless, int temp)
 	
 	memcpy((char *) st_astm, (char *) ALMT_VALUE_ASTM+(n_ples*JML_KOPI_ASTM), (PER_ASTM * sizeof (struct t_astm)));	
 	cuhu1 = st_astm[n_suhu].koef;
-	printf("|%f|",cuhu1);
+	//printf("|%f|",cuhu1);
 	cuhu2 = st_astm[n_suhu+1].koef;
-	printf("|%f|",cuhu2);
+	//printf("|%f|",cuhu2);
 
 	
 	low_cuhu =((float)n_suhu/4) +25.00;

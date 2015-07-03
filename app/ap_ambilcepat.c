@@ -68,6 +68,10 @@ int ch;
 	int bunga;
 	bunga = 1000/JUM_DIGITAL;
 	
+	int tot;
+	for (tot=0; tot<3; tot++) k_t1[tot] = 1;
+	
+	
 	for( ;; )	{
 		
 
