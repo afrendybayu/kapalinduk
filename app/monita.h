@@ -240,7 +240,6 @@ volatile struct t_st_hw st_hw;
 struct t_kalib {
 	float m;
 	float C;
-	//int density;
 	char status;		// [status lihat define di atas !!!] //
 	char adc;
 };
@@ -359,6 +358,7 @@ struct t_env {
 	int		prioDebug2;
 	int		jmlfile;
 	int 	fuel_den;
+	int 	jumFlow;
 };
 //struct t_env st_env;
 
