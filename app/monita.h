@@ -358,6 +358,7 @@ struct t_env {
 	int		prioDebug;
 	int		prioDebug2;
 	int		jmlfile;
+	int 	fuel_den;
 };
 //struct t_env st_env;
 

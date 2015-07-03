@@ -45,6 +45,7 @@ void cek_env(int argc, char **argv)	{
 	//uprintf("  Konfig Cron  : [%d] : %s\r\n", st_env->statusCron, (st_env->statusCron?"Aktif":"Mati"));
 	uprintf("  Konfig Debug1: %d\r\n", st_env->prioDebug);
 	uprintf("  Konfig Debug2: %d\r\n", st_env->prioDebug2);
+	uprintf("  Fuel Density: %d\r\n", st_env->fuel_den);
 }
 
 
@@ -161,7 +162,13 @@ char set_env(int argc, char **argv)	{
 			st_env->prioDebug2 = atoi( argv[2] );
 			printf("  Nomor batas prioritas debug2 : %d\r\n", st_env->prioDebug2);
 			
-		}	
+		}
+		else if (strcmp(argv[1], "density") == 0)	{
+			printf("Set Density\n\r");
+			st_env->fuel_den = atoi(argv[2]);
+			printf("Fuel Density = %d",st_env->fuel_den);
+			
+		}
 	}
 	
 	//simpan_struct_block_rom(SEKTOR_ENV, ENV, 0, (char *) st_env);
