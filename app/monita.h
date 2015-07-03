@@ -114,6 +114,7 @@ short astm_aktif;
 #endif
 
 volatile float data_f [ JML_TITIK_DATA ];
+volatile float astm_f [ 12 ];
 
 char strmb[MAX_RX_MB];//		__attribute__ ((section (".usbram1")));
 char outmb[MAX_RX_MB];//		__attribute__ ((section (".usbram1")));

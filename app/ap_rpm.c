@@ -306,8 +306,13 @@ void data_frek_rpm (void) {
 			coef_astm = nilai_coep(dens,i);
 			k_t1[i-6] = coef_astm;
 			d_t1[i-6] = data_f[i];
-			printf("coef_astm_%d=%f|%f|%f\n\r", i, coef_astm, k_t1[i-6], k_t0[i-6]);
-			printf("|%f|%f|\n\r", d_t1[i-6], d_t0[i-6]);
+			//printf("coef_astm_%d=%f|%f|%f\n\r", i, coef_astm, k_t1[i-6], k_t0[i-6]);
+			//printf("|%f|%f|\n\r", d_t1[i-6], d_t0[i-6]);
+			rataan_astm = (k_t1[i-6] + k_t0[i-6])/2.0;
+			liter_astm = d_t1[i-6] - d_t0[i-6];
+			liter_astm = liter_astm * rataan_astm;
+			astm_f[i] = liter_astm;
+			//printf("liter_astm = %f\n\r",astm_f[i]);
 			}			
 			#endif
 			
