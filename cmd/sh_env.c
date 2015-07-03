@@ -13,7 +13,7 @@
 #include "iap.h"
 
 //extern struct t_env env;
-int nFL;
+//int nFL;
 
 void cek_env(int argc, char **argv)	{
 	IAP_return_t iap_return;
@@ -48,7 +48,7 @@ void cek_env(int argc, char **argv)	{
 	uprintf("  Konfig Debug2: %d\r\n", st_env->prioDebug2);
 	uprintf("  Fuel Density: %d\r\n", st_env->fuel_den);
 	//uprintf("  Jumlah Flowmeter: %d\r\n", st_env->jumFlow);
-	uprintf("  Jumlah Flowmeter: %d\r\n", nFL);
+	uprintf("  Jumlah Flowmeter: %d|%d\r\n", st_env->nFL,st_env->jumFlow);
 }
 
 
@@ -179,7 +179,7 @@ char set_env(int argc, char **argv)	{
 			//cnt = atoi(argv[2]);
 			for (cnt = 0; cnt<((atoi(argv[2]))-1); cnt++)st_env->jumFlow = (st_env->jumFlow<<1)+1;
 			printf("Jumlah Kanal Flowmeter = %d",(atoi(argv[2])));
-			nFL = atoi(argv[2]);
+			st_env->nFL = atoi(argv[2]);
 		}
 	}
 	

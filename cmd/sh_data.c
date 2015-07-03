@@ -42,16 +42,16 @@ void cek_data(int argc, char **argv)	{
 			for (j=0; j<PER_SUMBER; j++)	
 			{
 				//printf("%d --> 0x%08X\r\n", i*PER_SUMBER+j, ALMT_DATA + i*JML_KOPI_TEMP);
-				uprintf(" %3d | %6d | %-17s | %11.2f | %-6s | %d\r\n", 	\
-					j+1, st_data[j].id, st_data[j].nama, data_f[smb_i*PER_SUMBER+j], st_data[j].satuan, smb_i*PER_SUMBER+j);
+				uprintf(" %3d | %6d | %-17s |[ %11.2f ][ %11.2f ]| %-6s | %d\r\n", 	\
+					j+1, st_data[j].id, st_data[j].nama, data_f[smb_i*PER_SUMBER+j], astm_f[smb_i*PER_SUMBER+j], st_data[j].satuan, smb_i*PER_SUMBER+j);
 			}
 	
 			st_data = ALMT_DATA + smb_r*JML_KOPI_TEMP;
 			for (j=0; j<2; j++)	
 			{
 				//printf("%d --> 0x%08X\r\n", i*PER_SUMBER+j, ALMT_DATA + i*JML_KOPI_TEMP);
-				uprintf(" %3d | %6d | %-17s | %11.2f | %-6s | %d\r\n", 	\
-					j+11, st_data[j].id, st_data[j].nama, data_f[smb_r*PER_SUMBER+j], st_data[j].satuan, smb_r*PER_SUMBER+j);
+				uprintf(" %3d | %6d | %-17s |[ %11.2f ][ %11.2f ]| %-6s | %d\r\n", 	\
+					j+11, st_data[j].id, st_data[j].nama, data_f[smb_r*PER_SUMBER+j], astm_f[smb_r*PER_SUMBER+j], st_data[j].satuan, smb_r*PER_SUMBER+j);
 			}
 			
 		}

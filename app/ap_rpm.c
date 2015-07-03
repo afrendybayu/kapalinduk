@@ -310,7 +310,7 @@ void data_frek_rpm (void) {
 			rataan_astm = (k_t1[i-6] + k_t0[i-6])/2.0;
 			liter_astm = d_t1[i-6] - d_t0[i-6];
 			liter_astm = liter_astm * rataan_astm;
-			astm_f[i] = liter_astm;
+			astm_f[i] = astm_f[i] + liter_astm;
 			//printf("liter_astm = %f\n\r",astm_f[i]);
 			}			
 			#endif

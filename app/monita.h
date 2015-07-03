@@ -115,6 +115,7 @@ short astm_aktif;
 
 volatile float data_f [ JML_TITIK_DATA ];
 volatile float astm_f [ 12 ];
+//volatile int nFL;
 
 char strmb[MAX_RX_MB];//		__attribute__ ((section (".usbram1")));
 char outmb[MAX_RX_MB];//		__attribute__ ((section (".usbram1")));
@@ -359,6 +360,7 @@ struct t_env {
 	int		jmlfile;
 	int 	fuel_den;
 	int 	jumFlow;
+	int 	nFL;
 };
 //struct t_env st_env;
 

@@ -248,6 +248,8 @@ inline void init_led()		{
 }
 
 void vLedTask( void *pvParameters )	{
+	struct t_env *st_env;
+	st_env = ALMT_ENV;
 	FIO1SET = LED_UTAMA;
 	short cnt_astm = 0;
 	char a=0, b=1, i=0;
@@ -301,7 +303,7 @@ void vLedTask( void *pvParameters )	{
 		cnt_astm ++;
 		if (cnt_astm == 120){ 
 		cnt_astm = 0;
-		astm_aktif = 7; // nilai astm_aktif di isi dengan jumlah flowmeter dalam deret binary. ngertos??
+		astm_aktif = st_env->jumFlow; // nilai astm_aktif di isi dengan jumlah flowmeter dalam deret binary. ngertos??
 		}
 		//printf("|%d|%d| ",cnt_astm,astm_aktif);
 		#endif
