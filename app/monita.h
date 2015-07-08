@@ -153,7 +153,7 @@ char outmb[MAX_RX_MB];//		__attribute__ ((section (".usbram1")));
 
 #if 1
 #define SEKTOR_ASTM		18
-#define ALMT_VALUE_ASTM	ALMT_SEKTOR_18
+#define ALMT_VALUE_ASTM	(ALMT_SEKTOR_18)
 #endif
 
 enum t_struct{ 

@@ -707,6 +707,11 @@ int simpan_konfig(int argc, char **argv)		{
 		tulis_konfig_file(st1, &filx);
 	}
 	
+	struct t_astm *st_astm;
+	st_astm = (char *) ALMT_VALUE_ASTM;
+	
+	
+	
 	f_close(&filx);
 }
 
