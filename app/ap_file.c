@@ -707,17 +707,22 @@ int simpan_konfig(int argc, char **argv)		{
 		tulis_konfig_file(st1, &filx);
 	}
 	
+	#if 1
 	struct t_astm *st_astm;
 	int a;
-	int x = 1;
+	int x = 0;
 	//st_astm = (char *) ALMT_VALUE_ASTM;
 	tulis_konfig_file("[astm]", &filx);
 	for (a=0; a<BLOK_ASTM; a++){
-	st_astm = (char *) (ALMT_VALUE_ASTM+(a*JML_KOPI_ASTM));	
+	st_astm = (char *) ALMT_VALUE_ASTM+(a*JML_KOPI_ASTM);	
+		
 		for (i=0; i<PER_ASTM; i++){
-		sprintf(st1,"d_astm%d = %f", x+i, st_astm[i].koef);
+		x = x+1;	
+		sprintf(st1,"d_astm%d = %f", x, st_astm[i].koef);
+		tulis_konfig_file(st1, &filx);
 		}
 	}
+	#endif
 	
 	f_close(&filx);
 }
