@@ -625,6 +625,7 @@ int simpan_konfig(int argc, char **argv)		{
 		//die(res);
 	}
 	
+	#if 1
 	struct t_env *st_env;
 	st_env = ALMT_ENV;
 	
@@ -706,8 +707,9 @@ int simpan_konfig(int argc, char **argv)		{
 		sprintf(st1, "urut%d = %d", i+1, st_file->urut[i]);
 		tulis_konfig_file(st1, &filx);
 	}
+	#endif
 	
-	#if 1
+	#if 0
 	struct t_astm *st_astm;
 	int a;
 	int x = 0;
