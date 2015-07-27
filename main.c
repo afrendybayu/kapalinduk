@@ -265,9 +265,9 @@ void vLedTask( void *pvParameters )	{
 		init_led();
 	} while(st_hw.init != uxTaskGetNumberOfTasks());
 	
-	#if 0
+	#if 1
 	int lok;
-	lok = 20;
+	lok = 1;
 	//tes panggil nilai astm --> oke
 	struct t_astm *st_astm;
 	st_astm = pvPortMalloc(PER_ASTM * sizeof (struct t_astm) );
@@ -279,7 +279,8 @@ void vLedTask( void *pvParameters )	{
 
 	memcpy((char *) st_astm, (char *) ALMT_VALUE_ASTM+(lok*JML_KOPI_ASTM), (PER_ASTM * sizeof (struct t_astm)));
 	
-	printf("astm = %f", st_astm[3].koef);	
+	printf("|%f|", st_astm[0].koef);	
+	printf("|%f|", st_astm[1].koef);	
 	vPortFree (st_astm);
 	
 	#endif

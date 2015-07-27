@@ -305,6 +305,7 @@ int parsing_cfg_astm(char *str)
 	
 	//sscanf(str, "%d: %f %f %f",&nx, &P, &T, &C);
 	sscanf(str, "d_astm%d = %f",&nx,&Coef);
+	printf("|%f|\n\r",Coef);
 	nx--;
 	nox = nx % PER_ASTM;
 	lok = (int) (nx/PER_ASTM);
@@ -649,7 +650,7 @@ int simpan_konfig(int argc, char **argv)		{
 	tulis_konfig_file("", &filx);
 	
 	tulis_konfig_file("[kanal]", &filx);
-	for (i=0; i<(TOT_ANDIG); i++)	{
+	for (i=0; i<TOT_ANDIG; i++)	{
 		sprintf(st1, "kalib%d = %.3f %.3f", i+1, st_env->kalib[i].m, st_env->kalib[i].C);
 		tulis_konfig_file(st1, &filx);
 		sprintf(st1, "status%d = %d", i+1, st_env->kalib[i].status);
@@ -716,7 +717,7 @@ int simpan_konfig(int argc, char **argv)		{
 	int x = 0;
 
 	tulis_konfig_file("[astm]", &filx);
-	for (a=0; a<4; a++){
+	for (a=0; a<2; a++){
 	st_astm = (char *) ALMT_VALUE_ASTM+(a*JML_KOPI_ASTM);	
 		
 		for (i=0; i<PER_ASTM; i++){
