@@ -267,7 +267,7 @@ void vLedTask( void *pvParameters )	{
 	
 	#if 1
 	int lok;
-	lok = 1;
+	lok = 0;
 	//tes panggil nilai astm --> oke
 	struct t_astm *st_astm;
 	st_astm = pvPortMalloc(PER_ASTM * sizeof (struct t_astm) );
