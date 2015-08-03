@@ -99,8 +99,8 @@ short astm_aktif;
 #define TIDAK_VALID			0xFFFF
 #define PER_SUMBER			10
 //#define PER_ASTM			85
-//#define PER_ASTM			91 //jumlah koefisien
-#define PER_ASTM			10 
+#define PER_ASTM			91 //jumlah koefisien
+//#define PER_ASTM			10 
 #define BLOK_ASTM			21
 #define JML_SUMBER			 6
 #define SUMBER_PER_SEKTOR	32
@@ -283,12 +283,14 @@ struct t_data {
 };
 //struct t_data st_data[JML_TITIK_DATA];
 
+#if 1
 struct t_astm
 	{
 	//float press;
 	//float temp;
 	float koef;
 	};
+#endif
 
 #ifdef PAKAI_CRON
 struct t_cron {

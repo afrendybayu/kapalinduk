@@ -696,7 +696,8 @@ char simpan_st_rom(int sektor, int st, int flag, unsigned short *pdata, int part
 		}
 		if (part==0)	
 		{					
-			simpan_rom(sektor, ALMT_VALUE_ASTM+(st*JML_KOPI_ASTM), (unsigned short *) pdata, hitung_ram(cek_jml_struct(ASTM)*PER_ASTM) );
+			//simpan_rom(sektor, ALMT_VALUE_ASTM+(st*JML_KOPI_ASTM), (unsigned short *) pdata, hitung_ram(cek_jml_struct(ASTM)*PER_ASTM) );
+			simpan_rom(sektor, ALMT_VALUE_ASTM+(st*JML_KOPI_ASTM), (unsigned short *) pdata, 512);
 		}
 		else if (part==1)	
 		{

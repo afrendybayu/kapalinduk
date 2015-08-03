@@ -265,9 +265,9 @@ void vLedTask( void *pvParameters )	{
 		init_led();
 	} while(st_hw.init != uxTaskGetNumberOfTasks());
 	
-	#if 1
+	#if 0
 	int lok;
-	lok = 0;
+	lok = 1;
 	//tes panggil nilai astm --> oke
 	struct t_astm *st_astm;
 	st_astm = pvPortMalloc(PER_ASTM * sizeof (struct t_astm) );

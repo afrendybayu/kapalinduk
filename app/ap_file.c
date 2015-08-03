@@ -280,6 +280,7 @@ int parsing_cfg_data(int i, char *str)	{
 	simpan_st_rom(SEKTOR_DATA, lok, 1, (unsigned short *) st_data, 1);
 	vPortFree (st_data);
 }
+float seblok[91];
 
 int parsing_cfg_astm(char *str)
 {
@@ -290,32 +291,41 @@ int parsing_cfg_astm(char *str)
 	pch = strchr(str, '=') + 1;		//if (pch==NULL)	return 1;
 	pch = strtok(pch, "\r\n");		//if (pch==NULL)	return 2;
 	
-	struct t_astm *st_astm;
+	//struct t_astm *st_astm;
 	int a,b;
 	//float P,T,Coef;
 	float Coef;
 
+#if 0
 	st_astm = pvPortMalloc(PER_ASTM * sizeof (struct t_astm) );
 	if (st_astm == NULL)	{
 		printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
 		vPortFree (st_astm);
 		return 3;
 	}
-
+#endif
 	
 	//sscanf(str, "%d: %f %f %f",&nx, &P, &T, &C);
 	sscanf(str, "d_astm%d = %f",&nx,&Coef);
-	printf("|%f|\n\r",Coef);
+	//printf("|%f|\n\r",Coef);
 	nx--;
 	nox = nx % PER_ASTM;
 	lok = (int) (nx/PER_ASTM);
-	memcpy((char *) st_astm, (char *) ALMT_VALUE_ASTM+(lok*JML_KOPI_ASTM), (PER_ASTM * sizeof (struct t_astm)));
+	
+	seblok[nox] = Coef;
+	
+	//memcpy((char *) st_astm, (char *) ALMT_VALUE_ASTM+(lok*JML_KOPI_ASTM), (PER_ASTM * sizeof (struct t_astm)));
 	//st_astm[nox].press = P;
 	//st_astm[nox].temp = T;
-	st_astm[nox].koef = Coef;
+	//st_astm[nox].koef = Coef;
 	
-	simpan_st_rom(SEKTOR_ASTM, lok, 0, (unsigned short *) st_astm, 0);
-	vPortFree (st_astm);
+	if (nox == 90){
+	//simpan_st_rom(SEKTOR_ASTM, lok, 0, (unsigned short *) st_astm, 0);
+	simpan_st_rom(SEKTOR_ASTM, lok, 0, (unsigned short *) seblok, 0);
+	printf("blok-%d\n\r",lok);
+	}
+		
+	//vPortFree (st_astm);
 	
 	}
 
@@ -441,6 +451,7 @@ void parsing_file_setting(char *str)	{
 		parsing_cmd_setting_subutama(str);
 	}
 }
+
 
 int upload_konfig(char *path)	{
 	FIL filx;
@@ -711,13 +722,13 @@ int simpan_konfig(int argc, char **argv)		{
 	tulis_konfig_file("", &filx);
 	#endif
 	
-	#if 1
+	#if 0
 	struct t_astm *st_astm;
 	int a;
-	int x = 0;
+	int x = 1820;
 
 	tulis_konfig_file("[astm]", &filx);
-	for (a=0; a<1; a++){
+	for (a=20; a<21; a++){
 	st_astm = (char *) ALMT_VALUE_ASTM+(a*JML_KOPI_ASTM);	
 		
 		for (i=0; i<PER_ASTM; i++){
