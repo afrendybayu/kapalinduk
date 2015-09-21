@@ -166,7 +166,7 @@ void hitung_uptime()	{
 }
 
 void get_cal()	{
-	char* hari[] = {"Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"};
+	//char* hari[] = {"Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"};
 	char* bln[] = {"", "Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agt", "Sep", "Okt", "Nov", "Des"};
 	rtcCTIME0_t ctime0;
 	rtcCTIME1_t ctime1;
@@ -174,10 +174,17 @@ void get_cal()	{
 	ctime0.i = RTC_CTIME0; 
 	ctime1.i = RTC_CTIME1; 
 	ctime2.i = RTC_CTIME2;
-
+	
+	#if 0
 	qsprintf(	"\r\n  Waktu : %s, %d-%s-%04d %d:%02d:%02d\r\n", 			\
 		hari[ctime0.dow], ctime1.dom, bln[ctime1.month], ctime1.year, 	\
 		ctime0.hours, ctime0.minutes, ctime0.seconds);		// ctime2.doy, 
+	#endif
+	#if 1
+	qsprintf(	"\r\n  Waktu : %d-%s-%04d %d:%02d:%02d\r\n", 			\
+		ctime1.dom, bln[ctime1.month], ctime1.year, 	\
+		ctime0.hours, ctime0.minutes, ctime0.seconds);		// ctime2.doy, 
+	#endif
 }
 
 void cek_rtc_mem(int argc, char ** argv)	{
