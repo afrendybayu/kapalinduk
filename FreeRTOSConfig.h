@@ -88,6 +88,7 @@
 #define BOARD_SANTER_versi	"v1.3A"
 
 #define PAKAI_LED_UTAMA
+#define PAKAI_RELAY
 #define PAKAI_SHELL
 #define printf 				printf0
 //#define configCOMMAND_INT_MAX_OUTPUT_SIZE 1

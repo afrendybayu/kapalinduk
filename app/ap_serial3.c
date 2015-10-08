@@ -170,12 +170,15 @@ char s[30];
 			xGotChar = xSerialGetChar3( xPort3, &ch, 100 );
 			//printf("x%02x ", (char) ch);
 			#if 1
-			if( xGotChar == pdTRUE )		{
-				if ((nmb==0) && ((char)ch==0xff))	{
+			if( xGotChar == pdTRUE )		
+			{
+				if ((nmb==0) && ((char)ch==0xff))	
+					{
 					//printf("nmb: %d, ch: %02x, mask sini !!", nmb, (char)ch);
 					//printf("kk %02x ", (char) ch);
-				} 
-				else {
+					} 
+				else 
+					{
 					//printf("%02x ", (char) ch);
 					//printf("%c ", (char) ch);
 					//if (nmb>8)	{
@@ -187,10 +190,11 @@ char s[30];
 					//sedot_mod(ch);
 					flag_ms=1;
 					
-				}
+					}
 				//mb_state=MB_RESP;
 			}
-			else {
+			else 
+			{
 				
 				// sedot data respon (sendiri), clear buffer
 				if ( (balas==nmb) && (balas>0) )	{			

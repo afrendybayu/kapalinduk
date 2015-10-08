@@ -161,6 +161,7 @@ int main( void )	{
 		tskIDLE_PRIORITY, ( xTaskHandle * ) &hdl_led );
 	
 	FIO1CLR = LED_UTAMA;
+	FIO1CLR = RLY_1;
 	init_ambilCepatTasks();
 
 	/* Start the scheduler. */
@@ -238,17 +239,22 @@ inline void stat_ps()	{
 inline void init_led()		{
 	vTaskDelay(400);
 	FIO1CLR = LED_UTAMA;
+	FIO1CLR = RLY_1;
 	vTaskDelay(50);
 	FIO1SET = LED_UTAMA;
+	FIO1SET = RLY_1;
 	vTaskDelay(50);
 	FIO1CLR = LED_UTAMA;
+	FIO1CLR = RLY_1;
 	vTaskDelay(50);
 	FIO1SET = LED_UTAMA;
+	FIO1SET = RLY_1;
 	pll_feed();
 }
 
 void vLedTask( void *pvParameters )	{
 	FIO1SET = LED_UTAMA;
+	FIO1SET = RLY_1;
 	char a=0, b=1, i=0;
 	char ss[6];
 	portTickType xLastWakeTime;
@@ -268,6 +274,7 @@ void vLedTask( void *pvParameters )	{
 	xLastWakeTime = xTaskGetTickCount();
 	for ( ;; )	{
 		toogle_led_utama();
+		toogle_relay_satu();
 		//printf("testing %.4f\r\n", 12.3455*8.1);
 		//printf("testing %d\r\n", 12);
 		//qsprintf("perkalian %.4f\r\n", 12.328*3);

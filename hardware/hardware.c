@@ -87,6 +87,10 @@ void init_hardware()	{
 		FIO1SET = LED_UTAMA;		// mati dulu;
 	#endif
 
+	#ifdef PAKAI_RELAY
+		FIO1SET = RLY_1;		// mati dulu;
+	#endif
+
 	#ifdef PAKAI_SHELL
 		vAltStartComTestTasks( mainCOM_TEST_PRIORITY, mainCOM_TEST_BAUD_RATE );
 	#endif
