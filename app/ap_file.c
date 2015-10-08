@@ -500,7 +500,8 @@ void simpan_file_data()		{
 				k = (st_file->urut[i]-1) % PER_SUMBER;
 				st_data = ALMT_DATA + j*JML_KOPI_TEMP;
 				
-				memcpy((void*) &isi[2*i+2], (void*) &st_data[k].id, 2);
+				//memcpy((void*) &isi[2*i+2], (void*) &st_data[k].id, 2);
+				memcpy((void*) &isi[4*i+2], (void*) &st_data[k].id, 4);
 			}
 			f_write(&filx, isi, (st_file->jml*4+2), &oo);
 		}
