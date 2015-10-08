@@ -488,23 +488,29 @@ void simpan_file_data()		{
 	res = f_open(&filx, st, FA_OPEN_EXISTING | FA_READ | FA_WRITE);
 	if (res)	{		// GAGAL buka, bikin baru !!!
 		res = f_open(&filx, st, FA_OPEN_ALWAYS | FA_READ | FA_WRITE);
-		if (res) {
+		if (res) 
+		{
 			uprintf("res: %d\r\n", res);
 			return;
 			//die(res);
-		} else {
+		} 
+		else 
+		{
 			// tambahan header untuk file baru !! -- disini --
 			isi[0] = '\r'; isi[1] = '\n';
-			for (i=0; i<st_file->jml; i++)	{
+			for (i=0; i<st_file->jml; i++)	
+			{
 				j = (int) ((st_file->urut[i]-1)/PER_SUMBER);
 				k = (st_file->urut[i]-1) % PER_SUMBER;
 				st_data = ALMT_DATA + j*JML_KOPI_TEMP;
 				
-				memcpy((void*) &isi[2*i+2], (void*) &st_data[k].id, 2);
+				memcpy((void*) &isi[4*i+2], (void*) &st_data[k].id, 4);
 			}
 			f_write(&filx, isi, (st_file->jml*4+2), &oo);
 		}
-	} else {		// file sudah ada
+	} 
+	else 
+	{		// file sudah ada
 		res = f_lseek(&filx, f_size(&filx));
 	}
 	

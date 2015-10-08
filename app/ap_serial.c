@@ -32,6 +32,7 @@
 #include "sh_rtos.h"
 #include "sh_data.h"
 #include "sh_kanal.h"
+#include "sh_tarik.h"
 
 #include "sh_utils.h"
 
@@ -210,6 +211,7 @@ void cmd_shell()	{
 	
 	tinysh_add_command(&baca_rom_cmd);
 
+	tinysh_add_command(&tarik_data_cmd);
 	
 	#ifdef PAKAI_ADC_7708
 	tinysh_add_command(&cek_adc_cmd);

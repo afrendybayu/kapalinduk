@@ -132,6 +132,9 @@ THUMB_SOURCE= \
 		$(CMD)/manual.c				\
 		$(APP)/ap_utils.c			\
 
+COM_SOURCE = \
+		$(CMD)/sh_tarik.c			\
+
 MODBUS_SOURCE=	\
 		$(MODUL)/modbus/mb.c			\
 
@@ -199,6 +202,7 @@ THUMB_SOURCE += $(RTC_SOURCE)
 THUMB_SOURCE += $(SDC_SOURCE)
 THUMB_SOURCE += $(ADC_SOURCE)
 THUMB_SOURCE += $(SERIAL3_SOURCE)
+THUMB_SOURCE += $(COM_SOURCE)
 
 ARM_SOURCE	+=  $(SERIAL_SOURCE_ISR)
 ARM_SOURCE	+=  $(ADC_SOURCE_ISR)
@@ -226,7 +230,7 @@ $(ARM_OBJS) : %.o : %.c Makefile FreeRTOSConfig.h
 bersihbersih: clean
 clean :
 	rm $(NAMA_FILE).elf
-#	rm $(NAMA_FILE).hex
+	rm $(NAMA_FILE).hex
 	rm hasil/$(NAMA_FILE).bin
 	rm hasil/$(NAMA_FILE).map
 	rm $(THUMB_OBJS)

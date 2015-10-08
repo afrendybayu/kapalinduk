@@ -85,7 +85,7 @@
 #define BOARD_SANTER		"Santer"
 #define BOARD_SANTER_v1_0
 //#define BOARD_SANTER_versi	"v1.2"
-#define BOARD_SANTER_versi	"Rinjani"
+#define BOARD_SANTER_versi	"Rinjani_0.1"
 
 #define PAKAI_LED_UTAMA
 #define PAKAI_RELAY

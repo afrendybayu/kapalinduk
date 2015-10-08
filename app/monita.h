@@ -99,6 +99,7 @@ typedef enum IAP_STATUS_t {
 #define TIDAK_VALID			0xFFFF
 #define PER_SUMBER			10
 #define JML_SUMBER			 6
+#define JML_RINJANI			 2
 #define SUMBER_PER_SEKTOR	32
 
 //#define ANGKA_PENTING	1
