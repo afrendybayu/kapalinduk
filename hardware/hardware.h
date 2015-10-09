@@ -28,7 +28,7 @@ void rtcWrite(struct tm *newTime);
 			#define LED_UTAMA	BIT(18)
 			
 			#define setup_led_utama()	do {	\
-						FIO1DIR |= LED_UTAMA;	\
+						FIO1DIR = LED_UTAMA;	\
 						FIO1CLR = LED_UTAMA;	\
 					} while(0)
 			#define toogle_led_utama()	FIO1PIN ^= LED_UTAMA;
@@ -58,7 +58,7 @@ void rtcWrite(struct tm *newTime);
 			#define RLY_7	BIT(14)
 			#define RLY_8	BIT(15)			
 			
-			#define cRelay1()		FIO1CLR|= RLY_1
+			#define cRelay1()		FIO1CLR = RLY_1
 			#define cRelay2()		FIO1CLR = RLY_2
 			#define cRelay3()		FIO1CLR = RLY_3
 			#define cRelay4()		FIO1CLR = RLY_4
@@ -77,10 +77,9 @@ void rtcWrite(struct tm *newTime);
 			#define sRelay8()		FIO1SET = RLY_8
 
 			#define setup_relay()		do {	\
-						FIO1DIR |= RLY_1;	\
-						FIO1CLR = RLY_1;	\
+						FIO1DIR   = FIO1DIR | RLY_1 | RLY_2 | RLY_3 | RLY_4;		\
+						FIO1DIR  |= FIO1DIR | RLY_5 | RLY_6 | RLY_7 | RLY_8;		\
 					} while(0)	
-			#define toogle_relay_satu()	FIO1PIN ^= RLY_1;
 		#endif
 		
 		#ifdef PAKAI_SHELL
