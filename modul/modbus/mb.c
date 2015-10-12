@@ -604,7 +604,7 @@ int parsing_mb_native_cmd(char*s, char* cmd, int* dest)	{
 		k++;
 	} while(s!=NULL);
 	
-	#if 0
+	#if 1
 	for (k=0; k<i; k++)	{
 		printf("isi buf[%d]: %d\r\n", k, buf[k]);
 	}
@@ -626,7 +626,7 @@ int parsing_mb_native_cmd(char*s, char* cmd, int* dest)	{
 	cmd[4] = (tmp >> 8) & 0xFF;
 	cmd[5] = tmp & 0xFF;
 	
-	#if 0
+	#if 1
 	for (k=0; k<6; k++)	{
 		printf("%02X", cmd[k]);
 	}
@@ -663,7 +663,7 @@ int parsing_mb_native_cmd(char*s, char* cmd, int* dest)	{
 	vPortFree(buf);
 	
 	//cmd = mbcmd;
-	#if 0
+	#if 1
 	printf("Cmd modbus: ");
 	for(k=0; k<8; k++)	{
 		printf("%02X ", cmd[k]);
