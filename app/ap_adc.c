@@ -22,6 +22,8 @@ void hitung_running_hours_adc(int i)		{
 	//data_f[28] = konter.t_konter[i].rh_x + t;
 }
 
+int up;
+
 void data_adc()	{
 	char i;
 	float tf;
@@ -29,9 +31,14 @@ void data_adc()	{
 	struct t_env *st_env;
 	st_env = ALMT_ENV;
 	
+	#if 1
+	up +=1;
+	if (up==100) up = 0;
+	#endif
+	
 	for (i=0; i<JML_KANAL_ADC; i++)		{
 		tf = (float) (adc.data[i] * faktor_pengali_420 / 0xffff);
-		tf = st_env->kalib[JML_KANAL+i].m * tf + st_env->kalib[JML_KANAL+i].C;
+		tf = st_env->kalib[JML_KANAL+i].m * tf + st_env->kalib[JML_KANAL+i].C+up;
 		
 		if (st_env->kalib[JML_KANAL_ADC+i].status == sADC_7708)	{
 			data_f[JML_KANAL+i] = tf;	
