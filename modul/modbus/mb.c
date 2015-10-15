@@ -145,8 +145,9 @@ unsigned char simpan_nilai_mb(int jml, unsigned char *s, int reg)	{
 		
 		data_f[no] = *fl;
 		
-		printf("dfloat: %08x %.3f\r\n", tmpFl, *fl);
+		//printf("dfloat: %08x %.3f\r\n", tmpFl, *fl);
 	}
+	printf("_____%s_____\r\n", __FUNCTION__);
 }
 
 unsigned int CRC16(unsigned int crc, unsigned int data)		{

@@ -94,7 +94,7 @@ int cmd_modbus(int gg, int *dReg)	{
 		if (atoi(st_sumber[gg].form)==SRC_MB_NATIVE)		{
 			//parsing_mb_cmd(s, &cmd, &dest);
 			parsing_mb_native_cmd(st_sumber[gg].form,outmb3,&destReg);
-			#if 1
+			#if 0
 			printf(" CMD: ");
 			for(k=0; k<8; k++)	{
 				printf("%02X ", outmb3[k]);
