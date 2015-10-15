@@ -94,7 +94,7 @@ int cmd_modbus(int gg, int *dReg)	{
 		if (atoi(st_sumber[gg].form)==SRC_MB_NATIVE)		{
 			//parsing_mb_cmd(s, &cmd, &dest);
 			parsing_mb_native_cmd(st_sumber[gg].form,outmb3,&destReg);
-			#if 0
+			#if 1
 			printf(" CMD: ");
 			for(k=0; k<8; k++)	{
 				printf("%02X ", outmb3[k]);
@@ -137,8 +137,7 @@ char s[30];
 	//disTX3_485();
 	enaTX3_485();
 	enaRX3_485();
-
-
+	
 	st_hw.init++;
 	
 	do {
@@ -166,7 +165,6 @@ char s[30];
 		}
 		else if (mb_state==MB_RESP)	{
 			//printf(">>> MB_RESP: %d\r\n", mbgilir);
-			//*
 			xGotChar = xSerialGetChar3( xPort3, &ch, 100 );
 			//printf("x%02x ", (char) ch);
 			#if 1
@@ -186,6 +184,7 @@ char s[30];
 						strmb3[nmb] = (char) ch;
 					//}
 					nmb++;
+					//printf("-%d ",nmb);
 					//strSer2[nmb+1] = '\0';
 					//sedot_mod(ch);
 					flag_ms=1;
@@ -195,18 +194,16 @@ char s[30];
 			}
 			else 
 			{
-				
 				// sedot data respon (sendiri), clear buffer
 				if ( (balas==nmb) && (balas>0) )	{			
 					//printf("Reset MB2 !!!\r\n");
 					nmb = 0;
 					flag_ms = 0;
 					balas = 0;
-					
 				}
 				
 				if (flag_ms==1 && nmb>=8)	{
-					//printf("hasil: %d\r\n", nmb);
+					printf("hasil: %d\r\n", nmb);
 					//printf("x%02x ", (char) ch);
 					balas = proses_mod3(nmb, strmb3,dReg);					//printf("--==> BALAS MB: %d\r\n", balas);
 					nmb = 0;

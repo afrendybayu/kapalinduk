@@ -36,12 +36,14 @@ int cek_crc_mod(int nstr, unsigned char *x)	{
 #endif
 
 int get_crc_mod(int nstr, unsigned char *x)	{
-	#if 0
+	#if 1
 	int k;
 	printf("masuk %s\r\nCmd modbus: ", __FUNCTION__);
+	#if 0
 	for(k=0; k<6; k++)	{
 		printf("%02X ", x[k]);
 	}
+	#endif
 	printf("\r\n");
 	#endif
 
@@ -143,7 +145,7 @@ unsigned char simpan_nilai_mb(int jml, unsigned char *s, int reg)	{
 		
 		data_f[no] = *fl;
 		
-		//printf("dfloat: %08x %.3f\r\n", tmpFl, *fl);
+		printf("dfloat: %08x %.3f\r\n", tmpFl, *fl);
 	}
 }
 
@@ -177,12 +179,12 @@ int kirim_respon_mb(int jml, char *s, int timeout, int serial)		{
 	
 	#ifdef PAKAI_SERIAL_3
 	if (serial==3)	{
-		//printf("_____%s_____\r\n", __FUNCTION__);
+		printf("_____%s_____\r\n", __FUNCTION__);
 		enaTX3_485();
 		for (i=0; i<jml; i++)	{
 			k += xSerialPutChar3 (0, s[i], 10);
 			
-			#if 0
+			#if 1
 			k++;
 			printf("%02X ", s[i]);
 			#endif
@@ -604,7 +606,7 @@ int parsing_mb_native_cmd(char*s, char* cmd, int* dest)	{
 		k++;
 	} while(s!=NULL);
 	
-	#if 1
+	#if 0
 	for (k=0; k<i; k++)	{
 		printf("isi buf[%d]: %d\r\n", k, buf[k]);
 	}
@@ -626,7 +628,7 @@ int parsing_mb_native_cmd(char*s, char* cmd, int* dest)	{
 	cmd[4] = (tmp >> 8) & 0xFF;
 	cmd[5] = tmp & 0xFF;
 	
-	#if 1
+	#if 0
 	for (k=0; k<6; k++)	{
 		printf("%02X", cmd[k]);
 	}
@@ -658,12 +660,12 @@ int parsing_mb_native_cmd(char*s, char* cmd, int* dest)	{
 	outmb3[6] = (crc >> 8) & 0xFF;
 	outmb3[7] = crc & 0xFF;
 	//*/
-	printf("  %s(): Mallok @ %X, data[21]: %.2f, d[22]: %.0f\r\n", __FUNCTION__, buf, data_f[20], data_f[21]);
+	//printf("  %s(): Mallok @ %X, data[21]: %.2f, d[22]: %.0f\r\n", __FUNCTION__, buf, data_f[20], data_f[21]);
 	
 	vPortFree(buf);
 	
 	//cmd = mbcmd;
-	#if 1
+	#if 0
 	printf("Cmd modbus: ");
 	for(k=0; k<8; k++)	{
 		printf("%02X ", cmd[k]);
