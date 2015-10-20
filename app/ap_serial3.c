@@ -251,6 +251,11 @@ int proses_mod3(int mbn, char *mbstr, int dReg)	{
 	printf("\r\n");
 	#endif
 	
+	#ifdef ERROR_DATA_RATE
+		if (dari == 0xFFFF) dari = 0;
+		dari++;
+		printf("total=%d\n\r",dari);
+	#endif
 	
 	// CEK CRC
 	hsl = get_crc_mod(mm-2, ss);	//printf("hasil : %04x\r\n", hsl);

@@ -13,7 +13,6 @@ extern char outmb[];
 extern char strmb3[];
 extern char outmb3[];
 
-
 #ifdef PAKAI_SERIAL_2
 int cek_crc_mod(int nstr, unsigned char *x)	{
 	unsigned char lo, hi;
@@ -36,7 +35,7 @@ int cek_crc_mod(int nstr, unsigned char *x)	{
 #endif
 
 int get_crc_mod(int nstr, unsigned char *x)	{
-	#if 1
+	#if 0
 	int k;
 	printf("masuk %s\r\nCmd modbus: ", __FUNCTION__);
 	#if 0
@@ -122,6 +121,9 @@ unsigned char simpan_nilai_mb(int jml, unsigned char *s, int reg)	{
 	
 	struct t_data *st_data;
 	
+	#ifdef ERROR_DATA_RATE
+		if (olah == 0xFFFF) olah = 0;
+	#endif
 	
 	//printf("jml: %d, reg: %d\r\n", jml, reg);
 	for(i=0; i<jml; i++)	{
@@ -147,7 +149,12 @@ unsigned char simpan_nilai_mb(int jml, unsigned char *s, int reg)	{
 		
 		//printf("dfloat: %08x %.3f\r\n", tmpFl, *fl);
 	}
-	printf("_____%s_____\r\n", __FUNCTION__);
+	
+	#ifdef ERROR_DATA_RATE
+		olah ++;
+		printf("oke=%d\n\r", olah);
+	#endif
+	//printf("_____%s_____\r\n", __FUNCTION__);
 }
 
 unsigned int CRC16(unsigned int crc, unsigned int data)		{
@@ -180,7 +187,7 @@ int kirim_respon_mb(int jml, char *s, int timeout, int serial)		{
 	
 	#ifdef PAKAI_SERIAL_3
 	if (serial==3)	{
-		printf("_____%s_____\r\n", __FUNCTION__);
+		//printf("_____%s_____\r\n", __FUNCTION__);
 		enaTX3_485();
 		for (i=0; i<jml; i++)	{
 			k += xSerialPutChar3 (0, s[i], 10);

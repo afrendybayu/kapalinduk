@@ -38,4 +38,8 @@ int baca_kirim_file(int reg, int len, char *str);
 int proses_file_terkirim(int len, char *str);
 #endif
 
+#ifdef ERROR_DATA_RATE
+unsigned int dari,olah;
+#endif
+
 #endif
