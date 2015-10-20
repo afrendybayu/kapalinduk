@@ -179,6 +179,11 @@ int kirim_respon_mb(int jml, char *s, int timeout, int serial)		{
 		enaTX2_485();
 		for (i=0; i<jml; i++)	{
 			k += xSerialPutChar2 (0, outmb[i], 10);
+			
+			#if 1
+			k++;
+			printf("%02X ", outmb[i]);
+			#endif
 		}
 		vTaskDelay(timeout);
 		disTX2_485();

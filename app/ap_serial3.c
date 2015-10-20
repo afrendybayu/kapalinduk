@@ -242,7 +242,7 @@ int proses_mod3(int mbn, char *mbstr, int dReg)	{
 	if (mbn<=8)	return 0;
 	ss = &strmb3[8];
 	
-	#if 0
+	#if 1
 	printf("\r\nJml Respon: %d -->", mbn);
 	for (i=0; i<(mbn-8); i++)		{
 		//printf(" %02x", mbstr[i]);
@@ -258,7 +258,8 @@ int proses_mod3(int mbn, char *mbstr, int dReg)	{
 	#endif
 	
 	// CEK CRC
-	hsl = get_crc_mod(mm-2, ss);	//printf("hasil : %04x\r\n", hsl);
+	hsl = get_crc_mod(mm-2, ss);	
+	printf("hasil : %04x\r\n", hsl);
 	if (((hsl>>8 & 0xFF) != ss[mm-1]) || ((hsl & 0xFF) != ss[mm-2]))	return 1;
 	
 	//printf("lanjut ....dReg: %d\r\n", dReg);
