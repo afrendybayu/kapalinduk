@@ -182,9 +182,10 @@ int kirim_respon_mb(int jml, char *s, int timeout, int serial)		{
 			
 			#if 1
 			k++;
-			printf("%02X ", outmb[i]);
+			printf("%02X", outmb[i]);
 			#endif
 		}
+		printf("\n\r");
 		vTaskDelay(timeout);
 		disTX2_485();
 	}

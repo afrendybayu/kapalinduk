@@ -166,7 +166,7 @@ char s[30];
 		else if (mb_state==MB_RESP)	{
 			//printf(">>> MB_RESP: %d\r\n", mbgilir);
 			xGotChar = xSerialGetChar3( xPort3, &ch, 100 );
-			//printf("x%02x ", (char) ch);
+			printf("x%02x ", (char) ch);
 			#if 1
 			if( xGotChar == pdTRUE )		
 			{
@@ -182,6 +182,7 @@ char s[30];
 					//if (nmb>8)	{
 						//nmb=0;
 						strmb3[nmb] = (char) ch;
+					//printf("x%02x ", strmb3[nmb]);
 					//}
 					nmb++;
 					//printf("-%d ",nmb);
@@ -240,9 +241,10 @@ int proses_mod3(int mbn, char *mbstr, int dReg)	{
 	char *ss;
 	
 	if (mbn<=8)	return 0;
-	ss = &strmb3[8];
+	ss = &mbstr[8];
+	//memcpy(&ss,&mbstr+8,(mbn*sizeof(char)));
 	
-	#if 1
+	#if 0
 	printf("\r\nJml Respon: %d -->", mbn);
 	for (i=0; i<(mbn-8); i++)		{
 		//printf(" %02x", mbstr[i]);

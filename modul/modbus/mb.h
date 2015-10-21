@@ -7,6 +7,7 @@
 #define jml_st_mb10H		(8)
 #define jml_st_mb3H(no)		(3+no*4+2)	
 
+#define HEAD_STATUS				 0
 #define READ_COIL_STATUS		 1
 #define READ_INPUT_STATUS		 2
 #define READ_HOLDING_REG		 3
