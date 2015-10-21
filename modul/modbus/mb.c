@@ -180,12 +180,14 @@ int kirim_respon_mb(int jml, char *s, int timeout, int serial)		{
 		for (i=0; i<jml; i++)	{
 			k += xSerialPutChar2 (0, outmb[i], 10);
 			
-			#if 1
+			#if 0
 			//k++;
 			printf("%02X", outmb[i]);
 			#endif
 		}
+		#if 0
 		printf("\n\r");
+		#endif
 		vTaskDelay(timeout);
 		disTX2_485();
 	}
