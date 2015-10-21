@@ -181,7 +181,7 @@ int kirim_respon_mb(int jml, char *s, int timeout, int serial)		{
 			k += xSerialPutChar2 (0, outmb[i], 10);
 			
 			#if 1
-			k++;
+			//k++;
 			printf("%02X", outmb[i]);
 			#endif
 		}
@@ -198,8 +198,8 @@ int kirim_respon_mb(int jml, char *s, int timeout, int serial)		{
 		for (i=0; i<jml; i++)	{
 			k += xSerialPutChar3 (0, s[i], 10);
 			
-			#if 1
-			k++;
+			#if 0
+			//k++;
 			printf("%02X ", s[i]);
 			#endif
 		}

@@ -166,7 +166,7 @@ char s[30];
 		else if (mb_state==MB_RESP)	{
 			//printf(">>> MB_RESP: %d\r\n", mbgilir);
 			xGotChar = xSerialGetChar3( xPort3, &ch, 100 );
-			printf("x%02x ", (char) ch);
+			printf("|%02x ", (char) ch);
 			#if 1
 			if( xGotChar == pdTRUE )		
 			{
@@ -174,6 +174,7 @@ char s[30];
 					{
 					//printf("nmb: %d, ch: %02x, mask sini !!", nmb, (char)ch);
 					//printf("kk %02x ", (char) ch);
+					//printf("1.");
 					} 
 				else 
 					{
@@ -188,6 +189,7 @@ char s[30];
 					//printf("-%d ",nmb);
 					//strSer2[nmb+1] = '\0';
 					//sedot_mod(ch);
+					//printf("2.");
 					flag_ms=1;
 					
 					}
@@ -200,6 +202,7 @@ char s[30];
 					//printf("Reset MB2 !!!\r\n");
 					nmb = 0;
 					flag_ms = 0;
+					//printf("3.");
 					balas = 0;
 				}
 				
@@ -208,6 +211,7 @@ char s[30];
 					//printf("x%02x ", (char) ch);
 					balas = proses_mod3(nmb, strmb3,dReg);					//printf("--==> BALAS MB: %d\r\n", balas);
 					nmb = 0;
+					//printf("4.");
 					mb_state = MB_REST;
 				}
 				#if 0
@@ -222,6 +226,7 @@ char s[30];
 				
 				mbgilir++;
 				if (mbgilir>=JML_SUMBER)	mbgilir=0;
+				//printf("5.");
 			
 			}
 			#endif
@@ -242,7 +247,6 @@ int proses_mod3(int mbn, char *mbstr, int dReg)	{
 	
 	if (mbn<=8)	return 0;
 	ss = &mbstr[8];
-	//memcpy(&ss,&mbstr+8,(mbn*sizeof(char)));
 	
 	#if 0
 	printf("\r\nJml Respon: %d -->", mbn);
@@ -261,7 +265,7 @@ int proses_mod3(int mbn, char *mbstr, int dReg)	{
 	
 	// CEK CRC
 	hsl = get_crc_mod(mm-2, ss);	
-	printf("hasil : %04x\r\n", hsl);
+	printf("crc : %04x\r\n", hsl);
 	if (((hsl>>8 & 0xFF) != ss[mm-1]) || ((hsl & 0xFF) != ss[mm-2]))	return 1;
 	
 	//printf("lanjut ....dReg: %d\r\n", dReg);
