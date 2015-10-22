@@ -126,6 +126,7 @@ char s[30];
 	int  nmb = 0, balas = 0, dReg=0;
 	char mb_state = MB_REST;
 	char flag_ms = 0;
+	short emergency_exit;
 	/* Just to stop compiler warnings. */
 	( void ) pvParameters;
 	vTaskDelay(100);
@@ -154,7 +155,7 @@ char s[30];
 		}
 		else if (mb_state==MB_REQ)	{
 			
-			int rsp = cmd_modbus(mbgilir, &dReg);
+			int rsp = cmd_modbus(mbgilir, &dReg); // << (ada bug) yang buat modbus master loop di RESP, sementara buat jalan keluar dlu. debug dsini takes long time
 			printf(">>> MB_REQ: %d dest: %d ", mbgilir, dReg);
 			if (rsp>0)	mb_state = MB_RESP;
 			else 	{
@@ -213,6 +214,7 @@ char s[30];
 					nmb = 0;
 					//printf("4.");
 					mb_state = MB_REST;
+					emergency_exit = 0;
 				}
 				#if 0
 				if (balas==0)	{
@@ -225,7 +227,18 @@ char s[30];
 				#endif
 				
 				mbgilir++;
-				if (mbgilir>=JML_SUMBER)	mbgilir=0;
+				if (mbgilir>=JML_SUMBER)
+				{
+					mbgilir=0;
+					emergency_exit ++;
+				}
+				
+				// pintu darurat
+				if (emergency_exit >= 10)
+				{
+					mb_state = MB_REST;
+					emergency_exit = 0;
+				}
 				//printf("5.");
 			
 			}
