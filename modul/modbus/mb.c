@@ -636,7 +636,8 @@ int parsing_mb_native_cmd(char*s, char* cmd, int* dest)	{
 	cmd[0] = buf[1];
 	cmd[1] = buf[4]?WRITE_MULTIPLE_REG:READ_HOLDING_REG;
 	
-	tmp = buf[2]>40000?(buf[2]-40000-buf[3]):buf[2];
+	//tmp = buf[2]>40000?(buf[2]-40000-buf[3]):buf[2];
+	tmp = buf[2]>40000?(buf[2]-40001-buf[3]):(buf[2]-1);
 	cmd[2] = (tmp >> 8) & 0xFF;
 	cmd[3] = tmp & 0xFF;
 	
