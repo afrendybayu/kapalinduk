@@ -640,7 +640,8 @@ int parsing_mb_native_cmd(char*s, char* cmd, int* dest)	{
 	cmd[2] = (tmp >> 8) & 0xFF;
 	cmd[3] = tmp & 0xFF;
 	
-	tmp = buf[5]*2;
+	//tmp = buf[5]*2;
+	tmp = buf[5];
 	cmd[4] = (tmp >> 8) & 0xFF;
 	cmd[5] = tmp & 0xFF;
 	
