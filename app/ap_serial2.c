@@ -187,6 +187,7 @@ int proses_mod(int mbn, char *mbstr)	{
 		
 		cmd = strmb[1];
 		reg = (int) (strmb[2]<<8 | strmb[3]);
+		reg = reg+1;
 		jml = (int) (strmb[4]<<8 | strmb[5]);
 		
 		//printf("++++ cmd: 0x%02x, reg: 0x%02x, jml: %d\r\n", cmd, reg, jml);

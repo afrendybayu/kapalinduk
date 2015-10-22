@@ -435,7 +435,8 @@ int baca_reg_mb(int index, int jml)	{			// READ_HOLDING_REG
 	int i, nX, j=0, njml=0;
 	char *respon; 
 	
-	njml = (int) (jml/2);
+	//njml = (int) (jml/2);
+	njml = (int) (jml);
 	nX = jml_st_mb3H(njml);
 	
 	#if 0
@@ -454,7 +455,8 @@ int baca_reg_mb(int index, int jml)	{			// READ_HOLDING_REG
 	
 	outmb[0] = st_env->almtSlave;
 	outmb[1] = READ_HOLDING_REG;
-	outmb[2] = njml*4;
+	//outmb[2] = njml*4;
+	outmb[2] = njml;
 	
 	unsigned int *ifl;
 	for (i=0; i<njml; i++)	{
