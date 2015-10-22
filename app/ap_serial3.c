@@ -147,7 +147,7 @@ char s[30];
 
 	for( ;; )	{
 		if (mb_state==MB_REST)	{
-			//printf("\r\n>>> MB_REST: %d   ", mbgilir);
+			printf("\r\n>>> MB_REST: %d   ", mbgilir);
 			if (mbgilir==0)	vTaskDelay(1000);
 			else 			vTaskDelay(50);
 			mb_state = MB_REQ;
@@ -155,7 +155,7 @@ char s[30];
 		else if (mb_state==MB_REQ)	{
 			
 			int rsp = cmd_modbus(mbgilir, &dReg);
-			//printf(">>> MB_REQ: %d dest: %d ", mbgilir, dReg);
+			printf(">>> MB_REQ: %d dest: %d ", mbgilir, dReg);
 			if (rsp>0)	mb_state = MB_RESP;
 			else 	{
 				mb_state = MB_REST;
@@ -164,9 +164,9 @@ char s[30];
 			}
 		}
 		else if (mb_state==MB_RESP)	{
-			//printf(">>> MB_RESP: %d\r\n", mbgilir);
+			printf(">>> MB_RESP: %d\r\n", mbgilir);
 			xGotChar = xSerialGetChar3( xPort3, &ch, 100 );
-			printf("|%02x ", (char) ch);
+			//printf("|%02x ", (char) ch);
 			#if 1
 			if( xGotChar == pdTRUE )		
 			{
@@ -260,12 +260,12 @@ int proses_mod3(int mbn, char *mbstr, int dReg)	{
 	#ifdef ERROR_DATA_RATE
 		if (dari == 0xFFFF) dari = 0;
 		dari++;
-		printf("total=%d\n\r",dari);
+		printf("received=%d\n\r",dari);
 	#endif
 	
 	// CEK CRC
 	hsl = get_crc_mod(mm-2, ss);	
-	printf("crc : %04x\r\n", hsl);
+	//printf("crc : %04x\r\n", hsl);
 	if (((hsl>>8 & 0xFF) != ss[mm-1]) || ((hsl & 0xFF) != ss[mm-2]))	return 1;
 	
 	//printf("lanjut ....dReg: %d\r\n", dReg);

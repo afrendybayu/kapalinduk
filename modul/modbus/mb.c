@@ -152,7 +152,7 @@ unsigned char simpan_nilai_mb(int jml, unsigned char *s, int reg)	{
 	
 	#ifdef ERROR_DATA_RATE
 		olah ++;
-		printf("oke=%d\n\r", olah);
+		printf("procced=%d\n\r", olah);
 	#endif
 	//printf("_____%s_____\r\n", __FUNCTION__);
 }
