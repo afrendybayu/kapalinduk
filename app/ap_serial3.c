@@ -157,7 +157,11 @@ char s[30];
 			
 			int rsp = cmd_modbus(mbgilir, &dReg); // << (ada bug) yang buat modbus master loop di RESP, sementara buat jalan keluar dlu. debug dsini takes long time
 			printf(">>> MB_REQ: %d dest: %d ", mbgilir, dReg);
-			if (rsp>0)	mb_state = MB_RESP;
+			if (rsp>0)	
+			{
+				mb_state = MB_RESP;
+				printf(">>> MB_RESP: %d\r\n", mbgilir);
+			}
 			else 	{
 				mb_state = MB_REST;
 				mbgilir++;
@@ -165,7 +169,7 @@ char s[30];
 			}
 		}
 		else if (mb_state==MB_RESP)	{
-			printf(">>> MB_RESP: %d\r\n", mbgilir);
+			//printf(">>> MB_RESP: %d\r\n", mbgilir);
 			xGotChar = xSerialGetChar3( xPort3, &ch, 100 );
 			//printf("|%02x ", (char) ch);
 			#if 1
