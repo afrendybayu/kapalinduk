@@ -115,7 +115,7 @@ unsigned short cek_crc_ccitt_0xffff(int len, char *data)	{
 }
 #endif
 
-unsigned char simpan_nilai_mb(int jml, unsigned char *s, int reg)	{
+unsigned char simpan_mb_monita(int jml, unsigned char *s, int reg)	{
 	int i, j, k, tmpFl=0, ff=0, no=0;
 	float *fl;
 	
@@ -152,7 +152,49 @@ unsigned char simpan_nilai_mb(int jml, unsigned char *s, int reg)	{
 	
 	#ifdef ERROR_DATA_RATE
 		olah ++;
-		printf("procced=%d\n\r", olah);
+		printf("s_m_m=%d\n\r", olah);
+	#endif
+	//printf("_____%s_____\r\n", __FUNCTION__);
+}
+
+unsigned char simpan_mb_std(int jml, unsigned char *s, int reg)	{
+	int i, j, k, tmpFl=0, ff=0, no=0;
+	float *fl;
+	
+	struct t_data *st_data;
+	
+	#ifdef ERROR_DATA_RATE
+		if (olah_std == 0xFFFF) olah_std = 0;
+	#endif
+	
+	//printf("jml: %d, reg: %d\r\n", jml, reg);
+	for(i=0; i<jml; i++)	{
+		for (k=0; k<JML_SUMBER; k++ ) 	{
+			st_data = ALMT_DATA + k*JML_KOPI_TEMP;
+			for (j=0; j<PER_SUMBER; j++)	{
+				if ((reg+i)==st_data[j].id)	{
+					no = k*PER_SUMBER+j;
+					//printf("reg: %d, dataf %d\r\n", reg+i, (k*PER_SUMBER+j));
+					ff=1;
+					break;
+				}
+			}
+			if (ff==1)	break;
+		}
+		ff = 0;
+		
+		//printf("%02x %02x %02x %02x : ", s[i*4+0], s[i*4+1], s[i*4+2], s[i*4+3]);
+		tmpFl = ((s[i*2+0] & 0xFF)<<8) | (s[i*2+1] & 0xFF);
+		fl = (float *)&tmpFl;
+		
+		data_f[no] = *fl;
+		
+		//printf("dfloat: %08x %.3f\r\n", tmpFl, *fl);
+	}
+	
+	#ifdef ERROR_DATA_RATE
+		olah_std ++;
+		printf("s_m_b=%d\n\r", olah_std);
 	#endif
 	//printf("_____%s_____\r\n", __FUNCTION__);
 }

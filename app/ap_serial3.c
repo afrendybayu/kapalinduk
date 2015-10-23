@@ -261,9 +261,15 @@ int proses_mod3(int mbn, char *mbstr, int dReg)	{
 	int hsl=0, cmd=0, jml=0, reg=0;
 	int i,mm=(mbn-8);
 	char *ss;
+	char *ss2;
+	unsigned int det;
 	
 	if (mbn<=8)	return 0;
 	ss = &mbstr[8];
+	ss2 = &mbstr[0];
+	
+	det = (unsigned int) ss[2] / (unsigned int) ss2[5];
+	//printf("[%d]",det);
 	
 	#if 0
 	printf("\r\nJml Respon: %d -->", mbn);
@@ -286,7 +292,8 @@ int proses_mod3(int mbn, char *mbstr, int dReg)	{
 	if (((hsl>>8 & 0xFF) != ss[mm-1]) || ((hsl & 0xFF) != ss[mm-2]))	return 1;
 	
 	//printf("lanjut ....dReg: %d\r\n", dReg);
-	if (ss[1]==READ_HOLDING_REG)	simpan_nilai_mb(ss[2]/4, &ss[3], dReg);
+	if ((ss[1]==READ_HOLDING_REG) && det==4) simpan_mb_monita(ss[2]/4, &ss[3], dReg);
+	else simpan_mb_std(ss[2]/2, &ss[3], dReg);
 	//if (ss[1]==READ_HOLDING_REG)	simpan_nilai_mb(ss[2], &ss[3], dReg);
 	
 	return (mbn-8);

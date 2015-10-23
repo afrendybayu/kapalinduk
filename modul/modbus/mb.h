@@ -39,7 +39,7 @@ int proses_file_terkirim(int len, char *str);
 #endif
 
 #ifdef ERROR_DATA_RATE
-unsigned int dari,olah;
+unsigned int dari,olah,olah_std;
 #endif
 
 #endif
