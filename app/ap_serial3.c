@@ -286,8 +286,8 @@ int proses_mod3(int mbn, char *mbstr, int dReg)	{
 	if (((hsl>>8 & 0xFF) != ss[mm-1]) || ((hsl & 0xFF) != ss[mm-2]))	return 1;
 	
 	//printf("lanjut ....dReg: %d\r\n", dReg);
-	//if (ss[1]==READ_HOLDING_REG)	simpan_nilai_mb(ss[2]/4, &ss[3], dReg);
-	if (ss[1]==READ_HOLDING_REG)	simpan_nilai_mb(ss[2], &ss[3], dReg);
+	if (ss[1]==READ_HOLDING_REG)	simpan_nilai_mb(ss[2]/4, &ss[3], dReg);
+	//if (ss[1]==READ_HOLDING_REG)	simpan_nilai_mb(ss[2], &ss[3], dReg);
 	
 	return (mbn-8);
 	
