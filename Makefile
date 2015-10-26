@@ -143,6 +143,7 @@ SERIAL_SOURCE=	\
 
 SERIAL3_SOURCE= \
 		$(APP)/ap_serial3.c	\
+		$(APP)/ap_mbus.c	\
 
 SERIAL2_SOURCE= \
 		$(APP)/ap_serial2.c	\

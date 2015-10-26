@@ -145,7 +145,11 @@ unsigned char simpan_mb_monita(int jml, unsigned char *s, int reg)	{
 		tmpFl = ((s[i*4+0] & 0xFF)<<24) | ((s[i*4+1] & 0xFF)<<16) | ((s[i*4+2] & 0xFF)<<8) | (s[i*4+3] & 0xFF);
 		fl = (float *)&tmpFl;
 		
+		#ifdef MOV_AVG
+		mbus.ke_0[no-(2*JML_KANAL)] = *fl;
+		#else
 		data_f[no] = *fl;
+		#endif
 		
 		//printf("dfloat: %08x %.3f\r\n", tmpFl, *fl);
 	}
@@ -187,7 +191,11 @@ unsigned char simpan_mb_std(int jml, unsigned char *s, int reg)	{
 		tmpFl = ((s[i*2+0] & 0xFF)<<8) | (s[i*2+1] & 0xFF);
 		fl = (float *)&tmpFl;
 		
+		#ifdef MOV_AVG
+		mbus.ke_0[no-(2*JML_KANAL)] = *fl;
+		#else
 		data_f[no] = *fl;
+		#endif
 		
 		//printf("dfloat: %08x %.3f\r\n", tmpFl, *fl);
 	}

@@ -77,6 +77,7 @@ typedef enum IAP_STATUS_t {
 #define	 sADC_ORI		240
 #define  sADC_7708		250
 #define  fENERGI		251
+#define  MBUS			69
 
 #define  FOLDER_SENDED		"\\terkirim"
 #define	 LIHAT				0
@@ -173,6 +174,7 @@ enum t_struct st_struct;
 
 #define JUM_GPIO	10
 #define JML_KANAL	10
+#define JUM_MBUS	40
 
 #define uchr		unsigned char
 //#define uint		unsigned int
@@ -269,10 +271,18 @@ struct t_data {
 
 struct t_astm
 	{
-	//float press;
-	//float temp;
 	float koef;
 	};
+
+struct t_mbus
+{
+	float ke_0[JUM_MBUS];
+	float ke_1[JUM_MBUS];
+	float ke_2[JUM_MBUS];
+	float ke_3[JUM_MBUS];
+	float ke_4[JUM_MBUS];
+};
+struct t_mbus mbus;
 
 #ifdef PAKAI_CRON
 struct t_cron {
@@ -318,7 +328,8 @@ struct t_env {
 	unsigned char GW1;
 	unsigned char GW2;
 	unsigned char GW3;
-	struct t_kalib kalib[JML_KANAL*2];
+	//struct t_kalib kalib[JML_KANAL*2];
+	struct t_kalib kalib[JML_TITIK_DATA];
 	int magic1;
 	int magic2;
 	int mmc_serial;

@@ -114,6 +114,7 @@
 #define PAKAI_SERIAL_3
 #ifdef  PAKAI_SERIAL_3
 	#define ERROR_DATA_RATE
+	#define MOV_AVG
 	//#define PAKAI_SERIAL_3_P4		115200
 	#define PAKAI_SERIAL_3_P4		9600
 	#define ST_SER3					25

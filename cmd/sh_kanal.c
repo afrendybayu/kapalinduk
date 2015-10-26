@@ -24,6 +24,12 @@ void cek_kanal()	{
 		uprintf("    Kanal %2d. m: %8.3f, C: %8.3f, status: %d\r\n", \
 			(i+JML_KANAL+1), st_env->kalib[i+JML_KANAL].m, st_env->kalib[i+JML_KANAL].C, st_env->kalib[i+JML_KANAL].status);
 	}
+	
+	uprintf("  Info setting kanal modbus\r\n");
+	for (i=0; i<JUM_MBUS; i++)		{
+		uprintf("    Kanal %2d. m: %8.3f, C: %8.3f, status: %d\r\n", \
+			(i+(2*JML_KANAL)+1), st_env->kalib[i+(2*JML_KANAL)].m, st_env->kalib[i+(2*JML_KANAL)].C, st_env->kalib[i+(2*JML_KANAL)].status);
+	}
 	info_kanal();
 }
 
@@ -145,10 +151,24 @@ void set_kanal_default()		{
 		return;
 	}
 	
-	for (i=0; i<(JML_KANAL*2); i++)	{
+	for (i=0; i<(JML_KANAL); i++)	{
 		st_env->kalib[i].m = 1;
 		st_env->kalib[i].C = 0;
 		st_env->kalib[i].status = sRPM;
+		//strcpy(env.kalib[i].ket, "----");
+	}
+	
+		for (i=0; i<(JML_KANAL); i++)	{
+		st_env->kalib[i+JML_KANAL].m = 1;
+		st_env->kalib[i+JML_KANAL].C = 0;
+		st_env->kalib[i+JML_KANAL].status = sADC_7708;
+		//strcpy(env.kalib[i].ket, "----");
+	}
+	
+		for (i=0; i<(JUM_MBUS); i++)	{
+		st_env->kalib[i+(2*JML_KANAL)].m = 1;
+		st_env->kalib[i+(2*JML_KANAL)].C = 0;
+		st_env->kalib[i+(2*JML_KANAL)].status = MBUS;
 		//strcpy(env.kalib[i].ket, "----");
 	}
 	
