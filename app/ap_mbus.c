@@ -24,6 +24,10 @@ void data_mbus()
 			mbus.ke_2[i]=mbus.ke_1[i];
 			mbus.ke_1[i]=mbus.ke_0[i];
 		}
+		else if (st_env->kalib[(2*JML_KANAL)+i].status == sMBUS2)
+		{
+			data_f[(2*JML_KANAL)+i] = mbus.ke_0[i];
+		}
 	}	
 }
 #endif

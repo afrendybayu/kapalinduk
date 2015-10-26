@@ -102,6 +102,8 @@ char set_kanal(int argc, char **argv)		{
 				st_env->kalib[no-1].status = sADC_7708;
 			} else if ((stx==sMBUS) || (strcmp(argv[3],"mbus")==0)){
 				st_env->kalib[no-1].status = sMBUS;
+			} else if ((stx==sMBUS2) || (strcmp(argv[3],"mbus2")==0)){
+				st_env->kalib[no-1].status = sMBUS2;
 			} else {
 				st_env->kalib[no-1].status = 0;
 			}
