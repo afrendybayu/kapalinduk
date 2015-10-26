@@ -59,7 +59,7 @@ char set_kanal(int argc, char **argv)		{
 		return 0;
 	}
 	
-	int no = cek_nomor_valid(argv[1], JML_KANAL*2);
+	int no = cek_nomor_valid(argv[1], JML_TITIK_DATA);
 	if (no == TIDAK_VALID || no == NULL)	{
 		printf("  no kanal TIDAK VALID\r\n");
 		return 2;
@@ -100,8 +100,9 @@ char set_kanal(int argc, char **argv)		{
 				st_env->kalib[no-1].status = sADC_RH;
 			} else if ((stx==sADC_7708) || (strcmp(argv[3],"adc")==0))	{
 				st_env->kalib[no-1].status = sADC_7708;
+			} else if ((stx==sMBUS) || (strcmp(argv[3],"mbus")==0)){
+				st_env->kalib[no-1].status = sMBUS;
 			} else {
-				//st_env->kalib[no-1].status = sRPM;
 				st_env->kalib[no-1].status = 0;
 			}
 			uprintf("  status[%d] : %d\r\n", no-1, st_env->kalib[no-1].status);
@@ -168,7 +169,7 @@ void set_kanal_default()		{
 		for (i=0; i<(JUM_MBUS); i++)	{
 		st_env->kalib[i+(2*JML_KANAL)].m = 1;
 		st_env->kalib[i+(2*JML_KANAL)].C = 0;
-		st_env->kalib[i+(2*JML_KANAL)].status = MBUS;
+		st_env->kalib[i+(2*JML_KANAL)].status = sMBUS;
 		//strcpy(env.kalib[i].ket, "----");
 	}
 	
