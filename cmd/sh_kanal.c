@@ -25,11 +25,6 @@ void cek_kanal()	{
 			(i+JML_KANAL+1), st_env->kalib[i+JML_KANAL].m, st_env->kalib[i+JML_KANAL].C, st_env->kalib[i+JML_KANAL].status);
 	}
 	
-	uprintf("  Info setting kanal modbus\r\n");
-	for (i=0; i<JUM_MBUS; i++)		{
-		uprintf("    Kanal %2d. m: %8.3f, C: %8.3f, status: %d\r\n", \
-			(i+(2*JML_KANAL)+1), st_env->kalib[i+(2*JML_KANAL)].m, st_env->kalib[i+(2*JML_KANAL)].C, st_env->kalib[i+(2*JML_KANAL)].status);
-	}
 	info_kanal();
 }
 
@@ -59,7 +54,7 @@ char set_kanal(int argc, char **argv)		{
 		return 0;
 	}
 	
-	int no = cek_nomor_valid(argv[1], JML_TITIK_DATA);
+	int no = cek_nomor_valid(argv[1], (2*JML_KANAL));
 	if (no == TIDAK_VALID || no == NULL)	{
 		printf("  no kanal TIDAK VALID\r\n");
 		return 2;
@@ -100,12 +95,8 @@ char set_kanal(int argc, char **argv)		{
 				st_env->kalib[no-1].status = sADC_RH;
 			} else if ((stx==sADC_7708) || (strcmp(argv[3],"adc")==0))	{
 				st_env->kalib[no-1].status = sADC_7708;
-			} else if ((stx==sMBUS) || (strcmp(argv[3],"mbus")==0)){
-				st_env->kalib[no-1].status = sMBUS;
-			} else if ((stx==sMBUS2) || (strcmp(argv[3],"mbus2")==0)){
-				st_env->kalib[no-1].status = sMBUS2;
 			} else {
-				st_env->kalib[no-1].status = 0;
+				st_env->kalib[no-1].status = sNONE;
 			}
 			uprintf("  status[%d] : %d\r\n", no-1, st_env->kalib[no-1].status);
 			if (st_env->kalib[no-1].status==sONOFF_RH)	{
@@ -161,17 +152,10 @@ void set_kanal_default()		{
 		//strcpy(env.kalib[i].ket, "----");
 	}
 	
-		for (i=0; i<(JML_KANAL); i++)	{
+	for (i=0; i<(JML_KANAL); i++)	{
 		st_env->kalib[i+JML_KANAL].m = 1;
 		st_env->kalib[i+JML_KANAL].C = 0;
 		st_env->kalib[i+JML_KANAL].status = sADC_7708;
-		//strcpy(env.kalib[i].ket, "----");
-	}
-	
-		for (i=0; i<(JUM_MBUS); i++)	{
-		st_env->kalib[i+(2*JML_KANAL)].m = 1;
-		st_env->kalib[i+(2*JML_KANAL)].C = 0;
-		st_env->kalib[i+(2*JML_KANAL)].status = sMBUS;
 		//strcpy(env.kalib[i].ket, "----");
 	}
 	

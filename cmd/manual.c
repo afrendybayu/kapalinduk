@@ -119,7 +119,7 @@ void info_kanal()	{
 	printf("   %4d : sONOFF_RH\r\n", sONOFF_RH);
 	printf("   %4d : ANALOG MONITA\r\n", 250);
 	printf("   %4d : ANALOG RUNNINGHOUR\r\n", 999);
-	printf("   %4d : DATA MODBUS\r\n", sMBUS);
+	printf("   %4d : NO STATUS\r\n", sNONE);
 }
 
 void file_kitab()	{

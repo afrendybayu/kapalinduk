@@ -277,7 +277,10 @@ void vLedTask( void *pvParameters )	{
 		#ifdef PAKAI_ADC_7708
 		data_adc();
 		#endif
-	
+		
+		#ifdef MOV_AVG
+		data_mbus();
+		#endif
 		
 		i = 1-i;
 		if (i)	{

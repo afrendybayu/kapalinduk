@@ -58,6 +58,7 @@ typedef enum IAP_STATUS_t {
 #define  YA				1
 #define  TIDAK			0
 
+#define  sNONE			0
 #define  sRPM			1
 #define	 sONOFF			2
 #define	 sPUSHBUTTON	3
@@ -327,8 +328,7 @@ struct t_env {
 	unsigned char GW1;
 	unsigned char GW2;
 	unsigned char GW3;
-	//struct t_kalib kalib[JML_KANAL*2];
-	struct t_kalib kalib[JML_TITIK_DATA];
+	struct t_kalib kalib[JML_KANAL*2];
 	int magic1;
 	int magic2;
 	int mmc_serial;
