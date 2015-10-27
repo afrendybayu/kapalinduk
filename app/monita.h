@@ -77,8 +77,6 @@ typedef enum IAP_STATUS_t {
 #define	 sADC_ORI		240
 #define  sADC_7708		250
 #define  fENERGI		251
-#define  sMBUS			69
-#define  sMBUS2			70
 
 #define  FOLDER_SENDED		"\\terkirim"
 #define	 LIHAT				0
