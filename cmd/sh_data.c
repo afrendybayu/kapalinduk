@@ -178,6 +178,10 @@ char set_data(int argc, char **argv)		{
 			st_data[nox].status = atoi( argv[3] );
 			printf("  Status: [%d] : %s\r\n", st_data[nox].status, st_data[nox].status?"Aktif":"Mati");
 		} 
+		else if (strcmp(argv[2], "mavg") == 0){
+			st_data[nox].mv_avg = atoi(argv[3]);
+			printf("  Mv_Avg: [%d] : %s\r\n", st_data[nox].mv_avg, st_data[nox].mv_avg?"Aktif":"Mati");
+		}
 		else {
 			printf("  __ Perintah SALAH __\r\n");
 			data_kitab();
@@ -216,6 +220,7 @@ void set_data_default()		{
 			st_data[i].batasHH = 800;
 			st_data[i].rangeH  = 1000;
 			st_data[i].status  = 0;
+			st_data[i].mv_avg  = 0;
 			strcpy(st_data[i].satuan, "-");
 			strcpy(st_data[i].formula, "");
 		}

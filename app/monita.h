@@ -279,12 +279,14 @@ struct t_astm
 
 struct t_mavg
 {
+	int nomer;
 	float ke_0;
 	float ke_1;
 	float ke_2;
 	float ke_3;
 	float ke_4;
 };
+volatile struct t_mavg *st_mavg;
 
 #ifdef PAKAI_CRON
 struct t_cron {

@@ -227,7 +227,7 @@ void set_env_default()		{
 	
 	
 	st_env->magic1 = 0x01;
-	st_env->magic2 = 0x02;
+	st_env->magic2 = 0x03;
 	st_env->mmc_serial = 0;
 	strcpy(st_env->SN, "STR.kalender");
 
@@ -257,6 +257,7 @@ void set_env_default()		{
 	st_env->prioDebug2 = 20;
 	st_env->jmlfile = 0;
 	st_env->almtMaster = 1;
+	st_env->n_mavg = 3;
 	
 	simpan_st_rom(SEKTOR_ENV, ENV, 0, (unsigned short *) st_env, 0);
 	//simpan_struct_block_rom(SEKTOR_ENV, ENV, 1, (char *) &st_env);

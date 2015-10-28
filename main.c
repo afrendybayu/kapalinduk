@@ -142,6 +142,7 @@ xSemaphoreHandle xSemSer0 = NULL;
 /*-----------------------------------------------------------*/
 
 int main( void )	{
+	int jml_mavg;
 
 	st_hw.init = 0;
 	st_hw.idle_c = 0;
@@ -156,7 +157,7 @@ int main( void )	{
 	setup_hardware();
 	init_hardware();
 	
-	#ifdef MOV_AVG
+	#if 0
 	struct t_env *st_env;
 	st_env = pvPortMalloc( sizeof (struct t_env) );
 	if (st_env == NULL)	{
@@ -169,6 +170,15 @@ int main( void )	{
 	
 	simpan_st_rom(SEKTOR_ENV, ENV, 1, (unsigned short *) st_env, 0);
 	vPortFree (st_env);
+	#endif
+	
+	#ifdef MOV_AVG
+	jml_mavg = hitung_mavg();
+	st_mavg = pvPortMalloc( jml_mavg * sizeof (struct t_mavg) );
+	if (st_mavg == NULL)	{
+		printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
+		vPortFree (st_mavg);
+	}
 	#endif
 	
 	xTaskCreate( vLedTask, ( signed portCHAR * ) "Led", configMINIMAL_STACK_SIZE*ST_LED, NULL, \
@@ -265,7 +275,6 @@ void vLedTask( void *pvParameters )	{
 	FIO1SET = LED_UTAMA;
 	char a=0, b=1, i=0;
 	char ss[6];
-	int jml_mavg;
 	portTickType xLastWakeTime;
 	const portTickType xFrequency = 500;
 		
@@ -277,13 +286,16 @@ void vLedTask( void *pvParameters )	{
 		init_led();
 	} while(st_hw.init != uxTaskGetNumberOfTasks());
 
+	#if 0
 	struct t_env *st_env;
 	st_env = ALMT_ENV;
 	
 	jml_mavg = st_env->n_mavg;
+	#endif
 	
 	int q = 0;
 	xLastWakeTime = xTaskGetTickCount();
+	
 	for ( ;; )	{
 		toogle_led_utama();
 		//printf("testing %.4f\r\n", 12.3455*8.1);
@@ -297,7 +309,7 @@ void vLedTask( void *pvParameters )	{
 		#endif
 		
 		#ifdef MOV_AVG
-		data_mavg(jml_mavg);
+		data_mavg();
 		#endif
 		
 		i = 1-i;
@@ -313,7 +325,10 @@ void vLedTask( void *pvParameters )	{
 		st_hw.mm++;
 		//uprintf("..%d", st_hw.mm);
 	}
-
+	
+	#ifdef MOV_AVG
+	vPortFree (st_mavg);
+	#endif
 }
 
 /*-----------------------------------------------------------*/

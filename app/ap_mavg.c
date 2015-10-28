@@ -7,19 +7,12 @@
 
 extern volatile float data_f[];
 
-void data_mavg(int cnt)
+void data_mavg()
 {
 	int i,j;
 	int no;
 
 	struct t_data *st_data;
-	
-	struct t_mavg *st_mavg;
-	st_mavg = pvPortMalloc( cnt * sizeof (struct t_mavg) );
-	if (st_mavg == NULL)	{
-		printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
-		vPortFree (st_mavg);
-	}
 	
 	for (i=0; i<JML_SUMBER; i++)		
 	{
@@ -37,7 +30,6 @@ void data_mavg(int cnt)
 			}
 		}	
 	}
-	vPortFree(st_mavg);
 }
 
 int hitung_mavg()
@@ -58,4 +50,6 @@ int hitung_mavg()
 	
 	return cnt_mavg;
 }
+
+void ngurut_mavg();
 #endif
