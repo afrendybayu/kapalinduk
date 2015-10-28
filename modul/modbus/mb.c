@@ -146,7 +146,7 @@ unsigned char simpan_mb_monita(int jml, unsigned char *s, int reg)	{
 		fl = (float *)&tmpFl;
 		
 		#ifdef MOV_AVG
-		mbus.ke_0[no-(2*JML_KANAL)] = *fl;
+		mavg.ke_0[no] = *fl;
 		#else
 		data_f[no] = *fl;
 		#endif
@@ -192,7 +192,7 @@ unsigned char simpan_mb_std(int jml, unsigned char *s, int reg)	{
 		fl = (float *)&tmpFl;
 		
 		#ifdef MOV_AVG
-		mbus.ke_0[no-(2*JML_KANAL)] = *fl;
+		mavg.ke_0[no] = *fl;
 		#else
 		data_f[no] = *fl;
 		#endif

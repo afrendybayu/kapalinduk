@@ -264,25 +264,28 @@ struct t_data {
 	int  batasHH;
 	int  rangeH;
 	char nama[24];
-	char status;			// 
+	char status;			
 	char formula[16];
+	char mv_avg;
 };
 //struct t_data st_data[JML_TITIK_DATA];
 
+#if 0
 struct t_astm
 	{
 	float koef;
 	};
+#endif
 
-struct t_mbus
+struct t_mavg
 {
-	float ke_0[JUM_MBUS];
-	float ke_1[JUM_MBUS];
-	float ke_2[JUM_MBUS];
-	float ke_3[JUM_MBUS];
-	float ke_4[JUM_MBUS];
+	float ke_0[JML_TITIK_DATA];
+	float ke_1[JML_TITIK_DATA];
+	float ke_2[JML_TITIK_DATA];
+	float ke_3[JML_TITIK_DATA];
+	float ke_4[JML_TITIK_DATA];
 };
-struct t_mbus mbus;
+struct t_mavg mavg;
 
 #ifdef PAKAI_CRON
 struct t_cron {
@@ -360,6 +363,7 @@ struct t_env {
 	int		prioDebug2;
 	int		jmlfile;
 	unsigned char almtMaster;
+	int		n_mavg;
 };
 //struct t_env st_env;
 
