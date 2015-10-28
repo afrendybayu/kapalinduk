@@ -215,9 +215,6 @@ char s[30];
 					printf("hasil: %d\r\n", nmb);
 					//printf("x%02x ", (char) ch);
 					balas = proses_mod3(nmb, strmb3,dReg);					//printf("--==> BALAS MB: %d\r\n", balas);
-					//#ifdef MOV_AVG
-						//data_mbus();
-					//#endif
 					nmb = 0;
 					//printf("4.");
 					mb_state = MB_REST;

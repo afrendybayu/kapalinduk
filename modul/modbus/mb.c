@@ -118,8 +118,20 @@ unsigned short cek_crc_ccitt_0xffff(int len, char *data)	{
 unsigned char simpan_mb_monita(int jml, unsigned char *s, int reg)	{
 	int i, j, k, tmpFl=0, ff=0, no=0;
 	float *fl;
+	int cnt;
 	
 	struct t_data *st_data;
+	struct t_env *st_env;
+	
+	cnt = st_env->n_mavg;
+	
+	struct t_mavg *st_mavg;
+	st_mavg = pvPortMalloc( cnt * sizeof (struct t_mavg) );
+	if (st_mavg == NULL)	{
+		printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
+		vPortFree (st_mavg);
+		return 3;
+	}
 	
 	#ifdef ERROR_DATA_RATE
 		if (olah == 0xFFFF) olah = 0;
@@ -146,14 +158,14 @@ unsigned char simpan_mb_monita(int jml, unsigned char *s, int reg)	{
 		fl = (float *)&tmpFl;
 		
 		#ifdef MOV_AVG
-		mavg.ke_0[no] = *fl;
+		st_mavg[no].ke_0 = *fl;
 		#else
 		data_f[no] = *fl;
 		#endif
 		
 		//printf("dfloat: %08x %.3f\r\n", tmpFl, *fl);
 	}
-	
+	vPortFree(st_mavg);
 	#ifdef ERROR_DATA_RATE
 		olah ++;
 		printf("s_m_m=%d\n\r", olah);
@@ -164,8 +176,20 @@ unsigned char simpan_mb_monita(int jml, unsigned char *s, int reg)	{
 unsigned char simpan_mb_std(int jml, unsigned char *s, int reg)	{
 	int i, j, k, tmpFl=0, ff=0, no=0;
 	float *fl;
+	int cnt;
 	
 	struct t_data *st_data;
+	struct t_env *st_env;
+	
+	cnt = st_env->n_mavg;
+	
+	struct t_mavg *st_mavg;
+	st_mavg = pvPortMalloc( cnt * sizeof (struct t_mavg) );
+	if (st_mavg == NULL)	{
+		printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
+		vPortFree (st_mavg);
+		return 3;
+	}
 	
 	#ifdef ERROR_DATA_RATE
 		if (olah_std == 0xFFFF) olah_std = 0;
@@ -192,7 +216,7 @@ unsigned char simpan_mb_std(int jml, unsigned char *s, int reg)	{
 		fl = (float *)&tmpFl;
 		
 		#ifdef MOV_AVG
-		mavg.ke_0[no] = *fl;
+		st_mavg[no].ke_0 = *fl;
 		#else
 		data_f[no] = *fl;
 		#endif
@@ -200,6 +224,7 @@ unsigned char simpan_mb_std(int jml, unsigned char *s, int reg)	{
 		//printf("dfloat: %08x %.3f\r\n", tmpFl, *fl);
 	}
 	
+	vPortFree(st_mavg);
 	#ifdef ERROR_DATA_RATE
 		olah_std ++;
 		printf("s_m_b=%d\n\r", olah_std);

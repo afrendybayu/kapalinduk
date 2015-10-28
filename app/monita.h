@@ -279,13 +279,12 @@ struct t_astm
 
 struct t_mavg
 {
-	float ke_0[JML_TITIK_DATA];
-	float ke_1[JML_TITIK_DATA];
-	float ke_2[JML_TITIK_DATA];
-	float ke_3[JML_TITIK_DATA];
-	float ke_4[JML_TITIK_DATA];
+	float ke_0;
+	float ke_1;
+	float ke_2;
+	float ke_3;
+	float ke_4;
 };
-struct t_mavg mavg;
 
 #ifdef PAKAI_CRON
 struct t_cron {
