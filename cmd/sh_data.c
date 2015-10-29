@@ -21,28 +21,28 @@ void cek_data(int argc, char **argv)	{
 			return;
 		}
 		uprintf("\r\n    Cek data sumber: %d\r\n******************************************************\r\n", smb);
-		uprintf ("  NO |   ID   |        Nama       |    Nilai    | Satuan |\r\n");
+		uprintf ("  NO |   ID   |        Nama       |    Nilai    | Satuan | M. Average |\r\n");
 		smb--;
 		st_data = ALMT_DATA + smb*JML_KOPI_TEMP;
 		for (j=0; j<PER_SUMBER; j++)	{
 			//printf("%d --> 0x%08X\r\n", i*PER_SUMBER+j, ALMT_DATA + i*JML_KOPI_TEMP);
-			uprintf(" %3d | %6d | %-17s | %11.2f | %-6s | %d\r\n", 	\
-				j+1, st_data[j].id, st_data[j].nama, data_f[smb*PER_SUMBER+j], st_data[j].satuan, smb*PER_SUMBER+j);
+			uprintf(" %3d | %6d | %-17s | %11.2f | %-6s | %d | %d\r\n", 	\
+				j+1, st_data[j].id, st_data[j].nama, data_f[smb*PER_SUMBER+j], st_data[j].satuan, st_data[j].mv_avg, smb*PER_SUMBER+j);
 		}
 		return;
 	}
 	
 	uprintf("\r\n    Cek data input modul    \r\n****************************************\r\n");
-	uprintf ("  NO |   ID   |        Nama       |   Nilai   | Satuan | rangeL | batasLL | batasL | batasH | batasHH | rangeH | status |\r\n");
+	uprintf ("  NO |   ID   |        Nama       |   Nilai   | Satuan | rangeL | batasLL | batasL | batasH | batasHH | rangeH | M. Average | status |\r\n");
 	for (i=0; i<JML_SUMBER; i++ ) 	{
 		st_data = ALMT_DATA + i*JML_KOPI_TEMP;
 		for (j=0; j<PER_SUMBER; j++)	{
 			//printf("%d --> 0x%08X\r\n", i*PER_SUMBER+j, ALMT_DATA + i*JML_KOPI_TEMP);
 			#if 1
-			uprintf(" %3d | %6d | %-17s | %9.1f | %-6s | %6d | %7d | %6d | %6d | %7d | %6d | %-6s |\r\n", 	\
+			uprintf(" %3d | %6d | %-17s | %9.1f | %-6s | %6d | %7d | %6d | %6d | %7d | %6d | %d | %-6s |\r\n", 	\
 				i*PER_SUMBER+j+1, st_data[j].id, st_data[j].nama, data_f[i*PER_SUMBER+j], 		\
 				st_data[j].satuan,  st_data[j].rangeL, st_data[j].batasLL, st_data[j].batasL, 	\
-				st_data[j].batasH, st_data[j].batasHH, st_data[j].rangeH, st_data[j].status?"Aktif":"Mati" );
+				st_data[j].batasH, st_data[j].batasHH, st_data[j].rangeH, st_data[j].mv_avg, st_data[j].status?"Aktif":"Mati" );
 			#endif
 		}
 	}

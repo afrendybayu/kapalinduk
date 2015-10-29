@@ -118,9 +118,10 @@ unsigned short cek_crc_ccitt_0xffff(int len, char *data)	{
 unsigned char simpan_mb_monita(int jml, unsigned char *s, int reg)	{
 	int i, j, k, tmpFl=0, ff=0, no=0;
 	float *fl;
-	int cnt;
+	//int cnt;
 	
 	struct t_data *st_data;
+	#if 0
 	struct t_env *st_env;
 	
 	cnt = st_env->n_mavg;
@@ -132,6 +133,7 @@ unsigned char simpan_mb_monita(int jml, unsigned char *s, int reg)	{
 		vPortFree (st_mavg);
 		return 3;
 	}
+	#endif
 	
 	#ifdef ERROR_DATA_RATE
 		if (olah == 0xFFFF) olah = 0;
@@ -157,15 +159,12 @@ unsigned char simpan_mb_monita(int jml, unsigned char *s, int reg)	{
 		tmpFl = ((s[i*4+0] & 0xFF)<<24) | ((s[i*4+1] & 0xFF)<<16) | ((s[i*4+2] & 0xFF)<<8) | (s[i*4+3] & 0xFF);
 		fl = (float *)&tmpFl;
 		
-		#ifdef MOV_AVG
-		st_mavg[no].ke_0 = *fl;
-		#else
 		data_f[no] = *fl;
-		#endif
+
 		
 		//printf("dfloat: %08x %.3f\r\n", tmpFl, *fl);
 	}
-	vPortFree(st_mavg);
+	//vPortFree(st_mavg);
 	#ifdef ERROR_DATA_RATE
 		olah ++;
 		printf("s_m_m=%d\n\r", olah);
@@ -176,9 +175,10 @@ unsigned char simpan_mb_monita(int jml, unsigned char *s, int reg)	{
 unsigned char simpan_mb_std(int jml, unsigned char *s, int reg)	{
 	int i, j, k, tmpFl=0, ff=0, no=0;
 	float *fl;
-	int cnt;
+	//int cnt;
 	
 	struct t_data *st_data;
+	#if 0
 	struct t_env *st_env;
 	
 	cnt = st_env->n_mavg;
@@ -190,6 +190,7 @@ unsigned char simpan_mb_std(int jml, unsigned char *s, int reg)	{
 		vPortFree (st_mavg);
 		return 3;
 	}
+	#endif
 	
 	#ifdef ERROR_DATA_RATE
 		if (olah_std == 0xFFFF) olah_std = 0;
@@ -215,16 +216,12 @@ unsigned char simpan_mb_std(int jml, unsigned char *s, int reg)	{
 		tmpFl = ((s[i*2+0] & 0xFF)<<8) | (s[i*2+1] & 0xFF);
 		fl = (float *)&tmpFl;
 		
-		#ifdef MOV_AVG
-		st_mavg[no].ke_0 = *fl;
-		#else
 		data_f[no] = *fl;
-		#endif
 		
 		//printf("dfloat: %08x %.3f\r\n", tmpFl, *fl);
 	}
 	
-	vPortFree(st_mavg);
+	//vPortFree(st_mavg);
 	#ifdef ERROR_DATA_RATE
 		olah_std ++;
 		printf("s_m_b=%d\n\r", olah_std);
