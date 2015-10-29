@@ -365,6 +365,7 @@ struct t_env {
 	int		jmlfile;
 	unsigned char almtMaster;
 	int		n_mavg;
+	int 	n_move;
 };
 //struct t_env st_env;
 

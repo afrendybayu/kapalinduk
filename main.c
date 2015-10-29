@@ -157,7 +157,7 @@ int main( void )	{
 	setup_hardware();
 	init_hardware();
 	
-	#if 0
+	#ifdef MOV_AVG
 	struct t_env *st_env;
 	st_env = pvPortMalloc( sizeof (struct t_env) );
 	if (st_env == NULL)	{
@@ -167,18 +167,19 @@ int main( void )	{
 
 	memcpy((char *) st_env, (char *) ALMT_ENV, (sizeof (struct t_env)));	
 	st_env->n_mavg = hitung_mavg();
+	jml_mavg = st_env->n_mavg;
 	
 	simpan_st_rom(SEKTOR_ENV, ENV, 1, (unsigned short *) st_env, 0);
 	vPortFree (st_env);
 	#endif
 	
 	#ifdef MOV_AVG
-	jml_mavg = hitung_mavg();
 	st_mavg = pvPortMalloc( jml_mavg * sizeof (struct t_mavg) );
 	if (st_mavg == NULL)	{
 		printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
 		vPortFree (st_mavg);
 	}
+	ngurut_mavg();
 	#endif
 	
 	xTaskCreate( vLedTask, ( signed portCHAR * ) "Led", configMINIMAL_STACK_SIZE*ST_LED, NULL, \
@@ -277,6 +278,7 @@ void vLedTask( void *pvParameters )	{
 	char ss[6];
 	portTickType xLastWakeTime;
 	const portTickType xFrequency = 500;
+	int jml_mavg;
 		
 	vTaskDelay(100);
 	//printf("  task : %s: %d\r\n", __FUNCTION__, uxTaskGetNumberOfTasks());
@@ -286,7 +288,7 @@ void vLedTask( void *pvParameters )	{
 		init_led();
 	} while(st_hw.init != uxTaskGetNumberOfTasks());
 
-	#if 0
+	#ifdef MOV_AVG
 	struct t_env *st_env;
 	st_env = ALMT_ENV;
 	
@@ -309,7 +311,7 @@ void vLedTask( void *pvParameters )	{
 		#endif
 		
 		#ifdef MOV_AVG
-		data_mavg();
+		data_mavg(jml_mavg);
 		#endif
 		
 		i = 1-i;

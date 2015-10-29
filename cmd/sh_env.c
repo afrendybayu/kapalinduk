@@ -257,7 +257,8 @@ void set_env_default()		{
 	st_env->prioDebug2 = 20;
 	st_env->jmlfile = 0;
 	st_env->almtMaster = 1;
-	st_env->n_mavg = 3;
+	st_env->n_mavg = 0;
+	st_env->n_move = 3;
 	
 	simpan_st_rom(SEKTOR_ENV, ENV, 0, (unsigned short *) st_env, 0);
 	//simpan_struct_block_rom(SEKTOR_ENV, ENV, 1, (char *) &st_env);
