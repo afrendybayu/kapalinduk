@@ -6,15 +6,32 @@
 #ifdef MOV_AVG
 
 extern volatile float data_f[];
+extern struct t_mavg *st_mavg;
+
+void reset_mavg(int max)
+{
+	int i;
+	
+	for (i=0; i<max; i++)
+	{
+		st_mavg[i].ke_4=0;
+		st_mavg[i].ke_3=0;
+		st_mavg[i].ke_2=0;
+		st_mavg[i].ke_1=0;
+		st_mavg[i].ke_0=0;
+	}
+		
+}
 
 void data_mavg(int max)
 {
-	int i,j;
+	int i;
 	int no;
 	
 	for (i=0; i<max; i++)
 	{
 		no = st_mavg[i].nomer;
+		printf("|no=%d\n\r|",no);
 		st_mavg[i].ke_3=data_f[no];
 		data_f[no] = (st_mavg[i].ke_0+st_mavg[i].ke_1+st_mavg[i].ke_2+st_mavg[i].ke_3+st_mavg[i].ke_4)/5;
 		st_mavg[i].ke_4=st_mavg[i].ke_3;

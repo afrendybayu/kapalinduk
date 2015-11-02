@@ -51,6 +51,7 @@ void cek_env(int argc, char **argv)	{
 	uprintf("  Konfig Debug1: %d\r\n", st_env->prioDebug);
 	uprintf("  Konfig Debug2: %d\r\n", st_env->prioDebug2);
 	uprintf("  Memory space: %d\r\n", xPortGetFreeHeapSize());
+	uprintf("  Moving average: %d\n\r",st_env->n_mavg);
 }
 
 

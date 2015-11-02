@@ -142,8 +142,6 @@ xSemaphoreHandle xSemSer0 = NULL;
 /*-----------------------------------------------------------*/
 
 int main( void )	{
-	int jml_mavg;
-
 	st_hw.init = 0;
 	st_hw.idle_c = 0;
 	st_hw.mm = 0;
@@ -157,7 +155,7 @@ int main( void )	{
 	setup_hardware();
 	init_hardware();
 	
-	#ifdef MOV_AVG
+	#if 0
 	struct t_env *st_env;
 	st_env = pvPortMalloc( sizeof (struct t_env) );
 	if (st_env == NULL)	{
@@ -166,14 +164,13 @@ int main( void )	{
 	}
 
 	memcpy((char *) st_env, (char *) ALMT_ENV, (sizeof (struct t_env)));	
-	st_env->n_mavg = hitung_mavg();
-	jml_mavg = st_env->n_mavg;
-	
+	jml_mavg = hitung_mavg();
+	st_env->n_mavg = jml_mavg;
 	simpan_st_rom(SEKTOR_ENV, ENV, 1, (unsigned short *) st_env, 0);
 	vPortFree (st_env);
 	#endif
 	
-	#ifdef MOV_AVG
+	#if 0
 	st_mavg = pvPortMalloc( jml_mavg * sizeof (struct t_mavg) );
 	if (st_mavg == NULL)	{
 		printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);

@@ -5,6 +5,7 @@
 void data_mavg(int max);
 int hitung_mavg();
 void ngurut_mavg();
+void reset_mavg(int max);
 
 
 #endif

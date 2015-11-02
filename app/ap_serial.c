@@ -337,13 +337,37 @@ portBASE_TYPE xResyncRequired = pdFALSE, xErrorOccurred = pdFALSE;
 portBASE_TYPE xGotChar;
 int ch, mm=0;
 char s[30];
+int jml_mavg;
+extern struct t_mavg *st_mavg;
 
 	/* Just to stop compiler warnings. */
 	( void ) pvParameters;
 	vTaskDelay(1);
+
+	#ifdef MOV_AVG
+	struct t_env *st_env;
+	st_env = pvPortMalloc( sizeof (struct t_env) );
+	if (st_env == NULL)	{
+		uprintf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
+		vPortFree(st_env);
+	}
+
+	memcpy((char *) st_env, (char *) ALMT_ENV, (sizeof (struct t_env)));	
+	jml_mavg = hitung_mavg();
+	st_env->n_mavg = jml_mavg;
+	simpan_st_rom(SEKTOR_ENV, ENV, 1, (unsigned short *) st_env, 0);
+	vPortFree (st_env);
+	
+	st_mavg = pvPortMalloc( jml_mavg * sizeof (struct t_mavg) );
+	if (st_mavg == NULL)	{
+		uprintf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
+		vPortFree (st_mavg);
+	}
+	ngurut_mavg();
+	reset_mavg(jml_mavg);
+	#endif
 	
 	//vSerialPutString(xPort, "mulakan\r\n", 9);
-	
 	init_banner();
 	//set_env_default();
 	baca_konfig_rom();					// hardware/iap.c

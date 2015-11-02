@@ -161,7 +161,6 @@ unsigned char simpan_mb_monita(int jml, unsigned char *s, int reg)	{
 		
 		data_f[no] = *fl;
 
-		
 		//printf("dfloat: %08x %.3f\r\n", tmpFl, *fl);
 	}
 	//vPortFree(st_mavg);
