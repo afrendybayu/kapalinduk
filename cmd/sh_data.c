@@ -21,13 +21,13 @@ void cek_data(int argc, char **argv)	{
 			return;
 		}
 		uprintf("\r\n    Cek data sumber: %d\r\n******************************************************\r\n", smb);
-		uprintf ("  NO |   ID   |        Nama       |    Nilai    | Satuan | M. Average |\r\n");
+		uprintf ("  NO |   ID   |        Nama       |    Nilai    | Satuan | M.A | TOT |\r\n");
 		smb--;
 		st_data = ALMT_DATA + smb*JML_KOPI_TEMP;
 		for (j=0; j<PER_SUMBER; j++)	{
 			//printf("%d --> 0x%08X\r\n", i*PER_SUMBER+j, ALMT_DATA + i*JML_KOPI_TEMP);
-			uprintf(" %3d | %6d | %-17s | %11.2f | %-6s | %d | %d\r\n", 	\
-				j+1, st_data[j].id, st_data[j].nama, data_f[smb*PER_SUMBER+j], st_data[j].satuan, st_data[j].mv_avg, smb*PER_SUMBER+j);
+			uprintf(" %3d | %6d | %-17s | %11.2f | %-6s | %3d | %d | %d\r\n", 	\
+				j+1, st_data[j].id, st_data[j].nama, data_f[smb*PER_SUMBER+j], st_data[j].satuan, st_data[j].mv_avg, st_data[j].no_ma, smb*PER_SUMBER+j);
 		}
 		return;
 	}
@@ -221,6 +221,7 @@ void set_data_default()		{
 			st_data[i].rangeH  = 1000;
 			st_data[i].status  = 0;
 			st_data[i].mv_avg  = 0;
+			st_data[i].no_ma = 255;
 			strcpy(st_data[i].satuan, "-");
 			strcpy(st_data[i].formula, "");
 		}

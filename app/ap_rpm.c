@@ -10,7 +10,7 @@
 extern unsigned int giliran;
 //extern volatile float data_f[];
 extern struct t2_konter konter;
-extern struct t_mavg st_mavg;
+extern struct t_mavg *st_mavg;
 //extern unsigned char status_konter[];
 
 
@@ -224,7 +224,14 @@ void data_frek_rpm (void) {
 			
 			if (status==sRPM)	{
 				if (fl2>RPM_MAX)	fl2 = 0;
-				else	data_f[i] = fl2;
+				else
+				{	
+					if (st_data[i].mv_avg == 1) 
+					{
+					
+					}
+					else data_f[i] = fl2;
+				}
 			}
 			if (status==sRPM_RH)	{
 				//if (fl2>RPM_MAX)	fl2 = 0;

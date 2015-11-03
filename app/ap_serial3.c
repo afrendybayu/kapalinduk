@@ -148,7 +148,7 @@ char s[30];
 
 	for( ;; )	{
 		if (mb_state==MB_REST)	{
-			printf("\r\n>>> MB_REST: %d   ", mbgilir);
+			//printf("\r\n>>> MB_REST: %d   ", mbgilir);
 			if (mbgilir==0)	vTaskDelay(1000);
 			else 			vTaskDelay(50);
 			mb_state = MB_REQ;
@@ -156,11 +156,11 @@ char s[30];
 		else if (mb_state==MB_REQ)	{
 			
 			int rsp = cmd_modbus(mbgilir, &dReg); // << (ada bug) yang buat modbus master loop di RESP, sementara buat jalan keluar dlu. debug dsini takes long time
-			printf(">>> MB_REQ: %d dest: %d ", mbgilir, dReg);
+			//printf(">>> MB_REQ: %d dest: %d ", mbgilir, dReg);
 			if (rsp>0)	
 			{
 				mb_state = MB_RESP;
-				printf(">>> MB_RESP: %d\r\n", mbgilir);
+				//printf(">>> MB_RESP: %d\r\n", mbgilir);
 			}
 			else 	{
 				mb_state = MB_REST;

@@ -267,6 +267,7 @@ struct t_data {
 	char status;			
 	char formula[16];
 	char mv_avg;
+	unsigned char no_ma;
 };
 //struct t_data st_data[JML_TITIK_DATA];
 
