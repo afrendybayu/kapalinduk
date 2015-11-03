@@ -10,6 +10,7 @@
 extern unsigned int giliran;
 //extern volatile float data_f[];
 extern struct t2_konter konter;
+extern struct t_mavg st_mavg;
 //extern unsigned char status_konter[];
 
 
@@ -188,6 +189,9 @@ void data_frek_rpm (void) {
 	
 	struct t_env *st_env;
 	st_env = ALMT_ENV;
+	
+	struct t_data *st_data;
+	st_data = ALMT_DATA;
 	
 	for (i=0; i<JML_KANAL; i++)	{
 		status = st_env->kalib[i].status;
