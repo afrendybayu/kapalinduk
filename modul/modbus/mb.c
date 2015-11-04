@@ -169,6 +169,7 @@ unsigned char simpan_mb_monita(int jml, unsigned char *s, int reg)	{
 		printf("s_m_m=%d\n\r", olah);
 	#endif
 	//printf("_____%s_____\r\n", __FUNCTION__);
+	printf("|mbus|\n\r");
 }
 
 unsigned char simpan_mb_std(int jml, unsigned char *s, int reg)	{

@@ -70,5 +70,6 @@ void data_adc()	{
 			}
 		}
 	}
+	printf("|adc|\n\r");
 }
 #endif

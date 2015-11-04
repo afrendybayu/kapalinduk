@@ -224,14 +224,7 @@ void data_frek_rpm (void) {
 			
 			if (status==sRPM)	{
 				if (fl2>RPM_MAX)	fl2 = 0;
-				else
-				{	
-					if (st_data[i].mv_avg == 1) 
-					{
-					
-					}
-					else data_f[i] = fl2;
-				}
+				else data_f[i] = fl2;
 			}
 			if (status==sRPM_RH)	{
 				//if (fl2>RPM_MAX)	fl2 = 0;
@@ -437,4 +430,5 @@ void data_frek_rpm (void) {
 		}
 		#endif
 	}
+	printf("|rpm|\n\r");
 }
