@@ -186,7 +186,7 @@ void data_frek_rpm (void) {
 	char status;
 	float temp_f, fl2;
 	float temp_rpm;
-	int nox;
+	unsigned char nox;
 	
 	struct t_env *st_env;
 	st_env = ALMT_ENV;

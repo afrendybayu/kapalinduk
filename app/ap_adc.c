@@ -8,6 +8,7 @@
 
 extern struct t_adc adc;
 extern volatile float data_f[];
+extern struct t_mavg *st_mavg;
 //extern float data_f[];
 //extern struct t_env env;
 
@@ -28,8 +29,13 @@ void data_adc()	{
 	char i;
 	float tf;
 	
+	unsigned char nox;
 	struct t_env *st_env;
 	st_env = ALMT_ENV;
+	
+	struct t_data *st_data;
+	st_data = ALMT_DATA+JML_KOPI_TEMP;
+	
 	
 	#if 1
 	up +=1;
@@ -40,8 +46,14 @@ void data_adc()	{
 		tf = (float) (adc.data[i] * faktor_pengali_420 / 0xffff);
 		tf = st_env->kalib[JML_KANAL+i].m * tf + st_env->kalib[JML_KANAL+i].C+up;
 		
-		if (st_env->kalib[JML_KANAL_ADC+i].status == sADC_7708)	{
-			data_f[JML_KANAL+i] = tf;	
+		if (st_env->kalib[JML_KANAL_ADC+i].status == sADC_7708)	
+		{
+			if (st_data[i].mv_avg == 1)
+			{
+				nox = st_data[i].no_ma;
+				st_mavg[nox].ke_0 = tf;
+			}
+			else data_f[JML_KANAL+i] = tf;
 		}
 		else if (st_env->kalib[JML_KANAL_ADC+i].status == sADC_RH)	{
 			//uprintf("data[%d] : %.2f\r\n", JML_KANAL+i+1, tf);
