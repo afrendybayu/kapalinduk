@@ -82,6 +82,6 @@ void data_adc()	{
 			}
 		}
 	}
-	printf("|adc|\n\r");
+	//printf("|adc|\n\r");
 }
 #endif

@@ -286,6 +286,7 @@ void vLedTask( void *pvParameters )	{
 	} while(st_hw.init != uxTaskGetNumberOfTasks());
 
 	#ifdef MOV_AVG
+	char toogle_mavg;
 	struct t_env *st_env;
 	st_env = ALMT_ENV;
 	
@@ -294,7 +295,7 @@ void vLedTask( void *pvParameters )	{
 	
 	int q = 0;
 	xLastWakeTime = xTaskGetTickCount();
-	
+	toogle_mavg = 0;
 	for ( ;; )	{
 		toogle_led_utama();
 		//printf("testing %.4f\r\n", 12.3455*8.1);
@@ -308,7 +309,12 @@ void vLedTask( void *pvParameters )	{
 		#endif
 		
 		#ifdef MOV_AVG
-		data_mavg(jml_mavg);
+		if (toogle_mavg) 
+		{
+			data_mavg(jml_mavg);
+			toogle_mavg = 0;
+		}
+		else toogle_mavg = 1;
 		#endif
 		
 		i = 1-i;

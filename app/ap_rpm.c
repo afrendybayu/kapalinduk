@@ -447,5 +447,5 @@ void data_frek_rpm (void) {
 		}
 		#endif
 	}
-	printf("|rpm|\n\r");
+	//printf("|rpm|\n\r");
 }
