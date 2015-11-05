@@ -8,6 +8,7 @@
 #ifdef PAKAI_MODBUS
 
 extern volatile float data_f[];
+extern struct t_mavg *st_mavg;
 extern char strmb[];
 extern char outmb[];
 extern char strmb3[];
@@ -118,6 +119,7 @@ unsigned short cek_crc_ccitt_0xffff(int len, char *data)	{
 unsigned char simpan_mb_monita(int jml, unsigned char *s, int reg)	{
 	int i, j, k, tmpFl=0, ff=0, no=0;
 	float *fl;
+	unsigned char nox;
 	//int cnt;
 	
 	struct t_data *st_data;
@@ -159,7 +161,13 @@ unsigned char simpan_mb_monita(int jml, unsigned char *s, int reg)	{
 		tmpFl = ((s[i*4+0] & 0xFF)<<24) | ((s[i*4+1] & 0xFF)<<16) | ((s[i*4+2] & 0xFF)<<8) | (s[i*4+3] & 0xFF);
 		fl = (float *)&tmpFl;
 		
-		data_f[no] = *fl;
+		if (st_data[i].mv_avg == 1)
+			{
+				nox = st_data[i].no_ma;
+				st_mavg[nox].ke_0 = *fl;
+			}
+		else data_f[no] = *fl;
+		//data_f[no] = *fl;
 
 		//printf("dfloat: %08x %.3f\r\n", tmpFl, *fl);
 	}
@@ -175,6 +183,7 @@ unsigned char simpan_mb_monita(int jml, unsigned char *s, int reg)	{
 unsigned char simpan_mb_std(int jml, unsigned char *s, int reg)	{
 	int i, j, k, tmpFl=0, ff=0, no=0;
 	float *fl;
+	unsigned char nox;
 	//int cnt;
 	
 	struct t_data *st_data;
@@ -216,7 +225,13 @@ unsigned char simpan_mb_std(int jml, unsigned char *s, int reg)	{
 		tmpFl = ((s[i*2+0] & 0xFF)<<8) | (s[i*2+1] & 0xFF);
 		fl = (float *)&tmpFl;
 		
-		data_f[no] = *fl;
+		if (st_data[i].mv_avg == 1)
+			{
+				nox = st_data[i].no_ma;
+				st_mavg[nox].ke_0 = *fl;
+			}
+		else data_f[no] = *fl;
+		//data_f[no] = *fl;
 		
 		//printf("dfloat: %08x %.3f\r\n", tmpFl, *fl);
 	}
