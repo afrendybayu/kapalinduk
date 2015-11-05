@@ -292,7 +292,15 @@ void data_frek_rpm (void) {
 			fl2 = (float) (temp_rpm*st_env->kalib[i].m)+st_env->kalib[i].C;
 			//printf("kanal: %d, rpm: %.2f, fl: %.2f\r\n", i+1, temp_rpm, fl2);
 			if (fl2>PROP_MAX)	fl2 = 0;
-			else	data_f[i] = fl2;
+			else
+			{	
+				if (st_data[i].mv_avg == 1)
+						{
+							nox = st_data[i].no_ma;
+							st_mavg[nox].ke_0 = fl2;
+						}
+				else data_f[i] = fl2;
+			}
 			#endif
 
 		}
