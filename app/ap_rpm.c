@@ -186,6 +186,7 @@ void data_frek_rpm (void) {
 	char status;
 	float temp_f, fl2;
 	float temp_rpm;
+	int nox;
 	
 	struct t_env *st_env;
 	st_env = ALMT_ENV;
@@ -224,7 +225,15 @@ void data_frek_rpm (void) {
 			
 			if (status==sRPM)	{
 				if (fl2>RPM_MAX)	fl2 = 0;
-				else data_f[i] = fl2;
+				else 
+				{	
+					if (st_data[i].mv_avg == 1)
+					{
+						nox = st_data[i].no_ma;
+						st_mavg[nox].ke_0 = fl2;
+					}
+					else data_f[i] = fl2;
+				}
 			}
 			if (status==sRPM_RH)	{
 				//if (fl2>RPM_MAX)	fl2 = 0;
