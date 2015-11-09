@@ -18,6 +18,9 @@
 #define READ_FILE_NAME			0x24
 #define READ_FILE_CONTENT		0x25
 #define SENDED_FILE				0x26
+#define KIRIM_WAKTU				0x27
+#define KIRIM_IDMODEM			0x28
+#define RESET					0x29
 
 //char strmb[MAX_RX_MB]		__attribute__ ((section (".usbram1")));
 //char outmb[MAX_RX_MB]		__attribute__ ((section (".usbram1")));

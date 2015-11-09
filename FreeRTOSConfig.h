@@ -117,7 +117,7 @@
 	#define MOV_AVG
 	//#define PAKAI_SERIAL_3_P4		115200
 	#define PAKAI_SERIAL_3_P4		9600
-	#define ST_SER3					25
+	#define ST_SER3					15
 	#define PAKAI_MODBUS					// fungsi2 modbus di ap_utils.h
 	#define MODBUS_RTU_MASTER
 #endif

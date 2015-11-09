@@ -344,6 +344,12 @@ extern struct t_mavg *st_mavg;
 	( void ) pvParameters;
 	vTaskDelay(1);
 
+	//vSerialPutString(xPort, "mulakan\r\n", 9);
+	init_banner();
+	//set_env_default();
+	baca_konfig_rom();					// hardware/iap.c
+	//load_data_rtc();
+	
 	#ifdef MOV_AVG
 	struct t_env *st_env;
 	st_env = pvPortMalloc( sizeof (struct t_env) );
@@ -355,7 +361,7 @@ extern struct t_mavg *st_mavg;
 	memcpy((char *) st_env, (char *) ALMT_ENV, (sizeof (struct t_env)));	
 	jml_mavg = hitung_mavg();
 	st_env->n_mavg = jml_mavg;
-	simpan_st_rom(SEKTOR_ENV, ENV, 1, (unsigned short *) st_env, 0);
+	simpan_st_rom(SEKTOR_ENV, ENV, 0, (unsigned short *) st_env, 0);
 	vPortFree (st_env);
 	
 	st_mavg = pvPortMalloc( jml_mavg * sizeof (struct t_mavg) );
@@ -365,13 +371,7 @@ extern struct t_mavg *st_mavg;
 	}
 	ngurut_mavg();
 	reset_mavg(jml_mavg);
-	#endif
-	
-	//vSerialPutString(xPort, "mulakan\r\n", 9);
-	init_banner();
-	//set_env_default();
-	baca_konfig_rom();					// hardware/iap.c
-	//load_data_rtc();
+	#endif	
 	
 	cmd_shell();
 	st_hw.init++;

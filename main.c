@@ -291,11 +291,11 @@ void vLedTask( void *pvParameters )	{
 	st_env = ALMT_ENV;
 	
 	jml_mavg = st_env->n_mavg;
+	toogle_mavg = 0;
 	#endif
 	
 	int q = 0;
 	xLastWakeTime = xTaskGetTickCount();
-	toogle_mavg = 0;
 	for ( ;; )	{
 		toogle_led_utama();
 		//printf("testing %.4f\r\n", 12.3455*8.1);
