@@ -355,6 +355,18 @@ int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 			uprintf(" hasil sended : %d\r\n", kk);
 		#endif
 	}
+	if (cmd==KIRIM_IDMODEM)
+	{
+	
+	}
+	if (cmd==KIRIM_WAKTU)
+	{
+	
+	}
+	if (cmd==RESET)
+	{
+	
+	}
 	return 10;
 }
 #endif
