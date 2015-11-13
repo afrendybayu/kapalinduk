@@ -27,9 +27,9 @@ enum xcmd_conf	{
 	MB_REST, MB_REQ, MB_RESP, 
 } cmd_mb_state		__attribute__ ((section (".usbram1")));
 
-char* strcmd_srcmb[] 	= {" ","NATIVE", "PM810", NULL};
+char* strcmd_srcmb[] 	= {" ","NATIVE", "PM810" , "SANTER" , "GWR" , NULL};
 enum xcmd_conf_files	{
-	NOL, SRC_MB_NATIVE, SRC_MB_PM810
+	NOL, SRC_MB_NATIVE, SRC_MB_PM810, SRC_MB_SANTER, SRC_MB_GWR
 } cmd_conf_srcmb;
 
 
@@ -80,7 +80,7 @@ void printd3(int prio, const char *format, ...)	{
 	}
 }
 
-int cmd_modbus(int gg, int *dReg)	{
+int cmd_modbus(int gg, int *dReg, char src)	{
 	struct t_sumber *st_sumber;
 	st_sumber = (char *) ALMT_SUMBER;
 	int destReg;
@@ -91,7 +91,8 @@ int cmd_modbus(int gg, int *dReg)	{
 	//*
 	if (st_sumber[gg].status)	{
 		//printf("----> Smbr[%d]: %d : REQ MODBUS %s : ", gg, st_sumber[gg].status, st_sumber[gg].form);
-		if (atoi(st_sumber[gg].form)==SRC_MB_NATIVE)		{
+		src = atoi(st_sumber[gg].form);
+		if (src!=NOL)		{
 			//parsing_mb_cmd(s, &cmd, &dest);
 			parsing_mb_native_cmd(st_sumber[gg].form,outmb3,&destReg);
 			#if 0
@@ -122,6 +123,7 @@ portBASE_TYPE xResyncRequired = pdFALSE, xErrorOccurred = pdFALSE;
 portBASE_TYPE xGotChar;
 int ch;
 char s[30];
+char src;
 	//char strmb[MAX_RX_MB];
 	int  nmb = 0, balas = 0, dReg=0;
 	char mb_state = MB_REST;
@@ -155,7 +157,7 @@ char s[30];
 		}
 		else if (mb_state==MB_REQ)	{
 			
-			int rsp = cmd_modbus(mbgilir, &dReg); // << (ada bug) yang buat modbus master loop di RESP, sementara buat jalan keluar dlu. debug dsini takes long time
+			int rsp = cmd_modbus(mbgilir, &dReg, src); // << (ada bug) yang buat modbus master loop di RESP, sementara buat jalan keluar dlu. debug dsini takes long time
 			//printf(">>> MB_REQ: %d dest: %d ", mbgilir, dReg);
 			if (rsp>0)	
 			{
@@ -214,7 +216,7 @@ char s[30];
 				if (flag_ms==1 && nmb>=8)	{
 					//printf("hasil: %d\r\n", nmb);
 					//printf("x%02x ", (char) ch);
-					balas = proses_mod3(nmb, strmb3,dReg);					//printf("--==> BALAS MB: %d\r\n", balas);
+					balas = proses_mod3(nmb, strmb3, dReg, src);					//printf("--==> BALAS MB: %d\r\n", balas);
 					nmb = 0;
 					//printf("4.");
 					mb_state = MB_REST;
@@ -257,7 +259,7 @@ char s[30];
 	}
 }
 
-int proses_mod3(int mbn, char *mbstr, int dReg)	{
+int proses_mod3(int mbn, char *mbstr, int dReg, char src)	{
 	int hsl=0, cmd=0, jml=0, reg=0;
 	int i,mm=(mbn-8);
 	char *ss;
@@ -266,9 +268,9 @@ int proses_mod3(int mbn, char *mbstr, int dReg)	{
 	
 	if (mbn<=8)	return 0;
 	ss = &mbstr[8];
-	ss2 = &mbstr[0];
+	//ss2 = &mbstr[0];
 	
-	det = (unsigned int) ss[2] / (unsigned int) ss2[5];
+	//det = (unsigned int) ss[2] / (unsigned int) ss2[5];
 	//printf("[%d]",det);
 	
 	#if 0
@@ -291,10 +293,33 @@ int proses_mod3(int mbn, char *mbstr, int dReg)	{
 	//printf("crc : %04x\r\n", hsl);
 	if (((hsl>>8 & 0xFF) != ss[mm-1]) || ((hsl & 0xFF) != ss[mm-2]))	return 1;
 	
+	#if 1
+	if (ss[1]==READ_HOLDING_REG){
+	switch (src){
+		case SRC_MB_SANTER:
+			simpan_mb_monita(ss[2], &ss[3], dReg); break;
+		case SRC_MB_GWR:
+			simpan_mb_gwr(ss[2], &ss[3], dReg); break;
+		case SRC_MB_NATIVE:
+			simpan_mb_std(ss[2], &ss[3], dReg); break;
+		case SRC_MB_PM810:
+			printf("810\n\r"); break;
+		default :
+			printf("invalid command\n\r"); return 0;
+	}
+	}
+	else{
+		printf("unavailable command\n\r");
+		return 0;
+	}
+	#endif
+	
+	#if 0
 	//printf("lanjut ....dReg: %d\r\n", dReg);
-	if ((ss[1]==READ_HOLDING_REG) && det==4) simpan_mb_monita(ss[2]/4, &ss[3], dReg);
-	else simpan_mb_std(ss[2]/2, &ss[3], dReg);
+	if ((ss[1]==READ_HOLDING_REG) && det==4) simpan_mb_monita(ss[2], &ss[3], dReg);
+	else simpan_mb_std(ss[2], &ss[3], dReg);
 	//if (ss[1]==READ_HOLDING_REG)	simpan_nilai_mb(ss[2], &ss[3], dReg);
+	#endif
 	
 	return (mbn-8);
 	
