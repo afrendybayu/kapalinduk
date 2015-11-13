@@ -248,7 +248,7 @@ unsigned char simpan_mb_gwr(int jml, unsigned char *s, int reg)	{
 
 unsigned char simpan_mb_std(int jml, unsigned char *s, int reg)	{
 	int i, j, k, tmpFl=0, ff=0, no=0;
-	float *fl;
+	float fl;
 	unsigned char nox;
 	//int cnt;
 	
@@ -289,15 +289,17 @@ unsigned char simpan_mb_std(int jml, unsigned char *s, int reg)	{
 		ff = 0;
 		
 		//printf("%02x %02x %02x %02x : ", s[i*4+0], s[i*4+1], s[i*4+2], s[i*4+3]);
-		tmpFl = ((s[i*2+0] & 0xFF)<<8) | (s[i*2+1] & 0xFF);
-		fl = (float *)&tmpFl;
+		tmpFl = 0x0000<<16 | ((s[i*2+0] & 0xFF)<<8) | (s[i*2+1] & 0xFF);
+		//printf("tmpfl=%x\n\r",tmpFl);
+		//fl = (float *)&tmpFl;
+		fl = (float) tmpFl;
 		
 		if (st_data[i].mv_avg == 1)
 			{
 				nox = st_data[i].no_ma;
-				st_mavg[nox].ke_0 = *fl;
+				st_mavg[nox].ke_0 = fl;
 			}
-		else data_f[no] = *fl;
+		else data_f[no] = fl;
 		//data_f[no] = *fl;
 		
 		//printf("dfloat: %08x %.3f\r\n", tmpFl, *fl);

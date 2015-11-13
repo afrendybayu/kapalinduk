@@ -80,7 +80,7 @@ void printd3(int prio, const char *format, ...)	{
 	}
 }
 
-int cmd_modbus(int gg, int *dReg, char src)	{
+int cmd_modbus(int gg, int *dReg, char *src) {
 	struct t_sumber *st_sumber;
 	st_sumber = (char *) ALMT_SUMBER;
 	int destReg;
@@ -91,7 +91,8 @@ int cmd_modbus(int gg, int *dReg, char src)	{
 	//*
 	if (st_sumber[gg].status)	{
 		//printf("----> Smbr[%d]: %d : REQ MODBUS %s : ", gg, st_sumber[gg].status, st_sumber[gg].form);
-		src = atoi(st_sumber[gg].form);
+		*src = atoi(st_sumber[gg].form);
+		//printf("src=%d\n\r",src);
 		if (src!=NOL)		{
 			//parsing_mb_cmd(s, &cmd, &dest);
 			parsing_mb_native_cmd(st_sumber[gg].form,outmb3,&destReg);
@@ -157,7 +158,7 @@ char src;
 		}
 		else if (mb_state==MB_REQ)	{
 			
-			int rsp = cmd_modbus(mbgilir, &dReg, src); // << (ada bug) yang buat modbus master loop di RESP, sementara buat jalan keluar dlu. debug dsini takes long time
+			int rsp = cmd_modbus(mbgilir, &dReg, &src); // << (ada bug) yang buat modbus master loop di RESP, sementara buat jalan keluar dlu. debug dsini takes long time
 			//printf(">>> MB_REQ: %d dest: %d ", mbgilir, dReg);
 			if (rsp>0)	
 			{
@@ -263,8 +264,8 @@ int proses_mod3(int mbn, char *mbstr, int dReg, char src)	{
 	int hsl=0, cmd=0, jml=0, reg=0;
 	int i,mm=(mbn-8);
 	char *ss;
-	char *ss2;
-	unsigned int det;
+	//char *ss2;
+	//unsigned int det;
 	
 	if (mbn<=8)	return 0;
 	ss = &mbstr[8];

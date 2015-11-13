@@ -25,4 +25,4 @@ xTaskHandle *hdl_serial3;
 void vAltStartCom3( unsigned portBASE_TYPE uxPriority, unsigned long ulBaudRate );
 int proses_mod3(int mbn, char *mbstr, int dReg, char src);
 void init_banner3()	;
-int cmd_modbus(int gg, int *dReg, char src);
+int cmd_modbus(int gg, int *dReg, char *src);
