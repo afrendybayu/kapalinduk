@@ -326,6 +326,7 @@ struct t_sumber {
 struct t_env {
 	char nama_board[32];
 	char id_modem[15];
+	char waktu_modem[8];
 	unsigned char IP0;
 	unsigned char IP1;
 	unsigned char IP2;

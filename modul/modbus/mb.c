@@ -436,14 +436,50 @@ int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 	}
 	if (cmd==RESET)
 	{
+		baca_reset(strmb);
 		uprintf("|R\n\r");
 	}
 	return 10;
 }
 #endif
 
-int baca_waktu_modem(char *str){
+int baca_reset(char *str){
+	char reset[5];
+	int len;
+	int i;
 	
+	len = (int) strmb[2];
+	for (i=0; i<len; i++){	
+		reset[i] = (char) strmb[3+i];	
+		uprintf("R[i]=%C\n\r",reset[i]);
+	}	
+	
+}
+
+int baca_waktu_modem(char *str){
+	struct t_env *st_env;
+	st_env = pvPortMalloc( sizeof (struct t_env) );
+
+	if (st_env==NULL)	{
+		uprintf("  GAGAL alokmem !");
+		vPortFree (st_env);
+		return;
+	}
+	memcpy((char *) st_env, (char *) ALMT_ENV, (sizeof (struct t_env)));
+	
+	char t_modem[8];
+	int len;
+	int i;
+	
+	len = (int) strmb[2];
+	for (i=0; i<len; i++){	
+		t_modem[i] = (char) strmb[3+i];	
+		uprintf("T[i]=%C\n\r",t_modem[i]);
+	}	
+	strcpy(st_env->waktu_modem, t_modem);
+	uprintf("waktu_modem=%s",st_env->waktu_modem);
+
+	vPortFree (st_env);
 }
 
 int baca_id_modem(char *str) {
@@ -451,7 +487,7 @@ int baca_id_modem(char *str) {
 	st_env = pvPortMalloc( sizeof (struct t_env) );
 
 	if (st_env==NULL)	{
-		printf("  GAGAL alokmem !");
+		uprintf("  GAGAL alokmem !");
 		vPortFree (st_env);
 		return;
 	}
@@ -465,10 +501,10 @@ int baca_id_modem(char *str) {
 
 	for (i=0; i<len; i++){	
 		ID[i] = (char) strmb[3+i];	
-		printf("ID[i]=%c\n\r");
+		uprintf("ID[i]=%C\n\r",ID[i]);
 	}	
 	strcpy(st_env->id_modem, ID);
-	printf("id_modem=%s",st_env->id_modem);
+	uprintf("id_modem=%s",st_env->id_modem);
 
 	vPortFree (st_env);
 

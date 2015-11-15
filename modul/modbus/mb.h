@@ -37,6 +37,8 @@ unsigned short crc_ccitt_0xffff(int len, char *data);
 //int tulis_single_mb(int reg, int index, char* str);
 
 int baca_id_modem(char *str);
+int baca_waktu_modem(char *str);
+int baca_reset(char *str);
 
 #ifdef PAKAI_FILE_SIMPAN
 int baca_kirim_file(int reg, int len, char *str);
