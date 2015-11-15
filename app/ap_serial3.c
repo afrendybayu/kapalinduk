@@ -29,7 +29,7 @@ enum xcmd_conf	{
 
 char* strcmd_srcmb[] 	= {" ","NATIVE", "PM810" , "SANTER" , "GWR" , NULL};
 enum xcmd_conf_files	{
-	NOL, SRC_MB_NATIVE, SRC_MB_PM810, SRC_MB_SANTER, SRC_MB_GWR
+	SRC_NOL, SRC_MB_NATIVE, SRC_MB_PM810, SRC_MB_SANTER, SRC_MB_GWR
 } cmd_conf_srcmb;
 
 
@@ -93,7 +93,7 @@ int cmd_modbus(int gg, int *dReg, char *src) {
 		//printf("----> Smbr[%d]: %d : REQ MODBUS %s : ", gg, st_sumber[gg].status, st_sumber[gg].form);
 		*src = atoi(st_sumber[gg].form);
 		//printf("src=%d\n\r",src);
-		if (src!=NOL)		{
+		if (src!=SRC_NOL)		{
 			//parsing_mb_cmd(s, &cmd, &dest);
 			parsing_mb_native_cmd(st_sumber[gg].form,outmb3,&destReg);
 			#if 0
@@ -173,8 +173,8 @@ char src;
 		}
 		else if (mb_state==MB_RESP)	{
 			//printf(">>> MB_RESP: %d\r\n", mbgilir);
-			xGotChar = xSerialGetChar3( xPort3, &ch, 100 );
-			//printf("|%02x ", (char) ch);
+			xGotChar = xSerialGetChar3( xPort3, &ch, 10 );
+			printf("|%02x ", (char) ch);
 			#if 1
 			if( xGotChar == pdTRUE )		
 			{
@@ -215,7 +215,7 @@ char src;
 				}
 				
 				if (flag_ms==1 && nmb>=8)	{
-					//printf("hasil: %d\r\n", nmb);
+					printf("hasil: %d\r\n", nmb);
 					//printf("x%02x ", (char) ch);
 					balas = proses_mod3(nmb, strmb3, dReg, src);					//printf("--==> BALAS MB: %d\r\n", balas);
 					nmb = 0;
@@ -296,18 +296,18 @@ int proses_mod3(int mbn, char *mbstr, int dReg, char src)	{
 	
 	#if 1
 	if (ss[1]==READ_HOLDING_REG){
-	switch (src){
-		case SRC_MB_SANTER:
-			simpan_mb_monita(ss[2], &ss[3], dReg); break;
-		case SRC_MB_GWR:
-			simpan_mb_gwr(ss[2], &ss[3], dReg); break;
-		case SRC_MB_NATIVE:
-			simpan_mb_std(ss[2], &ss[3], dReg); break;
-		case SRC_MB_PM810:
-			printf("810\n\r"); break;
-		default :
-			printf("invalid command\n\r"); return 0;
-	}
+		switch (src){
+			case SRC_MB_SANTER:
+				simpan_mb_monita(ss[2], &ss[3], dReg); break;
+			case SRC_MB_GWR:
+				simpan_mb_gwr(ss[2], &ss[3], dReg); break;
+			case SRC_MB_NATIVE:
+				simpan_mb_std(ss[2], &ss[3], dReg); break;
+			case SRC_MB_PM810:
+				printf("810\n\r"); break;
+			default :
+				printf("invalid command\n\r"); return 0;
+		}
 	}
 	else{
 		printf("unavailable command\n\r");

@@ -426,15 +426,15 @@ int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 	}
 	if (cmd==KIRIM_IDMODEM)
 	{
-	
+		printf("|ID\n\r");
 	}
 	if (cmd==KIRIM_WAKTU)
 	{
-	
+		printf("|T\n\r");	
 	}
 	if (cmd==RESET)
 	{
-	
+		printf("|R\n\r");
 	}
 	return 10;
 }
