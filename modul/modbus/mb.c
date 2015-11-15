@@ -426,20 +426,53 @@ int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 	}
 	if (cmd==KIRIM_IDMODEM)
 	{
-		printf("|ID\n\r");
+		baca_id_modem(strmb);
+		uprintf("|ID\n\r");
 	}
 	if (cmd==KIRIM_WAKTU)
 	{
-		printf("|T\n\r");	
+		baca_waktu_modem(strmb);
+		uprintf("|T\n\r");	
 	}
 	if (cmd==RESET)
 	{
-		printf("|R\n\r");
+		uprintf("|R\n\r");
 	}
 	return 10;
 }
 #endif
 
+int baca_waktu_modem(char *str){
+	
+}
+
+int baca_id_modem(char *str) {
+	struct t_env *st_env;
+	st_env = pvPortMalloc( sizeof (struct t_env) );
+
+	if (st_env==NULL)	{
+		printf("  GAGAL alokmem !");
+		vPortFree (st_env);
+		return;
+	}
+	memcpy((char *) st_env, (char *) ALMT_ENV, (sizeof (struct t_env)));
+	
+	char ID[15];
+	int len;
+	int i;
+
+	len = (int) strmb[2];
+
+	for (i=0; i<len; i++){	
+		ID[i] = (char) strmb[3+i];	
+		printf("ID[i]=%c\n\r");
+	}	
+	strcpy(st_env->id_modem, ID);
+	printf("id_modem=%s",st_env->id_modem);
+
+	vPortFree (st_env);
+
+}
 
 #ifdef PAKAI_FILE_SIMPAN
 int baca_kirim_file(int no, int len, char *str)		{
