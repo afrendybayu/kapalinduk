@@ -473,7 +473,7 @@ int baca_waktu_modem(char *str){
 	
 	len = (int) strmb[2];
 	for (i=0; i<len; i++){	
-		t_modem[i] = (char) strmb[3+i];	
+		t_modem[i] = (int) strmb[3+i];	
 		uprintf("T[i]=%C\n\r",t_modem[i]);
 	}	
 	strcpy(st_env->waktu_modem, t_modem);

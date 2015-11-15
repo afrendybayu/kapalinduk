@@ -122,6 +122,7 @@ char s[30];
 			}
 			
 			if (flag_ms==1 && nmb>4)	{
+				printf("\n\r");
 				balas = proses_mod(nmb, strmb);
 				//printf("--==> BALAS MB: %d\r\n", balas);
 				nmb = 0;
