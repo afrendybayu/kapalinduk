@@ -106,7 +106,7 @@ int cmd_modbus(int gg, int *dReg, char *src) {
 			
 			*dReg = destReg;
 			//printf("Dest Reg: %d - %d\r\n", *dReg, destReg);
-			return kirim_respon_mb(8,outmb3,50,3);
+			return kirim_respon_mb(8,outmb3,25,3);
 		}
 	}
 	//*/
