@@ -85,6 +85,7 @@ int cmd_modbus(int gg, int *dReg, char *src) {
 	st_sumber = (char *) ALMT_SUMBER;
 	int destReg;
 	int k;
+	int timeout;
 	//char *ss;
 	//if (gg==0)	printf("  ========================\r\n");
 	//printf(" CMD Sumber %d\r\n",gg);
@@ -104,9 +105,23 @@ int cmd_modbus(int gg, int *dReg, char *src) {
 			printf("\r\n");
 			#endif
 			
+			
+			switch (*src){
+			case SRC_MB_SANTER:
+				timeout = 50; break;
+			case SRC_MB_GWR:
+				timeout = 20; break;
+			case SRC_MB_NATIVE:
+				timeout = 50; break;
+			case SRC_MB_PM810:
+				timeout = 50; break;
+			default :
+				timeout = 50; break;
+			}
+		
 			*dReg = destReg;
 			//printf("Dest Reg: %d - %d\r\n", *dReg, destReg);
-			return kirim_respon_mb(8,outmb3,50,3);
+			return kirim_respon_mb(8,outmb3,timeout,3);
 		}
 	}
 	//*/
