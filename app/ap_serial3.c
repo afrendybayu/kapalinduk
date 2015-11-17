@@ -188,7 +188,7 @@ char src;
 		}
 		else if (mb_state==MB_RESP)	{
 			//printf(">>> MB_RESP: %d\r\n", mbgilir);
-			xGotChar = xSerialGetChar3( xPort3, &ch, 10 );
+			xGotChar = xSerialGetChar3( xPort3, &ch, 100 );
 			//printf("|%02x ", (char) ch);
 			#if 1
 			if( xGotChar == pdTRUE )		
