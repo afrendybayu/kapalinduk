@@ -106,7 +106,7 @@ int cmd_modbus(int gg, int *dReg, char *src) {
 			
 			*dReg = destReg;
 			//printf("Dest Reg: %d - %d\r\n", *dReg, destReg);
-			return kirim_respon_mb(8,outmb3,20,3);
+			return kirim_respon_mb(8,outmb3,50,3);
 		}
 	}
 	//*/
@@ -174,7 +174,7 @@ char src;
 		else if (mb_state==MB_RESP)	{
 			//printf(">>> MB_RESP: %d\r\n", mbgilir);
 			xGotChar = xSerialGetChar3( xPort3, &ch, 10 );
-			printf("|%02x ", (char) ch);
+			//printf("|%02x ", (char) ch);
 			#if 1
 			if( xGotChar == pdTRUE )		
 			{
@@ -215,7 +215,7 @@ char src;
 				}
 				
 				if (flag_ms==1 && nmb>=8)	{
-					printf("hasil: %d\r\n", nmb);
+					//printf("hasil: %d\r\n", nmb);
 					//printf("x%02x ", (char) ch);
 					balas = proses_mod3(nmb, strmb3, dReg, src);					//printf("--==> BALAS MB: %d\r\n", balas);
 					nmb = 0;

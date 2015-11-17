@@ -103,7 +103,7 @@ char s[30];
 				//printf("nmb: %d, ch: %02x, mask sini !!", nmb, (char)ch);
 			} 
 			else {
-				printf("%02x ", (char) ch);
+				//printf("%02x ", (char) ch);
 				//printf("%c ", (char) ch);
 				strmb[nmb] = (char) ch;
 				nmb++;
@@ -122,7 +122,7 @@ char s[30];
 			}
 			
 			if (flag_ms==1 && nmb>4)	{
-				printf("\n\r");
+				//printf("\n\r");
 				balas = proses_mod(nmb, strmb);
 				//printf("--==> BALAS MB: %d\r\n", balas);
 				nmb = 0;
