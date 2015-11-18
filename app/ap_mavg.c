@@ -39,7 +39,8 @@ void data_mavg(int max)
 		st_mavg[i].ke_2=st_mavg[i].ke_1;
 		st_mavg[i].ke_1=st_mavg[i].ke_0;
 	}
-	printf("|ma|\n\r");
+	//printf("|ma|\n\r");
+	printf("|<<<<<>>>>>|\n\r");
 	
 	#if 0
 	struct t_data *st_data;
