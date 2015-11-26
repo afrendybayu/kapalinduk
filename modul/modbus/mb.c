@@ -427,17 +427,17 @@ int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 	if (cmd==KIRIM_IDMODEM)
 	{
 		baca_id_modem(strmb);
-		uprintf("|ID\n\r");
+		//uprintf("|ID\n\r");
 	}
 	if (cmd==KIRIM_WAKTU)
 	{
 		baca_waktu_modem(strmb);
-		uprintf("|T\n\r");	
+		//uprintf("|T\n\r");	
 	}
 	if (cmd==RESET)
 	{
 		baca_reset(strmb);
-		uprintf("|R\n\r");
+		//uprintf("|R\n\r");
 	}
 	return 10;
 }
@@ -474,11 +474,14 @@ int baca_waktu_modem(char *str){
 	len = (int) strmb[2];
 	for (i=0; i<len; i++){	
 		t_modem[i] = (int) strmb[3+i];	
-		uprintf("T[i]=%C\n\r",t_modem[i]);
+		//uprintf("T[i]=%C\n\r",t_modem[i]);
 	}	
-	strcpy(st_env->waktu_modem, t_modem);
-	uprintf("waktu_modem=%s",st_env->waktu_modem);
+	//strcpy(st_env->waktu_modem, t_modem);
+	st_env->waktu_modem = (int)strtol(t_modem, NULL, 16);
+	//uprintf("waktu_modem=%s\n\r",st_env->waktu_modem);
+	uprintf("waktu_modem=%d\n\r",st_env->waktu_modem);
 
+	simpan_st_rom(SEKTOR_ENV, ENV, 0, (unsigned short *) st_env, 0);
 	vPortFree (st_env);
 }
 
@@ -501,11 +504,12 @@ int baca_id_modem(char *str) {
 
 	for (i=0; i<len; i++){	
 		ID[i] = (char) strmb[3+i];	
-		uprintf("ID[i]=%C\n\r",ID[i]);
+		//uprintf("ID[i]=%C\n\r",ID[i]);
 	}	
 	strcpy(st_env->id_modem, ID);
-	uprintf("id_modem=%s",st_env->id_modem);
+	uprintf("id_modem=%s\n\r",st_env->id_modem);
 
+	simpan_st_rom(SEKTOR_ENV, ENV, 0, (unsigned short *) st_env, 0);
 	vPortFree (st_env);
 
 }
