@@ -28,8 +28,8 @@ void cek_env(int argc, char **argv)	{
 	uprintf("\r\n  Cek modul %s %s   \r\n  ******************************\r\n", BOARD_SANTER, BOARD_SANTER_versi);
 	uprintf("  Nama Board : %s\r\n", st_env->nama_board);
 	uprintf("  No Seri    : %s\r\n", st_env->SN);
-	uprintf(" ID Modem : %s\n\r", st_env->id_modem);
-	uprintf(" Waktu Modem : %s\n\r", st_env->waktu_modem);
+	uprintf("  ID Modem : %s\n\r", st_env->id_modem);
+	uprintf("  Waktu Modem : %s\n\r", st_env->waktu_modem);
 	//uprintf("  No Ajaib   : %02X:%02X\r\n", st_env->magic1, st_env->magic2);
 	#ifdef PAKAI_ETH
 	uprintf("  Konfigurasi Ethernet\r\n");
