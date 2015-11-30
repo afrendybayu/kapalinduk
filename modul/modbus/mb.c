@@ -481,15 +481,13 @@ int baca_waktu_modem(char *str){
 		//uprintf("T[i]=%C\n\r",t_modem[i]);
 	}	
 	//strcpy(st_env->waktu_modem, t_modem);
-	st_env->waktu_modem = (int)strtol(t_modem, NULL, 16);
-	//wkt = (int)strtol(t_modem, NULL, 16);
+	st_env->waktu_modem = (int)strtol(t_modem, NULL, 16); //epoch
 	wkt = st_env->waktu_modem;
-	//uprintf("waktu_modem=%s\n\r",st_env->waktu_modem);
-	uprintf("waktu_modem=%d",st_env->waktu_modem);
+	//uprintf("waktu_modem=%d",st_env->waktu_modem);
 	
 	wm = localtime (&wkt);
-	uprintf(" |%04d|%02d|%02d|%02d|%02d|%02d|",wm->tm_year+1900, wm->tm_mon+1, wm->tm_mday, wm->tm_hour, wm->tm_min, wm->tm_sec);
-	uprintf("\n\r");
+	//uprintf(" |%04d|%02d|%02d|%02d|%02d|%02d|",wm->tm_year+1900, wm->tm_mon+1, wm->tm_mday, wm->tm_hour, wm->tm_min, wm->tm_sec);
+	//uprintf("\n\r");
 	
 	/* update waktu */	
 	rtcWrite( wm );
@@ -520,7 +518,7 @@ int baca_id_modem(char *str) {
 		//uprintf("ID[i]=%C\n\r",ID[i]);
 	}	
 	strcpy(st_env->id_modem, ID);
-	uprintf("id_modem=%s\n\r",st_env->id_modem);
+	//uprintf("id_modem=%s\n\r",st_env->id_modem);
 
 	simpan_st_rom(SEKTOR_ENV, ENV, 0, (unsigned short *) st_env, 0);
 	vPortFree (st_env);
