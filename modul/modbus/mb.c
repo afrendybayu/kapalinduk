@@ -4,6 +4,7 @@
 #include "hardware.h"
 #include "ap_utils.h"
 #include "mb.h"
+#include <time.h>
 
 #ifdef PAKAI_MODBUS
 
@@ -457,6 +458,8 @@ int baca_reset(char *str){
 }
 
 int baca_waktu_modem(char *str){
+	struct tm *wm;
+	unsigned int wkt;
 	struct t_env *st_env;
 	st_env = pvPortMalloc( sizeof (struct t_env) );
 
@@ -470,6 +473,7 @@ int baca_waktu_modem(char *str){
 	char t_modem[8];
 	int len;
 	int i;
+	char buf[80];
 	
 	len = (int) strmb[2];
 	for (i=0; i<len; i++){	
@@ -478,9 +482,18 @@ int baca_waktu_modem(char *str){
 	}	
 	//strcpy(st_env->waktu_modem, t_modem);
 	st_env->waktu_modem = (int)strtol(t_modem, NULL, 16);
+	//wkt = (int)strtol(t_modem, NULL, 16);
+	wkt = st_env->waktu_modem;
 	//uprintf("waktu_modem=%s\n\r",st_env->waktu_modem);
-	uprintf("waktu_modem=%d\n\r",st_env->waktu_modem);
-
+	uprintf("waktu_modem=%d",st_env->waktu_modem);
+	
+	wm = localtime (&wkt);
+	uprintf(" |%04d|%02d|%02d|%02d|%02d|%02d|",wm->tm_year+1900, wm->tm_mon+1, wm->tm_mday, wm->tm_hour, wm->tm_min, wm->tm_sec);
+	uprintf("\n\r");
+	
+	/* update waktu */	
+	rtcWrite( wm );
+	
 	simpan_st_rom(SEKTOR_ENV, ENV, 0, (unsigned short *) st_env, 0);
 	vPortFree (st_env);
 }
