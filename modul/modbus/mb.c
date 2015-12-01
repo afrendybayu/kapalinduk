@@ -473,7 +473,6 @@ int baca_waktu_modem(char *str){
 	char t_modem[8];
 	int len;
 	int i;
-	char buf[80];
 	
 	len = (int) strmb[2];
 	for (i=0; i<len; i++){	
