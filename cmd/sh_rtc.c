@@ -98,7 +98,6 @@ void set_date(int argc, char **argv)	{
 	tmku.tm_mon  = tmku.tm_mon - 1;
 	tmku.tm_sec  = 0;
 	tmku.tm_wday = tmku.tm_wday - 1;
-	tmku.tm_sec = 0;
 
 	rtcWrite( &tmku );
 	//clk = mktime(&tmku);	

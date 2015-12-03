@@ -339,6 +339,7 @@ int ch, mm=0;
 char s[30];
 int jml_mavg;
 extern struct t_mavg *st_mavg;
+rtcCTIME0_t ctime0;
 
 	/* Just to stop compiler warnings. */
 	( void ) pvParameters;
@@ -439,12 +440,14 @@ extern struct t_mavg *st_mavg;
 		//vTaskDelay(10);
 		//printf("testing\r\n");
 		xGotChar = xSerialGetChar( xPort, &ch, 10 );
+		ctime0.i = RTC_CTIME0; 
 		
 		if( xGotChar == pdTRUE )		{
 			tinysh_char_in((unsigned char) ch);
 			toogle_led_utama();
 		}
-		if (st_hw.mm>=120)	{			// cron tiap 1 menit
+		//if (st_hw.mm>=120)	{			// cron tiap 1 menit
+		if (ctime0.seconds<=3)	{			// cron tiap dibawah detik ke 3
 		//if (st_hw.mm >= 10)	{			// cron tiap 10detik
 		//if (st_hw.mm>=2)		{			// cron tiap 1 detik
 			st_hw.mm = 0;

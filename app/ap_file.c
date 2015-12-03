@@ -467,8 +467,7 @@ void simpan_file_data()		{
 	//ctime2.i = RTC_CTIME2;
 	
 	//uprintf("waktu: %d%02d%02d_%02d%02d\r\n", ctime1.year, ctime1.month, ctime1.dom, ctime0.hours, ctime0.minutes );
-	if (ctime0.seconds<30) {
-	uprintf("NULIS\n\r");
+	//uprintf("NULIS\n\r");
 	menit =  (ctime0.minutes<30)?0:30;
 	sprintf(fol, "0:\\%d%02d%02d", ctime1.year, ctime1.month, ctime1.dom);
 	sprintf(st, "%s\\%d%02d%02d_%02d%02d.str", fol, ctime1.year, ctime1.month, ctime1.dom, ctime0.hours, menit);
@@ -545,7 +544,6 @@ void simpan_file_data()		{
 	
 	//f_sync(&filx);
 	f_close(&filx);
-	}
 }
 
 void tulis_konfig_file(char *s, FIL* fp)	{
