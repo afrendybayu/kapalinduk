@@ -447,7 +447,7 @@ rtcCTIME0_t ctime0;
 			toogle_led_utama();
 		}
 		//if (st_hw.mm>=120)	{			// cron tiap 1 menit
-		if (ctime0.seconds<=3)	{			// cron tiap dibawah detik ke 3
+		if ((ctime0.seconds==3) && (st_hw.mm>20))	{			// cron tiap di detik ke 3 | treshold 20
 		//if (st_hw.mm >= 10)	{			// cron tiap 10detik
 		//if (st_hw.mm>=2)		{			// cron tiap 1 detik
 			st_hw.mm = 0;
