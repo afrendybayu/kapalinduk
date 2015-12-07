@@ -438,7 +438,7 @@ int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 	if (cmd==RESET)
 	{
 		baca_reset(strmb);
-		uprintf("|R\n\r");
+		//uprintf("|R\n\r");
 	}
 	return 10;
 }
