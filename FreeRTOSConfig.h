@@ -81,7 +81,7 @@
  *----------------------------------------------------------*/
 
 
-#define PROMPT				"iTong"
+#define PROMPT				"Well_Noted"
 #define BOARD_SANTER		"Santer"
 #define BOARD_SANTER_v1_0
 //#define BOARD_SANTER_versi	"v1.2"
