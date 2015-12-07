@@ -485,11 +485,11 @@ int baca_waktu_modem(char *str){
 	//strcpy(st_env->waktu_modem, t_modem);
 	st_env->waktu_modem = (int)strtol(t_modem, NULL, 16); //epoch
 	wkt = st_env->waktu_modem;
-	//uprintf("waktu_modem=%d",st_env->waktu_modem);
+	uprintf("waktu_modem=%d",st_env->waktu_modem);
 	
 	wm = localtime (&wkt);
 	//uprintf(" |%04d|%02d|%02d|%02d|%02d|%02d|",wm->tm_year+1900, wm->tm_mon+1, wm->tm_mday, wm->tm_hour, wm->tm_min, wm->tm_sec);
-	//uprintf("\n\r");
+	uprintf("\n\r");
 	
 	/* update waktu */	
 	rtcWrite( wm );
