@@ -446,15 +446,18 @@ int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 
 int baca_reset(char *str){
 	char reset[5];
+	char key[5] = "reset";
 	int len;
 	int i;
 	
 	len = (int) strmb[2];
 	for (i=0; i<len; i++){	
 		reset[i] = (char) strmb[3+i];	
-		uprintf("R[i]=%C\n\r",reset[i]);
+		//uprintf("R[i]=%C\n\r",reset[i]);
 	}	
 	
+	if (strcmp(key,reset) != 0) uprintf ("reset\n\r");
+	else uprintf("no_reset\n\r");
 }
 
 int baca_waktu_modem(char *str){
