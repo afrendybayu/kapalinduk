@@ -456,7 +456,8 @@ int baca_reset(char *str){
 		//uprintf("R[i]=%C\n\r",reset[i]);
 	}	
 	
-	if (strcmp(key,reset) != 0) uprintf ("reset\n\r");
+	//if (strcmp(key,reset) != 0) uprintf ("reset\n\r");
+	if (strcmp(key,reset) != 0) reset_cpu();
 	else uprintf("no_reset\n\r");
 }
 
