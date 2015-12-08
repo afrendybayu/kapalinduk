@@ -95,7 +95,7 @@ char s[30];
 	} while(st_hw.init != uxTaskGetNumberOfTasks());
 		
 	for( ;; )	{
-		//printd2(10, "serial 2: %d\r\n", loop2++);
+		printd2(10, "serial 2: %d\r\n", loop2++);
 		//vSerialPutString2(xPort2, "tes2\r\n", 6);
 		xGotChar = xSerialGetChar2( xPort2, &ch, 10 );
 		if( xGotChar == pdTRUE )		{

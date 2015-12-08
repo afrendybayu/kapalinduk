@@ -105,6 +105,104 @@
 #define serSOURCE_RX					( ( unsigned char ) 0x04 )
 #define serINTERRUPT_SOURCE_MASK		( ( unsigned char ) 0x0f )
 
+
+
+#ifdef PAKAI_SERIAL_1
+
+static xQueueHandle xRxedChars1; 
+static xQueueHandle xCharsForTx1; 
+static volatile long lTHREEmpty1;
+
+void vSerialISRCreateQueues1( unsigned portBASE_TYPE uxQueueLength, xQueueHandle *pxRxedChars, xQueueHandle *pxCharsForTx, long volatile **pplTHREEmptyFlag );
+
+/* UART0 interrupt service routine entry point. */
+void vUART1_ISR_Wrapper( void ) __attribute__ ((naked));
+
+/* UART0 interrupt service routine handler. */
+//void vUART_ISR_Handler( void ) __attribute__ ((noinline));
+void vUART1_ISR_Handler( void );
+
+void vSerialISRCreateQueues1(	unsigned portBASE_TYPE uxQueueLength, xQueueHandle *pxRxedChars, 
+								xQueueHandle *pxCharsForTx, long volatile **pplTHREEmptyFlag )
+{
+	/* Create the queues used to hold Rx and Tx characters. */
+	//xRxedChars = xQueueCreate( uxQueueLength, ( unsigned portBASE_TYPE ) sizeof( signed char ) );
+	xRxedChars1 = xQueueCreate( 8, ( unsigned portBASE_TYPE ) sizeof( signed portCHAR ) );
+	xCharsForTx1 = xQueueCreate( uxQueueLength + 1, ( unsigned portBASE_TYPE ) sizeof( signed char ) );
+
+	/* Pass back a reference to the queues so the serial API file can 
+	post/receive characters. */
+	*pxRxedChars = xRxedChars1;
+	*pxCharsForTx = xCharsForTx1;
+
+	/* Initialise the THRE empty flag - and pass back a reference. */
+	lTHREEmpty1 = ( long ) pdTRUE;
+	*pplTHREEmptyFlag = &lTHREEmpty1;
+}
+
+void vUART1_ISR_Wrapper( void )
+{
+	/* Save the context of the interrupted task. */
+	portSAVE_CONTEXT();
+
+	/* Call the handler.  This must be a separate function from the wrapper
+	to ensure the correct stack frame is set up. */
+	__asm volatile ("bl vUART2_ISR_Handler");
+
+	/* Restore the context of whichever task is going to run next. */
+	portRESTORE_CONTEXT();
+}
+
+void vUART1_ISR_Handler( void )
+{
+signed char cChar;
+portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
+
+	/* What caused the interrupt? */
+	switch( U1IIR & serINTERRUPT_SOURCE_MASK )
+	{
+		case serSOURCE_ERROR :	/* Not handling this, but clear the interrupt. */
+								cChar = U1LSR;
+								break;
+
+		case serSOURCE_THRE	:	/* The THRE is empty.  If there is another
+								character in the Tx queue, send it now. */
+								if( xQueueReceiveFromISR( xCharsForTx1, &cChar, &xHigherPriorityTaskWoken ) == pdTRUE )
+								{
+									U1THR = cChar;
+								}
+								else
+								{
+									/* There are no further characters 
+									queued to send so we can indicate 
+									that the THRE is available. */
+									lTHREEmpty1 = pdTRUE;
+								}
+								break;
+
+		case serSOURCE_RX_TIMEOUT :
+		case serSOURCE_RX	:	/* A character was received.  Place it in 
+								the queue of received characters. */
+								cChar = U1RBR;
+								xQueueSendFromISR( xRxedChars1, &cChar, &xHigherPriorityTaskWoken );
+								break;
+
+		default				:	/* There is nothing to do, leave the ISR. */
+								break;
+	}
+
+	if( xHigherPriorityTaskWoken )
+	{
+		portYIELD_FROM_ISR();
+	}
+
+	/* Clear the ISR in the VIC. */
+	VICVectAddr = serCLEAR_VIC_INTERRUPT;
+}
+
+#endif
+
+
 #ifdef PAKAI_SERIAL_2
 
 static xQueueHandle xRxedChars2; 

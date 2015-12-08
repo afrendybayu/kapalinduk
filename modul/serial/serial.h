@@ -141,5 +141,10 @@ signed portBASE_TYPE xSerialPutChar3( xComPortHandle pxPort3, signed portCHAR cO
 void vSerialPutString3(xComPortHandle pxPort3, const signed portCHAR * const pcString, unsigned short usStringLength);
 #endif
 
+#ifdef PAKAI_SERIAL_1
+signed portBASE_TYPE xSerialPutChar1( xComPortHandle pxPort1, signed portCHAR cOutChar, portTickType xBlockTime );
+void vSerialPutString1(xComPortHandle pxPort1, const signed portCHAR * const pcString, unsigned short usStringLength);
+#endif
+
 #endif
 

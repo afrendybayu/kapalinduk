@@ -102,6 +102,12 @@
 
 //#define PAKAI_RELAY
 
+#define PAKAI_SERIAL_1
+#ifdef  PAKAI_SERIAL_1
+	#define PAKAI_SERIAL_1_P2		9600
+	#define ST_SER1					15
+	#endif
+
 #define PAKAI_SERIAL_2
 #ifdef  PAKAI_SERIAL_2
 	//#define PAKAI_SERIAL_2_P0		115200
@@ -122,7 +128,7 @@
 
 #define PAKAI_SPI_SSP1
 #ifdef  PAKAI_SPI_SSP1
-	#define PAKAI_ADC_7708 
+//	#define PAKAI_ADC_7708 
 #endif
 
 

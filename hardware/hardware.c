@@ -59,6 +59,12 @@ void setup_hardware()	{
 		setup_serial0_P0();
 	#endif
 	
+	#ifdef PAKAI_SERIAL_1			
+		#ifdef PAKAI_SERIAL_1_P2
+			setup_serial1_P2();
+		#endif
+	#endif
+	
 	#ifdef PAKAI_SERIAL_2			
 		#ifdef PAKAI_SERIAL_2_P0
 			setup_serial2_P0();
@@ -110,6 +116,11 @@ void init_hardware()	{
 		adc_int_init();
 	#endif
 	
+	#endif
+	
+	#ifdef PAKAI_SERIAL_1	
+		//qsprintf("init serial 2\r\n");
+		vAltStartCom1( mainCOM_TEST_PRIORITY, PAKAI_SERIAL_1_P2 );
 	#endif
 	
 	#ifdef PAKAI_SERIAL_2	
