@@ -118,7 +118,7 @@ typedef enum IAP_STATUS_t {
 #endif
 
 volatile float data_f [ JML_TITIK_DATA ];
-
+volatile float astm_f [PER_SUMBER];
 
 // 32 KB
 #define ALMT_SEKTOR_8	0x08000	
