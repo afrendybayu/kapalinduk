@@ -102,6 +102,9 @@ typedef enum IAP_STATUS_t {
 #define JML_SUMBER			 6
 #define SUMBER_PER_SEKTOR	32
 
+#define BLOK_ASTM			21
+#defint PER_ASTM			91
+
 //#define ANGKA_PENTING	1
 
 #ifdef PAKAI_RELAY
