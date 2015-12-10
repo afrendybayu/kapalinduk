@@ -15,5 +15,8 @@ void hitung_rpm(void);
 void data_frek_rpm (void);
 void hitung_running_hours();
 
+//astm
+int lok_suhu(float cuhu);
+float nilai_coep (int loc_pless, int temp);
 
 #endif

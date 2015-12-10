@@ -270,6 +270,9 @@ inline void init_led()		{
 }
 
 void vLedTask( void *pvParameters )	{
+	struct t_env *st_env;
+	st_env = ALMT_ENV;
+	short cnt_astm = 0;
 	FIO1SET = LED_UTAMA;
 	char a=0, b=1, i=0;
 	char ss[6];
@@ -287,11 +290,31 @@ void vLedTask( void *pvParameters )	{
 
 	#ifdef MOV_AVG
 	char toogle_mavg;
-	struct t_env *st_env;
-	st_env = ALMT_ENV;
+	//struct t_env *st_env;
+	//st_env = ALMT_ENV;
 	
 	jml_mavg = st_env->n_mavg;
 	toogle_mavg = 0;
+	#endif
+	
+	#ifdef debug_ASTM
+	int lok;
+	lok = 1;
+	//tes panggil nilai astm --> oke
+	struct t_astm *st_astm;
+	st_astm = pvPortMalloc(PER_ASTM * sizeof (struct t_astm) );
+	if (st_astm == NULL)	{
+		printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
+		vPortFree (st_astm);
+		return 3;
+	}
+
+	memcpy((char *) st_astm, (char *) ALMT_VALUE_ASTM+(lok*JML_KOPI_ASTM), (PER_ASTM * sizeof (struct t_astm)));
+	
+	printf("|%f|", st_astm[0].koef);	
+	printf("|%f|", st_astm[1].koef);	
+	vPortFree (st_astm);
+	
 	#endif
 	
 	int q = 0;
@@ -306,6 +329,16 @@ void vLedTask( void *pvParameters )	{
 
 		#ifdef PAKAI_ADC_7708
 		data_adc();
+		#endif
+		
+		#ifdef ADA_ASTM
+		//counter untuk astm, periode 1 menit
+		cnt_astm ++;
+		if (cnt_astm == 120){ 
+		cnt_astm = 0;
+		astm_aktif = st_env->jumFlow; // nilai astm_aktif di isi dengan jumlah flowmeter dalam deret binary. ngertos??
+		}
+		//printf("|%d|%d| ",cnt_astm,astm_aktif);
 		#endif
 		
 		#ifdef MOV_AVG

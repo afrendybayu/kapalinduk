@@ -50,6 +50,7 @@ typedef enum IAP_STATUS_t {
 } IAP_STATUS_t;
 
 //IAP_return_t iap_return;
+short astm_aktif;
 
 #define  RPM_MAX		3000
 #define  PROP_MAX		250
@@ -211,6 +212,11 @@ struct t2_konter{
 
 unsigned int giliran;
 struct t2_konter konter;
+float k_t0[3];
+float k_t1[3];
+float d_t0[3];
+float d_t1[3];
+
 //unsigned char status_konter[JML_KANAL];
 
 struct t_st_hw  {

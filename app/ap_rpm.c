@@ -51,11 +51,9 @@ void cek_input_onoff(void)	{
 void set_konter_rpm(int st, unsigned int period)		{
 	//new_period = T1TC;
 	if (period > konter.t_konter[st].last_period)	{
-		konter.t_konter[st].beda = (period -
-			konter.t_konter[st].last_period) * 50;	// 1 clock 50 nanosecond
+		konter.t_konter[st].beda = (period - konter.t_konter[st].last_period) * 50;	// 1 clock 50 nanosecond
 	}	else	{	// sudah overflow
-		konter.t_konter[st].beda = (period +
-			(0xFFFFFFFF - konter.t_konter[st].last_period)) * 50;	// 1 clock 50 nanosecond
+		konter.t_konter[st].beda = (period + (0xFFFFFFFF - konter.t_konter[st].last_period)) * 50;	// 1 clock 50 nanosecond
 	}
 	konter.t_konter[st].hit++;
 	konter.t_konter[st].last_period = period;
@@ -187,6 +185,12 @@ void data_frek_rpm (void) {
 	float temp_f, fl2;
 	float temp_rpm;
 	unsigned char nox;
+
+	float coef_astm;	
+	float liter_astm;
+	float rataan_astm;
+	int dens;
+	short geser = 1;
 	
 	struct t_env *st_env;
 	st_env = ALMT_ENV;
@@ -307,6 +311,28 @@ void data_frek_rpm (void) {
 		else if (status==sFLOWx)	{
 			//*
 			data_f[i] = (konter.t_konter[i].hit*st_env->kalib[i].m)+st_env->kalib[i].C;
+			
+			// dsini nanti di tambahkan perkalian dengan nilai ASTM
+			#ifdef ADA_ASTM
+			if (astm_aktif){ 
+			//printf("|%f|%f|\n\r",astm_f[i],k_t0[i-6]);
+			k_t0[i-6] = k_t1[i-6];
+			d_t0[i-6] = d_t1[i-6];
+			astm_aktif = astm_aktif - geser;
+			geser = geser << 1;
+			dens = st_env->fuel_den;
+			coef_astm = nilai_coep(dens,i);
+			k_t1[i-6] = coef_astm;
+			d_t1[i-6] = data_f[i];
+			//printf("coef_astm_%d=%f|%f|%f\n\r", i, coef_astm, k_t1[i-6], k_t0[i-6]);
+			//printf("|%f|%f|\n\r", d_t1[i-6], d_t0[i-6]);
+			rataan_astm = (k_t1[i-6] + k_t0[i-6])/2.0;
+			liter_astm = d_t1[i-6] - d_t0[i-6];
+			liter_astm = liter_astm * rataan_astm;
+			astm_f[i] = astm_f[i] + liter_astm;
+			//printf("liter_astm = %f\n\r",astm_f[i]);
+			}			
+			#endif
 			
 			#if 1
 			if (data_f[i]>nFLOW_MAX) {		// reset setelah 10juta, 7 digit
@@ -448,4 +474,55 @@ void data_frek_rpm (void) {
 		#endif
 	}
 	//printf("|rpm|\n\r");
+}
+
+int lok_suhu(float cuhu)
+{
+	int poss,q;
+	float cuhu_temp;
+	
+	
+	cuhu_temp = cuhu-25.00;
+	cuhu_temp = cuhu_temp*4;
+	q = (int) cuhu_temp;
+	poss = q;
+
+	return poss;
+}
+
+float nilai_coep (int loc_pless, int temp)
+{
+	int n_ples;
+	float suhux;
+	float cuhu1,cuhu2,low_cuhu;
+	float koep;
+	int n_suhu;
+
+	struct t_astm *st_astm;	
+	st_astm = pvPortMalloc( PER_ASTM * sizeof (struct t_astm) );
+	if (st_astm == NULL)	{
+		printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
+		vPortFree(st_astm);
+		return 2;
+	}
+
+	suhux = data_f[temp+6]; // <--- kudu dicek lagi, kyknya miss dsini
+	n_suhu = lok_suhu(suhux);
+	n_ples = (int) (loc_pless-810)/2;
+	
+	memcpy((char *) st_astm, (char *) ALMT_VALUE_ASTM+(n_ples*JML_KOPI_ASTM), (PER_ASTM * sizeof (struct t_astm)));	
+	cuhu1 = st_astm[n_suhu].koef;
+	//printf("|%f|",cuhu1);
+	cuhu2 = st_astm[n_suhu+1].koef;
+	//printf("|%f|",cuhu2);
+
+	
+	low_cuhu =((float)n_suhu/4) +25.00;
+	
+	/*INTERPOLASI*/
+	koep = (((suhux-low_cuhu)*(cuhu2-cuhu1)*4.00)+cuhu1);
+	//printf("koep = %f",koep);
+	vPortFree (st_astm);
+	
+	return koep;
 }
