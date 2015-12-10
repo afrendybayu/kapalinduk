@@ -122,6 +122,9 @@
 	#define MODBUS_RTU_MASTER
 #endif
 
+//ASTM
+#define ADA_ASTM
+
 #define PAKAI_SPI_SSP1
 #ifdef  PAKAI_SPI_SSP1
 	#define PAKAI_ADC_7708 

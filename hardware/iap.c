@@ -686,6 +686,61 @@ char simpan_st_rom(int sektor, int st, int flag, unsigned short *pdata, int part
 		#endif
 	}
 	
+	#ifdef ADA_ASTM
+	else if (sektor==SEKTOR_ASTM)		
+	{
+		if (flag==1)
+		{
+			printf("kopi sektor astm\r\n");
+			kopikan_sektor_tmp(alamat_sektor(SEKTOR_ASTM));
+			hapuskan_sektor(sektor);		// hapus sektor
+		}
+		if (part==0)	
+		{					
+			//simpan_rom(sektor, ALMT_VALUE_ASTM+(st*JML_KOPI_ASTM), (unsigned short *) pdata, hitung_ram(cek_jml_struct(ASTM)*PER_ASTM) );
+			simpan_rom(sektor, ALMT_VALUE_ASTM+(st*JML_KOPI_ASTM), (unsigned short *) pdata, 512);
+		}
+		else if (part==1)	
+		{
+			int i;
+
+			printf("sektor: %d, part: %d, st: %d, flag: %d\r\n", sektor, part, st, flag);
+			for (i=0; i<BLOK_ASTM; i++)		
+			{
+				printf(" >> i: %d, ", i);
+				if (i==st)	
+				{
+					printf("data asli\r\n");
+					simpan_rom(sektor, ALMT_VALUE_ASTM+(st*JML_KOPI_ASTM), (unsigned short *) pdata, \
+						hitung_ram(cek_jml_struct(ASTM)*PER_ASTM) );
+				}
+				else		
+				{
+					printf("data temp\r\n");
+					//struct t_data *st_data;
+					struct t_astm *st_astm;
+					st_astm = pvPortMalloc( PER_ASTM*sizeof (struct t_astm) );
+					if (st_astm == NULL)	
+					{
+						printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
+						vPortFree (st_astm);
+						return 2;
+					}
+					printf(" %s(): Mallok @ %X\r\n", __FUNCTION__, st_astm);
+
+					taskENTER_CRITICAL();
+					memcpy((char *) st_astm, (char *) ALMT_DATA_TMP+(i*JML_KOPI_TEMP), (PER_ASTM*sizeof (struct t_astm)));
+					taskEXIT_CRITICAL();
+					
+					simpan_rom(sektor, ALMT_VALUE_ASTM+(i*JML_KOPI_ASTM), (unsigned short *) st_astm, \
+						hitung_ram(cek_jml_struct(ASTM)*PER_ASTM) );					
+					vPortFree (st_astm);
+				}
+			}
+		}
+	}
+	#endif
+	
 	return 0;
 }
 

@@ -102,8 +102,11 @@ typedef enum IAP_STATUS_t {
 #define JML_SUMBER			 6
 #define SUMBER_PER_SEKTOR	32
 
+#ifdef ADA_ASTM
 #define BLOK_ASTM			21
-#defint PER_ASTM			91
+#define PER_ASTM			91
+#define JML_KOPI_ASTM		512
+#endif
 
 //#define ANGKA_PENTING	1
 
@@ -147,7 +150,7 @@ volatile float data_f [ JML_TITIK_DATA ];
 #define ALMT_CRON		(ALMT_SEKTOR_19+1024*2)
 #define ALMT_FILE		(ALMT_SEKTOR_19+1024*3)
 
-#if 1
+#ifdef ADA_ASTM
 #define SEKTOR_ASTM		18
 #define ALMT_VALUE_ASTM	(ALMT_SEKTOR_18)
 #endif
@@ -157,7 +160,8 @@ enum t_struct{
 	ENV,
 	SUMBER,
 	CRON,
-	BERKAS
+	BERKAS,
+	ASTM
 }; 
 enum t_struct st_struct;
 
@@ -167,7 +171,6 @@ enum t_struct st_struct;
 #define SEKTOR_TEMP		21
 #define ALMT_SKTR_TEMP	ALMT_SEKTOR_21
 #define JML_KOPI_TEMP	1024
-#define JML_KOPI_ASTM	512
 #define ALMT_ENV_TMP		(ALMT_SEKTOR_21)
 #define ALMT_DATA_TMP		(ALMT_SEKTOR_21)
 #define ALMT_SUMBER_TMP		(ALMT_SEKTOR_21+1024*1)
@@ -274,7 +277,7 @@ struct t_data {
 };
 //struct t_data st_data[JML_TITIK_DATA];
 
-#if 0
+#ifdef ADA_ASTM
 struct t_astm
 	{
 	float koef;
