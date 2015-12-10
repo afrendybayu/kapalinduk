@@ -54,7 +54,12 @@ void cek_env(int argc, char **argv)	{
 	uprintf("  Konfig Debug1: %d\r\n", st_env->prioDebug);
 	uprintf("  Konfig Debug2: %d\r\n", st_env->prioDebug2);
 	uprintf("  Memory space: %d\r\n", xPortGetFreeHeapSize());
+	
 	uprintf("  Moving average: %d\n\r",st_env->n_mavg);
+	
+	uprintf("  Fuel Density: %d\r\n", st_env->fuel_den);
+	uprintf("  Jumlah Flowmeter: %d|%d\r\n", st_env->nFL,st_env->jumFlow);
+	
 }
 
 
@@ -180,6 +185,21 @@ char set_env(int argc, char **argv)	{
 			printf("  Nomor batas prioritas debug2 : %d\r\n", st_env->prioDebug2);
 			
 		}	
+		else if (strcmp(argv[1], "density") == 0)	{
+			printf("Set Density\n\r");
+			st_env->fuel_den = atoi(argv[2]);
+			printf("Fuel Density = %d",st_env->fuel_den);
+			
+		}
+		else if (strcmp(argv[1], "flow") == 0)	{
+			st_env->jumFlow = 1;
+			printf("Set Jumlah kanal Flowmeter\n\r");
+			unsigned int cnt;
+			//cnt = atoi(argv[2]);
+			for (cnt = 0; cnt<((atoi(argv[2]))-1); cnt++)st_env->jumFlow = (st_env->jumFlow<<1)+1;
+			printf("Jumlah Kanal Flowmeter = %d",(atoi(argv[2])));
+			st_env->nFL = atoi(argv[2]);
+		}
 	}
 	
 	//simpan_struct_block_rom(SEKTOR_ENV, ENV, 0, (char *) st_env);

@@ -376,6 +376,9 @@ struct t_env {
 	int		n_mavg;
 	int 	n_move;
 	unsigned int waktu_modem;
+	int 	fuel_den;
+	int 	jumFlow;
+	int 	nFL;
 };
 //struct t_env st_env;
 
