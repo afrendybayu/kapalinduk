@@ -199,9 +199,10 @@ char set_env(int argc, char **argv)	{
 				unsigned int cnt;
 				//cnt = atoi(argv[2]);
 				for (cnt = 0; cnt<((atoi(argv[2]))-1); cnt++)st_env->jumFlow = (st_env->jumFlow<<1)+1;
-				printf("Jumlah Kanal Flowmeter = %d",(atoi(argv[2])));
+				//printf("Jumlah Kanal Flowmeter = %d",(atoi(argv[2])));
 				st_env->nFL = atoi(argv[2]);
 			}
+			printf("Jumlah Kanal Flowmeter = %d",(atoi(argv[2])));
 		}
 	}
 	
