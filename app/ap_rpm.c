@@ -309,6 +309,14 @@ void data_frek_rpm (void) {
 
 		}
 		else if (status==sFLOWx)	{
+		  /* * Kanal2 flowmeter harus memakai kanal 7 sampai kanal 10
+			 * Kanal temperatur harus memakai kanal 10 dan 12 
+			 * ga suka pakai aturan ini, matikan aja ASTM nya
+			 * atau gak ga usah aja pakai santer
+			 * atau gak buat kau santer mu sendiri
+			 * dah pening awak
+			 * */
+			
 			//*
 			data_f[i] = (konter.t_konter[i].hit*st_env->kalib[i].m)+st_env->kalib[i].C;
 			
@@ -506,9 +514,10 @@ float nilai_coep (int loc_pless, int temp)
 		return 2;
 	}
 
-	suhux = data_f[temp+6]; // <--- kudu dicek lagi, kyknya miss dsini
+	//suhux = data_f[temp+6]; // <--- kudu dicek lagi, kyknya miss dsini
+	suhux = (data_f[10] + data_f[12])/2;  //buat gampang aja lah
 	n_suhu = lok_suhu(suhux);
-	n_ples = (int) (loc_pless-810)/2;
+	n_ples = (int) (loc_pless-810)/2.0;
 	
 	memcpy((char *) st_astm, (char *) ALMT_VALUE_ASTM+(n_ples*JML_KOPI_ASTM), (PER_ASTM * sizeof (struct t_astm)));	
 	cuhu1 = st_astm[n_suhu].koef;
