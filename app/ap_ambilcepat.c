@@ -67,8 +67,11 @@ int ch;
 	gpio_int_init();
 	
 	int tot;
-	for (tot=0; tot<3; tot++) k_t1[tot] = 1;
-	
+	for (tot=0; tot<JML_KANAL; tot++) {
+		k_t1[tot] = 1;
+		d_t1[tot] = 0;
+	}	
+		
 	for( ;; )	{
 		
 

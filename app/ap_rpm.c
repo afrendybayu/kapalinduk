@@ -185,6 +185,7 @@ void data_frek_rpm (void) {
 	float temp_f, fl2;
 	float temp_rpm;
 	unsigned char nox;
+	int langkah_astm = 0;
 
 	float coef_astm;	
 	float liter_astm;
@@ -316,7 +317,6 @@ void data_frek_rpm (void) {
 			 * atau gak buat kau santer mu sendiri
 			 * dah pening awak
 			 * */
-			
 			//*
 			data_f[i] = (konter.t_konter[i].hit*st_env->kalib[i].m)+st_env->kalib[i].C;
 			
@@ -324,22 +324,23 @@ void data_frek_rpm (void) {
 			#ifdef ADA_ASTM
 			if (astm_aktif){ 
 			//printf("|%f|%f|\n\r",astm_f[i],k_t0[i-6]);
-			k_t0[i-6] = k_t1[i-6];
-			d_t0[i-6] = d_t1[i-6];
+			k_t0[i] = k_t1[i];
+			d_t0[i] = d_t1[i];
 			astm_aktif = astm_aktif - geser;
 			geser = geser << 1;
 			dens = st_env->fuel_den;
-			coef_astm = nilai_coep(dens,i);
-			k_t1[i-6] = coef_astm;
-			d_t1[i-6] = data_f[i];
+			coef_astm = nilai_coep(dens,langkah_astm);
+			k_t1[i] = coef_astm;
+			d_t1[i] = data_f[i];
 			//printf("coef_astm_%d=%f|%f|%f\n\r", i, coef_astm, k_t1[i-6], k_t0[i-6]);
 			//printf("|%f|%f|\n\r", d_t1[i-6], d_t0[i-6]);
-			rataan_astm = (k_t1[i-6] + k_t0[i-6])/2.0;
-			liter_astm = d_t1[i-6] - d_t0[i-6];
+			rataan_astm = (k_t1[i] + k_t0[i])/2.0;
+			liter_astm = d_t1[i] - d_t0[i];
 			liter_astm = liter_astm * rataan_astm;
 			astm_f[i] = astm_f[i] + liter_astm;
 			//printf("liter_astm = %f\n\r",astm_f[i]);
-			}			
+			}
+			langkah_astm++;
 			#endif
 			
 			#if 1
@@ -505,6 +506,7 @@ float nilai_coep (int loc_pless, int temp)
 	float cuhu1,cuhu2,low_cuhu;
 	float koep;
 	int n_suhu;
+	int letak;
 
 	struct t_astm *st_astm;	
 	st_astm = pvPortMalloc( PER_ASTM * sizeof (struct t_astm) );
@@ -514,8 +516,11 @@ float nilai_coep (int loc_pless, int temp)
 		return 2;
 	}
 
+	letak = temp / 2;
+	
+	suhux = data_f[10+(2*letak)]; //data_f[10,12,14,16]
 	//suhux = data_f[temp+6]; // <--- kudu dicek lagi, kyknya miss dsini
-	suhux = (data_f[10] + data_f[12])/2;  //buat gampang aja lah
+	//suhux = (data_f[10] + data_f[12])/2;  //buat gampang aja lah
 	n_suhu = lok_suhu(suhux);
 	n_ples = (int) (loc_pless-810)/2.0;
 	
