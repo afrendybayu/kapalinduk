@@ -57,9 +57,10 @@ void cek_env(int argc, char **argv)	{
 	
 	uprintf("  Moving average: %d\n\r",st_env->n_mavg);
 	
+	#ifdef ADA_ASTM
 	uprintf("  Fuel Density: %d\r\n", st_env->fuel_den);
 	uprintf("  Jumlah Flowmeter: %d|%d\r\n", st_env->nFL,st_env->jumFlow);
-	
+	#endif
 }
 
 

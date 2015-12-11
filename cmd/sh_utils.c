@@ -49,9 +49,10 @@ int cek_jml_struct(char no)	{
 		return (sizeof(struct t_env));
 	else if (no == DATA)
 		return (sizeof(struct t_data));
+	#ifdef ADA_ASTM
 	else if (no == ASTM)
 		return (sizeof(struct t_astm));
-		
+	#endif	
 	#ifdef PAKAI_SDCARD
 	else if (no == BERKAS)
 		return (sizeof(struct t_file));

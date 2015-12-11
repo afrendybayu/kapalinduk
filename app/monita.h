@@ -119,7 +119,9 @@ short astm_aktif;
 #endif
 
 volatile float data_f [ JML_TITIK_DATA ];
+#ifdef ADA_ASTM
 volatile float astm_f [PER_SUMBER];
+#endif
 
 // 32 KB
 #define ALMT_SEKTOR_8	0x08000	
@@ -212,10 +214,12 @@ struct t2_konter{
 
 unsigned int giliran;
 struct t2_konter konter;
+#ifdef ADA_ASTM
 float k_t0[JML_KANAL]; __attribute__ ((section (".usbram1")));
 float k_t1[JML_KANAL]; __attribute__ ((section (".usbram1")));
 float d_t0[JML_KANAL]; __attribute__ ((section (".usbram1")));
 float d_t1[JML_KANAL]; __attribute__ ((section (".usbram1")));
+#endif
 
 //unsigned char status_konter[JML_KANAL];
 

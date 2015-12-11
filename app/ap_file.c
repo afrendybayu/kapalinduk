@@ -281,6 +281,7 @@ int parsing_cfg_data(int i, char *str)	{
 	vPortFree (st_data);
 }
 
+#ifdef ADA_ASTM
 float seblok[91];
 
 int parsing_cfg_astm(char *str)
@@ -320,6 +321,7 @@ int parsing_cfg_astm(char *str)
 	//vPortFree (st_astm);
 	
 	}
+#endif
 
 int parsing_cfg_files(int i, char *str)	{
 	int nx, num;
@@ -411,6 +413,7 @@ int parsing_cmd_setting_subutama(char *str)	{
 			}
 		}
 	}
+	#ifdef ADA_ASTM
 	else if (st_conf.cmd==CONF_ASTM)	
 	{
 			pch = strstr (str, "d_astm");
@@ -419,6 +422,7 @@ int parsing_cmd_setting_subutama(char *str)	{
 				parsing_cfg_astm(str);
 			}
 	}
+	#endif
 	//printf ("----- %d/%d, %s", st_conf.cmd, jmlIs, str);
 	return 0;
 }

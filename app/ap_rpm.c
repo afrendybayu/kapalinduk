@@ -485,6 +485,7 @@ void data_frek_rpm (void) {
 	//printf("|rpm|\n\r");
 }
 
+#ifdef ADA_ASTM
 int lok_suhu(float cuhu)
 {
 	int poss,q;
@@ -540,3 +541,4 @@ float nilai_coep (int loc_pless, int temp)
 	
 	return koep;
 }
+#endif
