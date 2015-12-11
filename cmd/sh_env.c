@@ -192,13 +192,16 @@ char set_env(int argc, char **argv)	{
 			
 		}
 		else if (strcmp(argv[1], "flow") == 0)	{
-			st_env->jumFlow = 1;
-			printf("Set Jumlah kanal Flowmeter\n\r");
-			unsigned int cnt;
-			//cnt = atoi(argv[2]);
-			for (cnt = 0; cnt<((atoi(argv[2]))-1); cnt++)st_env->jumFlow = (st_env->jumFlow<<1)+1;
-			printf("Jumlah Kanal Flowmeter = %d",(atoi(argv[2])));
-			st_env->nFL = atoi(argv[2]);
+			if(!(atoi(argv[2]))) st_env->jumFlow = 0;
+			else{
+				st_env->jumFlow = 1;
+				printf("Set Jumlah kanal Flowmeter\n\r");
+				unsigned int cnt;
+				//cnt = atoi(argv[2]);
+				for (cnt = 0; cnt<((atoi(argv[2]))-1); cnt++)st_env->jumFlow = (st_env->jumFlow<<1)+1;
+				printf("Jumlah Kanal Flowmeter = %d",(atoi(argv[2])));
+				st_env->nFL = atoi(argv[2]);
+			}
 		}
 	}
 	
