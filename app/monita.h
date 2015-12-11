@@ -212,10 +212,10 @@ struct t2_konter{
 
 unsigned int giliran;
 struct t2_konter konter;
-float k_t0[3];
-float k_t1[3];
-float d_t0[3];
-float d_t1[3];
+float k_t0[JML_KANAL]; __attribute__ ((section (".usbram1")));
+float k_t1[JML_KANAL]; __attribute__ ((section (".usbram1")));
+float d_t0[JML_KANAL]; __attribute__ ((section (".usbram1")));
+float d_t1[JML_KANAL]; __attribute__ ((section (".usbram1")));
 
 //unsigned char status_konter[JML_KANAL];
 
