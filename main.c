@@ -298,8 +298,9 @@ void vLedTask( void *pvParameters )	{
 	#endif
 	
 	#ifdef debug_ASTM
-	int lok;
-	lok = 1;
+	int lok,lok2;
+	lok = 0;
+	lok2 = 20;
 	//tes panggil nilai astm --> oke
 	struct t_astm *st_astm;
 	st_astm = pvPortMalloc(PER_ASTM * sizeof (struct t_astm) );
@@ -310,9 +311,10 @@ void vLedTask( void *pvParameters )	{
 	}
 
 	memcpy((char *) st_astm, (char *) ALMT_VALUE_ASTM+(lok*JML_KOPI_ASTM), (PER_ASTM * sizeof (struct t_astm)));
+	printf("|alpha = %f|", st_astm[0].koef);	
 	
-	printf("|%f|", st_astm[0].koef);	
-	printf("|%f|", st_astm[1].koef);	
+	memcpy((char *) st_astm, (char *) ALMT_VALUE_ASTM+(lok2*JML_KOPI_ASTM), (PER_ASTM * sizeof (struct t_astm)));
+	printf("|omega = %f|\n\r", st_astm[90].koef);	
 	vPortFree (st_astm);
 	
 	#endif

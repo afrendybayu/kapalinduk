@@ -27,10 +27,10 @@ void cek_data(int argc, char **argv)	{
 		for (j=0; j<PER_SUMBER; j++)	{
 			//printf("%d --> 0x%08X\r\n", i*PER_SUMBER+j, ALMT_DATA + i*JML_KOPI_TEMP);
 			#ifdef ADA_ASTM
-			uprintf(" %3d | %6d | %-17s | [ %11.2f ] ( %11.2f ) | %3d | %d | %d\r\n", 	\
+			uprintf(" %3d | %6d | %-17s | [ %11.2f ] ( %11.2f ) | %-6s | %3d | %d | %d\r\n", 	\
 				j+1, st_data[j].id, st_data[j].nama, data_f[smb*PER_SUMBER+j], astm_f[smb*PER_SUMBER+j], st_data[j].satuan, st_data[j].mv_avg, st_data[j].no_ma, smb*PER_SUMBER+j);
 			#else
-			uprintf(" %3d | %6d | %-17s | %11.2f | %3d | %d | %d\r\n", 	\
+			uprintf(" %3d | %6d | %-17s | %11.2f | %-6s | %3d | %d | %d\r\n", 	\
 				j+1, st_data[j].id, st_data[j].nama, data_f[smb*PER_SUMBER+j], st_data[j].satuan, st_data[j].mv_avg, st_data[j].no_ma, smb*PER_SUMBER+j);
 			#endif
 		}
