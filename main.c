@@ -335,10 +335,12 @@ void vLedTask( void *pvParameters )	{
 		
 		#ifdef ADA_ASTM
 		//counter untuk astm, periode 1 menit
-		cnt_astm ++;
-		if (cnt_astm == 120){ 
-		cnt_astm = 0;
-		astm_aktif = st_env->jumFlow; // nilai astm_aktif di isi dengan jumlah flowmeter dalam deret binary. ngertos??
+		if (st_env->jumFlow){
+			cnt_astm ++;
+			if (cnt_astm == 120){ 
+			cnt_astm = 0;
+			astm_aktif = st_env->jumFlow; // nilai astm_aktif di isi dengan jumlah flowmeter dalam deret binary. ngertos??
+			}
 		}
 		//printf("|%d|%d| ",cnt_astm,astm_aktif);
 		#endif

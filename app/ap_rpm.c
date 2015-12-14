@@ -353,6 +353,7 @@ void data_frek_rpm (void) {
 			
 			#ifdef PAKAI_RTC
 			*(&MEM_RTC0+RTC_MEM_START+i+1)   = *( (int*) &data_f[i]);
+			*(&MEM_RTC0+RTC_MEM_START+i+70)  = *( (int*) &astm_f[i]);
 			//*(&MEM_RTC0+(i*2))   = data_f[i*2];		// konter.t_konter[i].onoff;
 			//*(&MEM_RTC0+(i*2+1)) = data_f[i*2+1];		// konter.t_konter[i].hit;
 			#endif
@@ -482,6 +483,7 @@ void data_frek_rpm (void) {
 		}
 		#endif
 	}
+	astm_aktif = 0;
 	//printf("|rpm|\n\r");
 }
 
