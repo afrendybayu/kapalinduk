@@ -215,10 +215,10 @@ struct t2_konter{
 unsigned int giliran;
 struct t2_konter konter;
 #ifdef ADA_ASTM
-float k_t0[JML_KANAL]; __attribute__ ((section (".usbram1")));
-float k_t1[JML_KANAL]; __attribute__ ((section (".usbram1")));
-float d_t0[JML_KANAL]; __attribute__ ((section (".usbram1")));
-float d_t1[JML_KANAL]; __attribute__ ((section (".usbram1")));
+float k_t0[JML_KANAL];
+float k_t1[JML_KANAL];
+float d_t0[JML_KANAL];
+float d_t1[JML_KANAL];
 #endif
 
 //unsigned char status_konter[JML_KANAL];
