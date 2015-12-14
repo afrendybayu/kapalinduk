@@ -9,6 +9,7 @@
 
 //#define DEBUG_IAP
 extern volatile float data_f[];
+extern volatile float astm_f[];
 
 unsigned int param_table[5];
 
@@ -436,6 +437,9 @@ void load_data_rtc()	{
 			}
 			//uprintf("i: %d --> dataf[%d]: %.3f\r\n", i, i, data_f[i]);
 			//uprintf("data[%2d]: %.2f\r\n", i, data_f[i]);
+		}
+		for (i=0; i<JML_KANAL; i++)		{
+			astm_f[i] = kf = *( (float*) &(*(&MEM_RTC0+(RTC_MEM_START+i+70))));
 		}
 	}
 	else if (iap_return.ReturnCode == CMD_SUCCESS)	{		// setting KOSONG
