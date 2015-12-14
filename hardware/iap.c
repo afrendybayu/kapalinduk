@@ -433,6 +433,7 @@ void load_data_rtc()	{
 			}
 			if (status==sFLOWx)		{
 				konter.t_konter[i].hit = (int) ( (kf-st_env->kalib[i].C)/st_env->kalib[i].m );
+				d_t1[i] = data_f[i];
 				//uprintf("HIT[%d] : %d  --> ", i+1, konter.t_konter[i].hit);
 			}
 			//uprintf("i: %d --> dataf[%d]: %.3f\r\n", i, i, data_f[i]);
