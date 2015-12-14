@@ -37,7 +37,8 @@ void data_adc()	{
 	st_data = ALMT_DATA+JML_KOPI_TEMP;
 	
 	
-	#if 1
+	#if 0
+	/* Dummy ADC */
 	up +=1;
 	if (up==100) up = 0;
 	#endif
