@@ -108,6 +108,17 @@ char set_env(int argc, char **argv)	{
 				printf(" SN : %s\n", st_env->SN);
 			}
 		}
+		if (strcmp(argv[1], "idmodem") == 0)	{
+			printf(" set ID Modem Manual \r\n");
+			if (strlen(argv[2]) > sizeof (st_env->id_modem))		{
+				printf("ID Modem terlalu panjang !");
+				return 3;	
+			}
+			else	{
+				sprintf(st_env->id_modem, "%s", argv[2]);
+				printf(" ID Modem : %s\n", st_env->id_modem);
+			}
+		}
 		#ifdef PAKAI_ETH
 		else if (strcmp(argv[1], "ipaddr") == 0)  	{
 			printf(" set Alamat IP ");  

@@ -537,6 +537,7 @@ void simpan_file_data()		{
 	st_file = (char *) ALMT_FILE;
 	
 	struct t_data *st_data;
+	struct t_env *st_env;
 	
 	res = f_open(&filx, st, FA_OPEN_EXISTING | FA_READ | FA_WRITE);
 	if (res)	{		// GAGAL buka, bikin baru !!!
@@ -548,15 +549,17 @@ void simpan_file_data()		{
 		} else {
 			// tambahan header untuk file baru !! -- disini --
 			isi[0] = '\r'; isi[1] = '\n';
+			memcpy((void*) &isi[2], (void*) &st_env->id_modem, 15);
+			memcpy((void*) &isi[17], (void*) &st_env->SN, 20);
 			for (i=0; i<st_file->jml; i++)	{
 				j = (int) ((st_file->urut[i]-1)/PER_SUMBER);
 				k = (st_file->urut[i]-1) % PER_SUMBER;
 				st_data = ALMT_DATA + j*JML_KOPI_TEMP;
 				
 				//memcpy((void*) &isi[2*i+2], (void*) &st_data[k].id, 2);
-				memcpy((void*) &isi[4*i+2], (void*) &st_data[k].id, 4);
+				memcpy((void*) &isi[4*i+37], (void*) &st_data[k].id, 4);
 			}
-			f_write(&filx, isi, (st_file->jml*4+2), &oo);
+			f_write(&filx, isi, (st_file->jml*4+37), &oo);
 		}
 	} else {		// file sudah ada
 		res = f_lseek(&filx, f_size(&filx));
