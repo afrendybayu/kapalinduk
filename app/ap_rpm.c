@@ -353,7 +353,9 @@ void data_frek_rpm (void) {
 			
 			#ifdef PAKAI_RTC
 			*(&MEM_RTC0+RTC_MEM_START+i+1)   = *( (int*) &data_f[i]);
+			#ifdef ADA_ASTM
 			*(&MEM_RTC0+RTC_MEM_START+i+71)  = *( (int*) &astm_f[i]);
+			#endif
 			//*(&MEM_RTC0+(i*2))   = data_f[i*2];		// konter.t_konter[i].onoff;
 			//*(&MEM_RTC0+(i*2+1)) = data_f[i*2+1];		// konter.t_konter[i].hit;
 			#endif

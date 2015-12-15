@@ -70,7 +70,7 @@ int ch;
 	int tot;
 	for (tot=0; tot<JML_KANAL; tot++) {
 		k_t1[tot] = 1;
-		d_t1[tot] = 0;
+		//d_t1[tot] = 0;
 	}	
 	#endif
 		

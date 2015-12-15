@@ -433,15 +433,19 @@ void load_data_rtc()	{
 			}
 			if (status==sFLOWx)		{
 				konter.t_konter[i].hit = (int) ( (kf-st_env->kalib[i].C)/st_env->kalib[i].m );
+				#ifdef ADA_ASTM
 				d_t1[i] = data_f[i];
+				#endif
 				//uprintf("HIT[%d] : %d  --> ", i+1, konter.t_konter[i].hit);
 			}
 			//uprintf("i: %d --> dataf[%d]: %.3f\r\n", i, i, data_f[i]);
 			//uprintf("data[%2d]: %.2f\r\n", i, data_f[i]);
 		}
+		#ifdef ADA_ASTM
 		for (i=0; i<JML_KANAL; i++)		{
 			astm_f[i] = kf = *( (float*) &(*(&MEM_RTC0+(RTC_MEM_START+i+71))));
 		}
+		#endif
 	}
 	else if (iap_return.ReturnCode == CMD_SUCCESS)	{		// setting KOSONG
 	
