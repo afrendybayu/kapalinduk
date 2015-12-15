@@ -55,11 +55,14 @@ void cek_env(int argc, char **argv)	{
 	uprintf("  Konfig Debug2: %d\r\n", st_env->prioDebug2);
 	uprintf("  Memory space: %d\r\n", xPortGetFreeHeapSize());
 	
-	uprintf("  Moving average: %d\n\r",st_env->n_mavg);
+	#ifdef MOV_AVG
+	uprintf("  Jumlah Kanal MA: %d\n\r",st_env->n_mavg);
+	#endif
 	
 	#ifdef ADA_ASTM
 	uprintf("  Fuel Density: %d\r\n", st_env->fuel_den);
-	uprintf("  Jumlah Flowmeter: %d|%d\r\n", st_env->nFL,st_env->jumFlow);
+	uprintf("  Jumlah Flowmeter: %d\r\n", st_env->nFL);
+	uprintf("  Interval ASTM: %d s\r\n", (st_env->T_astm/2));
 	#endif
 }
 
@@ -185,7 +188,8 @@ char set_env(int argc, char **argv)	{
 			st_env->prioDebug2 = atoi( argv[2] );
 			printf("  Nomor batas prioritas debug2 : %d\r\n", st_env->prioDebug2);
 			
-		}	
+		}
+		#ifdef ADA_ASTM	
 		else if (strcmp(argv[1], "density") == 0)	{
 			printf("Set Density\n\r");
 			st_env->fuel_den = atoi(argv[2]);
@@ -208,6 +212,12 @@ char set_env(int argc, char **argv)	{
 			}
 			printf("Jumlah Kanal Flowmeter = %d\n\r",(atoi(argv[2])));
 		}
+		else if (strcmp(argv[1], "interval") == 0)	{
+			printf("Set Interval ASTM dalam detik\n\r");
+			st_env->T_astm = ((atoi(argv[2])) * 2);
+			printf("Interval ASTM = %d|%d s",atoi(argv[2]),st_env->T_astm);
+		}
+		#endif
 	}
 	
 	//simpan_struct_block_rom(SEKTOR_ENV, ENV, 0, (char *) st_env);
@@ -259,7 +269,7 @@ void set_env_default()		{
 	
 	
 	st_env->magic1 = 0x01;
-	st_env->magic2 = 0x03;
+	st_env->magic2 = 0x04;
 	st_env->mmc_serial = 0;
 	strcpy(st_env->SN, "STR.kalender");
 
@@ -292,6 +302,7 @@ void set_env_default()		{
 	st_env->n_mavg = 0;
 	st_env->n_move = 3;
 	st_env->jumFlow = 0;
+	st_env->T_astm = 10;
 	
 	simpan_st_rom(SEKTOR_ENV, ENV, 0, (unsigned short *) st_env, 0);
 	//simpan_struct_block_rom(SEKTOR_ENV, ENV, 1, (char *) &st_env);

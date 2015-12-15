@@ -389,6 +389,7 @@ struct t_env {
 	int 	fuel_den;
 	int 	jumFlow;
 	int 	nFL;
+	char 	T_astm;
 };
 //struct t_env st_env;
 

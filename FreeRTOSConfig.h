@@ -124,7 +124,9 @@
 
 //ASTM
 #define ADA_ASTM
-#define debug_ASTM
+#ifdef ADA_ASTM
+	#define debug_ASTM
+#endif
 
 #define PAKAI_SPI_SSP1
 #ifdef  PAKAI_SPI_SSP1

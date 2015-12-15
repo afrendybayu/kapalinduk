@@ -337,7 +337,7 @@ void vLedTask( void *pvParameters )	{
 		//counter untuk astm, periode 1 menit
 		if (st_env->jumFlow){
 			cnt_astm ++;
-			if (cnt_astm == 10){ 
+			if (cnt_astm >= st_env->T_astm){ 
 			cnt_astm = 0;
 			astm_aktif = st_env->jumFlow; // nilai astm_aktif di isi dengan jumlah flowmeter dalam deret binary. ngertos??
 			}
