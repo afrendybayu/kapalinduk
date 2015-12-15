@@ -234,7 +234,8 @@ void set_rtc_mem(int argc, char ** argv)	{
 	uprintf("  memRTC [%d]: %.3f\r\n", nx, fl);
 	
 	ifl = (unsigned int *) &fl;
-	data_f[nx-1] = fl;
+	if (nx<71) data_f[nx-1] = fl;
+	else astm_f[nx-71] = fl;
 
 	*(&MEM_RTC0+(RTC_MEM_START+nx)) = *( (int*) &fl);	// 100 + kanal (1-...)
 	

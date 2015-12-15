@@ -440,7 +440,7 @@ void load_data_rtc()	{
 			//uprintf("data[%2d]: %.2f\r\n", i, data_f[i]);
 		}
 		for (i=0; i<JML_KANAL; i++)		{
-			astm_f[i] = kf = *( (float*) &(*(&MEM_RTC0+(RTC_MEM_START+i+70))));
+			astm_f[i] = kf = *( (float*) &(*(&MEM_RTC0+(RTC_MEM_START+i+71))));
 		}
 	}
 	else if (iap_return.ReturnCode == CMD_SUCCESS)	{		// setting KOSONG
