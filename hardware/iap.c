@@ -434,7 +434,7 @@ void load_data_rtc()	{
 			if (status==sFLOWx)		{
 				konter.t_konter[i].hit = (int) ( (kf-st_env->kalib[i].C)/st_env->kalib[i].m );
 				#ifdef ADA_ASTM
-				d_t1[i] = data_f[i];
+				d_t1[i] = kf = *( (float*) &(*(&MEM_RTC0+(RTC_MEM_START+i+81))));;
 				#endif
 				//uprintf("HIT[%d] : %d  --> ", i+1, konter.t_konter[i].hit);
 			}

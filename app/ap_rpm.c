@@ -332,9 +332,12 @@ void data_frek_rpm (void) {
 			coef_astm = nilai_coep(dens,langkah_astm);
 			k_t1[i] = coef_astm;
 			d_t1[i] = data_f[i];
+			*(&MEM_RTC0+RTC_MEM_START+i+81)  = *( (int*) &d_t1[i]); // simpan data liter terakhir
+			//printf("|%f|<->",k_t1[i]);
 			//printf("coef_astm_%d=%f|%f|%f\n\r", i, coef_astm, k_t1[i-6], k_t0[i-6]);
 			//printf("|%f|%f|\n\r", d_t1[i-6], d_t0[i-6]);
 			rataan_astm = (k_t1[i] + k_t0[i])/2.0;
+			//printf("|%f|\n\r",rataan_astm);
 			liter_astm = d_t1[i] - d_t0[i];
 			liter_astm = liter_astm * rataan_astm;
 			astm_f[i] = astm_f[i] + liter_astm;
