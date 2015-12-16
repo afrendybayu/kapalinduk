@@ -99,8 +99,8 @@ char set_env(int argc, char **argv)	{
 		
 		if (strcmp(argv[1], "SN") == 0)	{
 			printf(" set no seri \r\n");
-			if (strlen(argv[2]) > sizeof (st_env->SN))		{
-				printf("SN terlalu panjang !");
+			if (strlen(argv[2]) != 15)		{
+				printf("SN Harus 15 Karakter !");
 				return 3;	
 			}
 			else	{
@@ -110,8 +110,8 @@ char set_env(int argc, char **argv)	{
 		}
 		if (strcmp(argv[1], "idmodem") == 0)	{
 			printf(" set ID Modem Manual \r\n");
-			if (strlen(argv[2]) > sizeof (st_env->id_modem))		{
-				printf("ID Modem terlalu panjang !");
+			if (strlen(argv[2]) != 15)		{
+				printf("ID Modem Harus 15 Karakter !");
 				return 3;	
 			}
 			else	{
