@@ -350,7 +350,15 @@ void data_frek_rpm (void) {
 			if (data_f[i]>nFLOW_MAX) {		// reset setelah 10juta, 7 digit
 			//if (data_f[(i*2)+1]>1000) {		// tes saja, reset setelah 10juta, 7 digit
 				data_f[i] = 0;
+				d_t1[i] = 0;
 				konter.t_konter[i].hit = 0;
+			}
+			#endif
+			
+			#ifdef ADA_ASTM
+			if (astm_f[i]>nFLOW_MAX) {		// reset setelah 10juta, 7 digit
+			//if (data_f[(i*2)+1]>1000) {		// tes saja, reset setelah 10juta, 7 digit
+				astm_f[i] = 0;
 			}
 			#endif
 			
