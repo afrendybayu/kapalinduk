@@ -21,27 +21,33 @@ void cek_data(int argc, char **argv)	{
 			return;
 		}
 		uprintf("\r\n    Cek data sumber: %d\r\n******************************************************\r\n", smb);
-		uprintf ("  NO |   ID   |        Nama       |    Nilai    | Satuan | M.A | TOT |\r\n");
+		//uprintf ("  NO |   ID   |        Nama       |    Nilai    |    ASTM    | Satuan | M.A |\r\n");
 		smb--;
 		if (!smb){
+			#ifdef ADA_ASTM
+			uprintf ("  NO |   ID   |        Nama       |    Nilai    |    ASTM     | Satuan | M.A |\r\n");
+			#else
+			uprintf ("  NO |   ID   |        Nama       |    Nilai    | Satuan | M.A |\r\n");
+			#endif
 			st_data = ALMT_DATA + smb*JML_KOPI_TEMP;
 			for (j=0; j<PER_SUMBER; j++)	{
 				//printf("%d --> 0x%08X\r\n", i*PER_SUMBER+j, ALMT_DATA + i*JML_KOPI_TEMP);
 				#ifdef ADA_ASTM
-				uprintf(" %3d | %6d | %-17s | [ %11.2f ] ( %11.2f ) | %-6s | %3d | %d | %d\r\n", 	\
-					j+1, st_data[j].id, st_data[j].nama, data_f[smb*PER_SUMBER+j], astm_f[smb*PER_SUMBER+j], st_data[j].satuan, st_data[j].mv_avg, st_data[j].no_ma, smb*PER_SUMBER+j);
+				uprintf(" %3d | %6d | %-17s | %11.2f | %11.2f | %-6s | %3d | %d\r\n", 	\
+					j+1, st_data[j].id, st_data[j].nama, data_f[smb*PER_SUMBER+j], astm_f[smb*PER_SUMBER+j], st_data[j].satuan, st_data[j].no_ma, smb*PER_SUMBER+j);
 				#else
-				uprintf(" %3d | %6d | %-17s | %11.2f | %-6s | %3d | %d | %d\r\n", 	\
-					j+1, st_data[j].id, st_data[j].nama, data_f[smb*PER_SUMBER+j], st_data[j].satuan, st_data[j].mv_avg, st_data[j].no_ma, smb*PER_SUMBER+j);
+				uprintf(" %3d | %6d | %-17s | %11.2f | %-6s | %3d | %d\r\n", 	\
+					j+1, st_data[j].id, st_data[j].nama, data_f[smb*PER_SUMBER+j], st_data[j].satuan, st_data[j].no_ma, smb*PER_SUMBER+j);
 				#endif
 			}
 		}
 		else{
+		uprintf ("  NO |   ID   |        Nama       |    Nilai    | Satuan | M.A |\r\n");
 		st_data = ALMT_DATA + smb*JML_KOPI_TEMP;
 			for (j=0; j<PER_SUMBER; j++)	{
 				//printf("%d --> 0x%08X\r\n", i*PER_SUMBER+j, ALMT_DATA + i*JML_KOPI_TEMP);
-				uprintf(" %3d | %6d | %-17s | %11.2f | %-6s | %3d | %d | %d\r\n", 	\
-					j+1, st_data[j].id, st_data[j].nama, data_f[smb*PER_SUMBER+j], st_data[j].satuan, st_data[j].mv_avg, st_data[j].no_ma, smb*PER_SUMBER+j);
+				uprintf(" %3d | %6d | %-17s | %11.2f | %-6s | %3d | %d\r\n", 	\
+					j+1, st_data[j].id, st_data[j].nama, data_f[smb*PER_SUMBER+j], st_data[j].satuan, st_data[j].no_ma, smb*PER_SUMBER+j);
 			}
 		}
 		return;
@@ -57,7 +63,7 @@ void cek_data(int argc, char **argv)	{
 			uprintf(" %3d | %6d | %-17s | %9.1f | %-6s | %6d | %7d | %6d | %6d | %7d | %6d | %d | %-6s |\r\n", 	\
 				i*PER_SUMBER+j+1, st_data[j].id, st_data[j].nama, data_f[i*PER_SUMBER+j], 		\
 				st_data[j].satuan,  st_data[j].rangeL, st_data[j].batasLL, st_data[j].batasL, 	\
-				st_data[j].batasH, st_data[j].batasHH, st_data[j].rangeH, st_data[j].mv_avg, st_data[j].status?"Aktif":"Mati" );
+				st_data[j].batasH, st_data[j].batasHH, st_data[j].rangeH, st_data[j].no_ma, st_data[j].status?"Aktif":"Mati" );
 			#endif
 		}
 	}
