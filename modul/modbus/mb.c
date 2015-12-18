@@ -238,6 +238,16 @@ unsigned char simpan_mb_gwr(int jml, unsigned char *s, int reg)	{
 
 		//printf("dfloat: %08x %.3f\r\n", tmpFl, *fl);
 	}
+	
+	if (jml == 4){
+		if (st_data[i].mv_avg == 1){
+			nox = st_data[i].no_ma -1;
+			st_mavg[nox].ke_0 = st_mavg[nox-4].ke_0 - st_mavg[nox-3].ke_0;
+		}
+		else data_f[no+1] =  data_f[no-3] - data_f[no-2];	
+	}
+	
+	
 	//vPortFree(st_mavg);
 	#ifdef ERROR_DATA_RATE
 		olah ++;

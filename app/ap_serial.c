@@ -375,7 +375,7 @@ rtcCTIME0_t ctime0;
 	reset_mavg(jml_mavg);
 	#endif	
 	
-	jml_arith = hitung_arith();
+	//jml_arith = hitung_arith();
 	
 	cmd_shell();
 	st_hw.init++;
