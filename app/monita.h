@@ -100,7 +100,8 @@ short astm_aktif;
 
 #define TIDAK_VALID			0xFFFF
 #define PER_SUMBER			10
-#define JML_SUMBER			 6
+//#define JML_SUMBER			 6
+#define JML_SUMBER			 10
 #define SUMBER_PER_SEKTOR	32
 
 #ifdef ADA_ASTM
