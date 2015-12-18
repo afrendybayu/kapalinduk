@@ -56,7 +56,7 @@ void cek_data(int argc, char **argv)	{
 				for (j=0; j<PER_SUMBER; j++)	{
 					//printf("%d --> 0x%08X\r\n", i*PER_SUMBER+j, ALMT_DATA + i*JML_KOPI_TEMP);
 					uprintf(" %3d | %6d | %-17s | %11.2f | %-6s | %2d | %d | %-7s | %d\r\n", 	\
-						j+1, st_data[j].id, st_data[j].nama, data_f[smb*PER_SUMBER+j], st_data[j].satuan, st_data[j].no_ma, st_data[j].arith, st_data[j].formula, smb*PER_SUMBER+j);
+						j+1, st_data[j].id, st_data[j].nama, data_f[smb*PER_SUMBER+j], st_data[j].satuan, st_data[j].no_ma, st_data[j].no_arith, st_data[j].formula, smb*PER_SUMBER+j);
 				}
 		}
 		return;
@@ -214,7 +214,7 @@ char set_data(int argc, char **argv)		{
 		}
 		else if (strcmp(argv[2], "arith") == 0){
 			st_data[nox].arith = atoi(argv[3]);
-			printf("  Arith: [%d] : %s\r\n", st_data[nox].arith, st_data[nox].arith);
+			printf("  Arith: [%d] : %s\r\n", st_data[nox].arith, st_data[nox].arith?"Aktif":"Mati");
 		}
 		else {
 			printf("  __ Perintah SALAH __\r\n");
@@ -257,6 +257,7 @@ void set_data_default()		{
 			st_data[i].mv_avg  = 0;
 			st_data[i].no_ma = 0;
 			st_data[i].arith = 0;
+			st_data[i].no_arith = 0;
 			strcpy(st_data[i].satuan, "-");
 			strcpy(st_data[i].formula, "");
 		}

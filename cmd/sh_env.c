@@ -282,7 +282,8 @@ void set_env_default()		{
 	st_env->magic1 = 0x01;
 	st_env->magic2 = 0x04;
 	st_env->mmc_serial = 0;
-	strcpy(st_env->SN, "STR.kalender");
+	strcpy(st_env->SN, "SanterJadul1234");
+	strcpy(st_env->SN, "ModemJadul12345");
 
 	strcpy(st_env->berkas, "/monita3/ml.php");
 	st_env->statusWebClient = 0;
