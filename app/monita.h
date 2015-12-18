@@ -284,6 +284,7 @@ struct t_data {
 	char formula[16];
 	char mv_avg;
 	unsigned char no_ma;
+	char arith;
 };
 //struct t_data st_data[JML_TITIK_DATA];
 
