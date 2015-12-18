@@ -322,7 +322,7 @@ struct t_cron {
 #endif 
 
 struct t_sumber {
-	char nama[16];
+	char nama[10];
 	char alamat;		/* untuk alamat modbus Power meter atau stack board (jika ada) */
 	unsigned char IP0;			// klo sumber berupa modul monita 
 	unsigned char IP1;
