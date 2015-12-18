@@ -208,7 +208,7 @@ char set_env(int argc, char **argv)	{
 			
 		}
 		else if (strcmp(argv[1], "flow") == 0)	{
-			printf("Set Jumlah kanal Flowmeter\n\r");
+			printf("Set Jumlah ASTM kanal Flowmeter\n\r");
 			if(!(atoi(argv[2]))) {
 				st_env->jumFlow = 0;
 				st_env->nFL = 0;

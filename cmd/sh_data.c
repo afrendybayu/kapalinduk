@@ -25,37 +25,37 @@ void cek_data(int argc, char **argv)	{
 		smb--;
 		if (!smb){
 			#ifdef ADA_ASTM
-			uprintf ("  NO |   ID   |        Nama       |    Nilai    |    ASTM     | Satuan | M.A |\r\n");
+			uprintf ("  NO |   ID   |        Nama       |    Nilai    |    ASTM     | Satuan | MA |\r\n");
 			#else
-			uprintf ("  NO |   ID   |        Nama       |    Nilai    | Satuan | M.A |\r\n");
+			uprintf ("  NO |   ID   |        Nama       |    Nilai    | Satuan | MA |\r\n");
 			#endif
 			st_data = ALMT_DATA + smb*JML_KOPI_TEMP;
 			for (j=0; j<PER_SUMBER; j++)	{
 				//printf("%d --> 0x%08X\r\n", i*PER_SUMBER+j, ALMT_DATA + i*JML_KOPI_TEMP);
 				#ifdef ADA_ASTM
-				uprintf(" %3d | %6d | %-17s | %11.2f | %11.2f | %-6s | %3d | %d\r\n", 	\
+				uprintf(" %3d | %6d | %-17s | %11.2f | %11.2f | %-6s | %2d | %d\r\n", 	\
 					j+1, st_data[j].id, st_data[j].nama, data_f[smb*PER_SUMBER+j], astm_f[smb*PER_SUMBER+j], st_data[j].satuan, st_data[j].no_ma, smb*PER_SUMBER+j);
 				#else
-				uprintf(" %3d | %6d | %-17s | %11.2f | %-6s | %3d | %d\r\n", 	\
+				uprintf(" %3d | %6d | %-17s | %11.2f | %-6s | %2d | %d\r\n", 	\
 					j+1, st_data[j].id, st_data[j].nama, data_f[smb*PER_SUMBER+j], st_data[j].satuan, st_data[j].no_ma, smb*PER_SUMBER+j);
 				#endif
 			}
 		}
-		else if (smb==1){
-			uprintf ("  NO |   ID   |        Nama       |    Nilai    | Satuan | M.A |\r\n");
+		else if (smb==1||smb==2){
+			uprintf ("  NO |   ID   |        Nama       |    Nilai    | Satuan | MA |\r\n");
 			st_data = ALMT_DATA + smb*JML_KOPI_TEMP;
 				for (j=0; j<PER_SUMBER; j++)	{
 					//printf("%d --> 0x%08X\r\n", i*PER_SUMBER+j, ALMT_DATA + i*JML_KOPI_TEMP);
-					uprintf(" %3d | %6d | %-17s | %11.2f | %-6s | %3d | %d\r\n", 	\
+					uprintf(" %3d | %6d | %-17s | %11.2f | %-6s | %2d | %d\r\n", 	\
 						j+1, st_data[j].id, st_data[j].nama, data_f[smb*PER_SUMBER+j], st_data[j].satuan, st_data[j].no_ma, smb*PER_SUMBER+j);
 				}
 		}
 		else{
-		uprintf ("  NO |   ID   |        Nama       |    Nilai    | Satuan | M.A | A |  Form.  |\r\n");
+		uprintf ("  NO |   ID   |        Nama       |    Nilai    | Satuan | MA | A |  Form.  |\r\n");
 			st_data = ALMT_DATA + smb*JML_KOPI_TEMP;
 				for (j=0; j<PER_SUMBER; j++)	{
 					//printf("%d --> 0x%08X\r\n", i*PER_SUMBER+j, ALMT_DATA + i*JML_KOPI_TEMP);
-					uprintf(" %3d | %6d | %-17s | %11.2f | %-6s | %3d | %d | %-7s | %d\r\n", 	\
+					uprintf(" %3d | %6d | %-17s | %11.2f | %-6s | %2d | %d | %-7s | %d\r\n", 	\
 						j+1, st_data[j].id, st_data[j].nama, data_f[smb*PER_SUMBER+j], st_data[j].satuan, st_data[j].no_ma, st_data[j].arith, st_data[j].formula, smb*PER_SUMBER+j);
 				}
 		}
