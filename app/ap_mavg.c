@@ -85,10 +85,10 @@ int hitung_mavg()
 		{
 			if (st_data[j].mv_avg == 1)	
 			{
-				st_data[j].no_ma = (unsigned char) cnt_mavg;
 				cnt_mavg++;
+				st_data[j].no_ma = (unsigned char) cnt_mavg;
 			}
-			else st_data[j].no_ma = 255;
+			else st_data[j].no_ma = 0;
 		}
 	simpan_st_rom(SEKTOR_DATA, i, 1, (unsigned short *) st_data, 1);
 	}

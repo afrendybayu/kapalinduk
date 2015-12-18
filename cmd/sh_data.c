@@ -214,7 +214,7 @@ char set_data(int argc, char **argv)		{
 		}
 		else if (strcmp(argv[2], "arith") == 0){
 			st_data[nox].arith = atoi(argv[3]);
-			printf("  Mv_Avg: [%d] : %s\r\n", st_data[nox].arith, st_data[nox].arith?"Aktif":"Mati");
+			printf("  Arith: [%d] : %s\r\n", st_data[nox].arith, st_data[nox].arith);
 		}
 		else {
 			printf("  __ Perintah SALAH __\r\n");
@@ -255,7 +255,7 @@ void set_data_default()		{
 			st_data[i].rangeH  = 1000;
 			st_data[i].status  = 0;
 			st_data[i].mv_avg  = 0;
-			st_data[i].no_ma = 255;
+			st_data[i].no_ma = 0;
 			st_data[i].arith = 0;
 			strcpy(st_data[i].satuan, "-");
 			strcpy(st_data[i].formula, "");

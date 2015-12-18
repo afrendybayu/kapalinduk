@@ -1,3 +1,4 @@
+#include "monita.h"
 
 #ifndef __APP_MAVG__
 #define __APP_MAVG

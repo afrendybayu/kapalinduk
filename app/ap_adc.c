@@ -51,7 +51,7 @@ void data_adc()	{
 		{
 			if (st_data[i].mv_avg == 1)
 			{
-				nox = st_data[i].no_ma;
+				nox = st_data[i].no_ma -1;
 				st_mavg[nox].ke_0 = tf;
 			}
 			else data_f[JML_KANAL+i] = tf;

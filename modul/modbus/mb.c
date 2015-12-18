@@ -165,7 +165,7 @@ unsigned char simpan_mb_monita(int jml, unsigned char *s, int reg)	{
 		
 		if (st_data[i].mv_avg == 1)
 			{
-				nox = st_data[i].no_ma;
+				nox = st_data[i].no_ma -1;
 				st_mavg[nox].ke_0 = *fl;
 			}
 		else data_f[no] = *fl;
@@ -230,7 +230,7 @@ unsigned char simpan_mb_gwr(int jml, unsigned char *s, int reg)	{
 		
 		if (st_data[i].mv_avg == 1)
 			{
-				nox = st_data[i].no_ma;
+				nox = st_data[i].no_ma -1;
 				st_mavg[nox].ke_0 = *fl;
 			}
 		else data_f[no] = *fl;
@@ -297,7 +297,7 @@ unsigned char simpan_mb_std(int jml, unsigned char *s, int reg)	{
 		
 		if (st_data[i].mv_avg == 1)
 			{
-				nox = st_data[i].no_ma;
+				nox = st_data[i].no_ma -1;
 				st_mavg[nox].ke_0 = fl;
 			}
 		else data_f[no] = fl;
