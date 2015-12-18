@@ -131,6 +131,7 @@ THUMB_SOURCE= \
 		$(CMD)/sh_sumber.c			\
 		$(CMD)/manual.c				\
 		$(APP)/ap_utils.c			\
+		$(APP)/ap_formdata.c		\
 
 MODBUS_SOURCE=	\
 		$(MODUL)/modbus/mb.c			\

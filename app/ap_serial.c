@@ -338,6 +338,7 @@ portBASE_TYPE xGotChar;
 int ch, mm=0;
 char s[30];
 int jml_mavg;
+int jml_arith;
 extern struct t_mavg *st_mavg;
 rtcCTIME0_t ctime0;
 
@@ -373,6 +374,8 @@ rtcCTIME0_t ctime0;
 	ngurut_mavg();
 	reset_mavg(jml_mavg);
 	#endif	
+	
+	jml_arith = hitung_arith();
 	
 	cmd_shell();
 	st_hw.init++;
