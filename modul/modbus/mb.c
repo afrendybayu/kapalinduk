@@ -347,9 +347,9 @@ int kirim_respon_mb(int jml, char *s, int timeout, int serial)		{
 		for (i=0; i<jml; i++)	{
 			k += xSerialPutChar2 (0, outmb[i], 10);
 			
-			#if 0
+			#if 1
 			//k++;
-			printf("%02X", outmb[i]);
+			printf("%02X ", outmb[i]);
 			#endif
 		}
 		#if 0
@@ -421,10 +421,10 @@ int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 	}
 	
 	if (cmd==READ_FILE_CONTENT)		{				// #define READ_FILE_CONTENT		25
-		//uprintf("==> Modbus READ FILE COntent skywave\r\n");
+		uprintf("==> Modbus READ FILE COntent skywave : %d :: %d\r\n", reg, len);
 		#ifdef PAKAI_FILE_SIMPAN
 			//baca_kirim_file(reg, len, str);
-			baca_kirim_file(reg, len, strmb);
+			baca_kirim_file((reg-1), len, strmb);
 		#endif
 	}
 	if (cmd==SENDED_FILE)		{				// #define READ_FILE_CONTENT		25
@@ -478,7 +478,7 @@ int baca_waktu_modem(char *str){
 	st_env = pvPortMalloc( sizeof (struct t_env) );
 
 	if (st_env==NULL)	{
-		uprintf("  GAGAL alokmem !");
+		uprintf("  GAGAL alokmem baca waktu modem !");
 		vPortFree (st_env);
 		return;
 	}
@@ -496,11 +496,11 @@ int baca_waktu_modem(char *str){
 	//strcpy(st_env->waktu_modem, t_modem);
 	st_env->waktu_modem = (int)strtol(t_modem, NULL, 16); //epoch
 	wkt = st_env->waktu_modem;
-	uprintf("waktu_modem=%d",st_env->waktu_modem);
+	//uprintf("waktu_modem=%d",st_env->waktu_modem);
 	
 	wm = localtime (&wkt);
 	//uprintf(" |%04d|%02d|%02d|%02d|%02d|%02d|",wm->tm_year+1900, wm->tm_mon+1, wm->tm_mday, wm->tm_hour, wm->tm_min, wm->tm_sec);
-	uprintf("\n\r");
+	//uprintf("\n\r");
 	
 	/* update waktu */	
 	rtcWrite( wm );
@@ -514,7 +514,7 @@ int baca_id_modem(char *str) {
 	st_env = pvPortMalloc( sizeof (struct t_env) );
 
 	if (st_env==NULL)	{
-		uprintf("  GAGAL alokmem !");
+		uprintf("  GAGAL alokmem  baca id modem!");
 		vPortFree (st_env);
 		return;
 	}
@@ -547,11 +547,13 @@ int baca_kirim_file(int no, int len, char *str)		{
 	char *respon;
 	FILINFO *finfo;
 	
+	printf(">>>> %s() : no: %d\r\n", __FUNCTION__, no);
+	
 	if (no==0)	{
 		//cari_berkas("H-2", LIHAT);
 		//cari_berkas("H-3", path, LIHAT_ISI_SATU);
 		cari_berkas(KIRIM_FILE_MULAI_WAKTU, path, LIHAT_ISI_SATU);
-		//uprintf("no: %d ---> path: %s\r\n", no, path, strlen(nf));
+		uprintf("no: %d ---> path: %s\r\n", no, path, strlen(nf));
 		
 		if (res = f_open(&fd2, path, FA_OPEN_EXISTING | FA_READ)) {
 			if (res!=FR_NO_FILE)
@@ -594,6 +596,13 @@ int baca_kirim_file(int no, int len, char *str)		{
 		nFilemulai = MAX_SEND_FILE_MB*(no+1);
 		lenPar = MAX_SEND_FILE_MB*no;
 		lenTot = fd2.fsize;
+		
+		printf("nFilemulai: %d, lenPar: %d, lenTot: %d\r\n", nFilemulai, lenPar, lenTot);
+		
+		if (lenTot < 0)	{
+			
+		}
+			
 	}
 	
 	//f_lseek( &fd2, finfo);
@@ -621,7 +630,7 @@ int baca_kirim_file(int no, int len, char *str)		{
 	outmb[nmx-2] = ((bad_crc&0xFF00)>>8);
 	outmb[nmx-1] = (bad_crc&0xFF);
 
-	#if 0
+	#if 1
 		uprintf("namafile: %s : %d\r\n", nf, ufile);
 		int kk,ll, h=0;
 		for (kk=0; kk<nmx; kk++)	{
@@ -700,8 +709,7 @@ int baca_reg_mb(int index, int jml)	{			// READ_HOLDING_REG
 	int i, nX, j=0, njml=0;
 	char *respon; 
 	
-	//njml = (int) (jml/2);
-	njml = (int) (jml);
+	njml = (int) (jml/2);
 	nX = jml_st_mb3H(njml);
 	
 	#if 0
@@ -720,21 +728,29 @@ int baca_reg_mb(int index, int jml)	{			// READ_HOLDING_REG
 	
 	outmb[0] = st_env->almtSlave;
 	outmb[1] = READ_HOLDING_REG;
-	outmb[2] = njml*4;
-	//outmb[2] = njml;
+	outmb[2] = njml*2;
+
 	
 	unsigned int *ifl;
-	for (i=0; i<(njml/2); i++)	{
+	for (i=0; i<(njml); i++)	{
 		if (1)	{		// almt ROM lintas struct (kelipatan 10)
 			
 		}
 		
 		ifl = (unsigned int *) &data_f[index+i];
-		printf("  data[%d]: %.2f = 0x%08x\r\n", index+i, data_f[index+i], *ifl);
+		//printf("  data[%d]: %.2f = 0x%08x\r\n", index+i, data_f[index+i], *ifl);
+		
+		outmb[3+i*4] = (unsigned char) (*ifl>>8) & 0xff;
+		outmb[4+i*4] = (unsigned char) (*ifl & 0xff);
+		outmb[5+i*4] = (unsigned char) (*ifl>>24) & 0xff;
+		outmb[6+i*4] = (unsigned char) (*ifl>>16) & 0xff;
+		
+		/*
 		outmb[3+i*4] = (unsigned char) (*ifl>>24) & 0xff;
 		outmb[4+i*4] = (unsigned char) (*ifl>>16) & 0xff;
 		outmb[5+i*4] = (unsigned char) (*ifl>> 8) & 0xff;
 		outmb[6+i*4] = (unsigned char) (*ifl & 0xff);
+		//*/
 	}
 
 
@@ -788,9 +804,8 @@ int tulis_reg_mb(int reg, int index, int jml, char* str)	{	// WRITE_MULTIPLE_REG
 	for (i=0; i<njml; i++)	{
 		//tmpFl = (str[7+i*4]<<24) | (str[8+i*4]<<16) | (str[9+i*4]<<8) | (str[10+i*4]) ;
 		tmpFl = (str[9+i*4]<<24) | (str[10+i*4]<<16) | (str[7+i*4]<<8) | (str[8+i*4]) ;
-		//tmpFl = (str[10+i*4]<<24) | (str[9+i*4]<<16) | (str[7+i*4]<<8) | (str[8+i*4]) ;
 		fl = (float *)&tmpFl;
-		uprintf("data[%d]: %.3f, 0x%08x\r\n", index+i, *fl, tmpFl);
+		//uprintf("data[%d]: %.3f, 0x%08x\r\n", index+i, *fl, tmpFl);
 
 		data_f[index+i] = *fl;
 		if (index+i==24)	{			// waktu epoch !!!
