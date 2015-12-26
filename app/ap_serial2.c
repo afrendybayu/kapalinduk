@@ -142,7 +142,7 @@ char s[30];
 int proses_mod(int mbn, char *mbstr)	{
 	int hsl=0, cmd=0, jml=0, reg=0;
 
-	#if 1
+	#if 0
 	printf("\r\nJml CMD: %d -->", mbn);
 	int i,mm;
 	

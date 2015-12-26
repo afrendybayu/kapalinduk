@@ -347,7 +347,7 @@ int kirim_respon_mb(int jml, char *s, int timeout, int serial)		{
 		for (i=0; i<jml; i++)	{
 			k += xSerialPutChar2 (0, outmb[i], 10);
 			
-			#if 1
+			#if 0
 			//k++;
 			printf("%02X ", outmb[i]);
 			#endif
@@ -421,7 +421,7 @@ int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 	}
 	
 	if (cmd==READ_FILE_CONTENT)		{				// #define READ_FILE_CONTENT		25
-		uprintf("==> Modbus READ FILE COntent skywave : %d :: %d\r\n", reg, len);
+		//uprintf("==> Modbus READ FILE COntent skywave : %d :: %d\r\n", reg, len);
 		#ifdef PAKAI_FILE_SIMPAN
 			//baca_kirim_file(reg, len, str);
 			baca_kirim_file((reg-1), len, strmb);
@@ -547,13 +547,13 @@ int baca_kirim_file(int no, int len, char *str)		{
 	char *respon;
 	FILINFO *finfo;
 	
-	printf(">>>> %s() : no: %d\r\n", __FUNCTION__, no);
+	//printf(">>>> %s() : no: %d\r\n", __FUNCTION__, no);
 	
 	if (no==0)	{
 		//cari_berkas("H-2", LIHAT);
 		//cari_berkas("H-3", path, LIHAT_ISI_SATU);
 		cari_berkas(KIRIM_FILE_MULAI_WAKTU, path, LIHAT_ISI_SATU);
-		uprintf("no: %d ---> path: %s\r\n", no, path, strlen(nf));
+		//uprintf("no: %d ---> path: %s\r\n", no, path, strlen(nf));
 		
 		if (res = f_open(&fd2, path, FA_OPEN_EXISTING | FA_READ)) {
 			if (res!=FR_NO_FILE)
@@ -569,7 +569,7 @@ int baca_kirim_file(int no, int len, char *str)		{
 		#if 0
 		respon = pvPortMalloc( nmx );		// nMallox
 		if (respon == NULL)	{
-			uprintf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
+			uprintf(" %s(): ERR allok memory File SDCARD gagal !\r\n", __FUNCTION__);
 			f_close(&fd2);
 			vPortFree (respon);
 			return 0;
@@ -585,7 +585,7 @@ int baca_kirim_file(int no, int len, char *str)		{
 		
 		int kk,ll, h=0;
 		for (kk=0; kk<fd2.fsize; kk++)	{
-			uprintf(" %02x", respon[30+kk]);
+		//	uprintf(" %02x", respon[30+kk]);
 			h++;
 			if (h>8)	uprintf("   ");
 			if (h>16)	{ 	h=0; uprintf("\r\n");	}
@@ -597,7 +597,7 @@ int baca_kirim_file(int no, int len, char *str)		{
 		lenPar = MAX_SEND_FILE_MB*no;
 		lenTot = fd2.fsize;
 		
-		printf("nFilemulai: %d, lenPar: %d, lenTot: %d\r\n", nFilemulai, lenPar, lenTot);
+		//printf("nFilemulai: %d, lenPar: %d, lenTot: %d\r\n", nFilemulai, lenPar, lenTot);
 		
 		if (lenTot < 0)	{
 			
@@ -619,18 +619,21 @@ int baca_kirim_file(int no, int len, char *str)		{
 	memcpy(&outmb[6], (void*) &lenTot, 4);
 	memcpy(&outmb[10], (void*) &nf, strlen(nf));	outmb[10+strlen(nf)]  = '\0';
 	
+	/*
 	#if 0
 	nmx = 8;
 	outmb[0] = 0x11;	outmb[1] = 0x25;	
 	outmb[2] = 0x00;	outmb[3] = 0x00;
 	outmb[4] = 0x00;	outmb[5] = 0x00;
 	#endif
+	//*/
+	
 	
 	unsigned short bad_crc=crc_ccitt_0xffff(nmx-2, outmb);
 	outmb[nmx-2] = ((bad_crc&0xFF00)>>8);
 	outmb[nmx-1] = (bad_crc&0xFF);
 
-	#if 1
+	#if 0
 		uprintf("namafile: %s : %d\r\n", nf, ufile);
 		int kk,ll, h=0;
 		for (kk=0; kk<nmx; kk++)	{
@@ -663,7 +666,7 @@ int proses_file_terkirim(int len, char *str)	{
 	sprintf(path, "\\%s\\%s", pch, nf);
 	
 	res = f_opendir(&dir, FOLDER_SENDED);		// masuk ke folder \\SENDED\\ //
-	uprintf("buka folder %s: %d, %d\r\n", FOLDER_SENDED, res );
+	//uprintf("buka folder %s: %d, %d\r\n", FOLDER_SENDED, res );
 	if (res != FR_OK)	{
 		f_opendir(&dir, "\\");		// masuk ke folder \\SENDED\\ //
 		res = f_mkdir(FOLDER_SENDED);
@@ -686,7 +689,7 @@ int proses_file_terkirim(int len, char *str)	{
 	sprintf(pch, "%s\\%s", FOLDER_SENDED, nf);
 	//uprintf("path: %s, ke: %s\r\n", path, pch);
 	res = f_rename(path, pch);
-	uprintf(" File %s sudah terkirim & dipindah ke %s: %d\r\n", nf, pch, res);
+	//uprintf(" File %s sudah terkirim & dipindah ke %s: %d\r\n", nf, pch, res);
 	
 	int kk=1;
 	while(res == 8) 	{
