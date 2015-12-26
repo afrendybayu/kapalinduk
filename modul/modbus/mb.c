@@ -724,13 +724,13 @@ int baca_reg_mb(int index, int jml)	{			// READ_HOLDING_REG
 	//outmb[2] = njml;
 	
 	unsigned int *ifl;
-	for (i=0; i<njml; i++)	{
+	for (i=0; i<(njml/2); i++)	{
 		if (1)	{		// almt ROM lintas struct (kelipatan 10)
 			
 		}
 		
 		ifl = (unsigned int *) &data_f[index+i];
-		//printf("  data[%d]: %.2f = 0x%08x\r\n", index+i, data_f[index+i], *ifl);
+		printf("  data[%d]: %.2f = 0x%08x\r\n", index+i, data_f[index+i], *ifl);
 		outmb[3+i*4] = (unsigned char) (*ifl>>24) & 0xff;
 		outmb[4+i*4] = (unsigned char) (*ifl>>16) & 0xff;
 		outmb[5+i*4] = (unsigned char) (*ifl>> 8) & 0xff;
@@ -786,9 +786,11 @@ int tulis_reg_mb(int reg, int index, int jml, char* str)	{	// WRITE_MULTIPLE_REG
 	struct tm aaa;
 	unsigned int wx = (unsigned int) now_to_time(1,aaa);		// epoch
 	for (i=0; i<njml; i++)	{
-		tmpFl = (str[7+i*4]<<24) | (str[8+i*4]<<16) | (str[9+i*4]<<8) | (str[10+i*4]) ;
+		//tmpFl = (str[7+i*4]<<24) | (str[8+i*4]<<16) | (str[9+i*4]<<8) | (str[10+i*4]) ;
+		tmpFl = (str[9+i*4]<<24) | (str[10+i*4]<<16) | (str[7+i*4]<<8) | (str[8+i*4]) ;
+		//tmpFl = (str[10+i*4]<<24) | (str[9+i*4]<<16) | (str[7+i*4]<<8) | (str[8+i*4]) ;
 		fl = (float *)&tmpFl;
-		//uprintf("data[%d]: %.3f, 0x%08x\r\n", index+i, *fl, tmpFl);
+		uprintf("data[%d]: %.3f, 0x%08x\r\n", index+i, *fl, tmpFl);
 
 		data_f[index+i] = *fl;
 		if (index+i==24)	{			// waktu epoch !!!
