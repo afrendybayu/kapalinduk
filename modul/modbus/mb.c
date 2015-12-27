@@ -432,7 +432,7 @@ int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 		#ifdef PAKAI_FILE_SIMPAN
 			//int kk = proses_file_terkirim(len, str);
 			int kk = proses_file_terkirim(len, strmb);
-			uprintf(" hasil sended : %d\r\n", kk);
+			//uprintf(" hasil sended : %d\r\n", kk);
 		#endif
 	}
 	if (cmd==KIRIM_IDMODEM)
@@ -655,8 +655,11 @@ int baca_kirim_file(int no, int len, char *str)		{
 int proses_file_terkirim(int len, char *str)	{
 	char nf[32], path[64], pch[64];
 	int x = (int) (str[2]<<8 | str[3]);
-	memcpy(nf, &str[4], x);
-	uprintf("nama file dikirim: %s\r\n", nf);
+	memcpy(nf, &str[4], x);	nf[x] = 0;
+	
+	int a;
+	//for(a=0; a<=17; a++)	uprintf("%02X ", str[4+a]);
+	//uprintf(" >> nama file dikirim: %s --- %s, x: %d\r\n", nf, str, x);
 	
 	FIL fd2;
 	FRESULT res;
@@ -692,11 +695,11 @@ int proses_file_terkirim(int len, char *str)	{
 	//uprintf(" File %s sudah terkirim & dipindah ke %s: %d\r\n", nf, pch, res);
 	
 	int kk=1;
-	while(res == 8) 	{
-		sprintf(pch, "\\%s\\dob%d_%s", FOLDER_SENDED, kk, nf);
+	while(res == FR_EXIST) 	{
+		sprintf(pch, "%s\\dob%d_%s", FOLDER_SENDED, kk, nf);
 		//uprintf("file %s dobel ke %s !!!\r\n", path, pch);
 		res = f_rename(path, pch);
-		uprintf(" >>>>> File DOBEL %s sudah terkirim & dipindah ke %s: %d\r\n", nf, pch, res);
+		//uprintf(" >>>>> File DOBEL %s sudah terkirim & dipindah ke %s: %d\r\n", nf, pch, res);
 		kk++;
 		//vTaskDelay(1000);
 		//res = 0;

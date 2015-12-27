@@ -106,17 +106,17 @@ int cmd_modbus(int gg, int *dReg, char *src) {
 			#endif
 			
 			
-			switch (*src){
-			case SRC_MB_SANTER:
-				timeout = 50; break;
-			case SRC_MB_GWR:
-				timeout = 20; break;
-			case SRC_MB_NATIVE:
-				timeout = 50; break;
-			case SRC_MB_PM810:
-				timeout = 50; break;
-			default :
-				timeout = 50; break;
+			switch (*src) {
+				case SRC_MB_SANTER:
+					timeout = 50; break;
+				case SRC_MB_GWR:
+					timeout = 20; break;
+				case SRC_MB_NATIVE:
+					timeout = 50; break;
+				case SRC_MB_PM810:
+					timeout = 50; break;
+				default :
+					timeout = 50; break;
 			}
 		
 			*dReg = destReg;
@@ -173,7 +173,8 @@ char src;
 		}
 		else if (mb_state==MB_REQ)	{
 			
-			int rsp = cmd_modbus(mbgilir, &dReg, &src); // << (ada bug) yang buat modbus master loop di RESP, sementara buat jalan keluar dlu. debug dsini takes long time
+			int rsp = cmd_modbus(mbgilir, &dReg, &src); 
+			// << (ada bug) yang buat modbus master loop di RESP, sementara buat jalan keluar dlu. debug dsini takes long time
 			//printf(">>> MB_REQ: %d dest: %d ", mbgilir, dReg);
 			if (rsp>0)	
 			{
