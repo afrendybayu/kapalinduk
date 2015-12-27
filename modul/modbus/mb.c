@@ -923,7 +923,7 @@ int parsing_mb_native_cmd(char*s, char* cmd, int* dest)	{
 	
 	unsigned int tmp;
 	//*
-	cmd[0] = buf[1];
+	cmd[0] = buf[1];		// idslave sensor
 	cmd[1] = buf[4]?WRITE_MULTIPLE_REG:READ_HOLDING_REG;
 	
 	//tmp = buf[2]>40000?(buf[2]-40000-buf[3]):buf[2];

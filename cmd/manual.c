@@ -8,6 +8,16 @@
 
 void sumber_kitab()		{
 	printf(" Perintah untuk mengubah konfig sumber !\r\n");
+	printf(" Penggunaan : set_sumber [no_sumber] [nama|ipaddr|ket|tipe|stack|formula|status] [nilainya]\r\n");
+	printf(" 1. Contoh set_sumber 2 formula 4;2;1031;0;3;9;1031\r\n");
+	printf("    Format formula: Tipe Sensor;IDslave sensor;Register Sensor;Offset/Base;Tipe Command;Panjang word data;Register Tujuan Santer\r\n");
+	printf("      TIpe Sensor: [1] Native  [2] PM810  [3] Santer  [4] GWR\r\n");
+	printf("      ID Slave : Konfigurasi ID Slave pada sensor \r\n");
+	printf("      Register Sensor : Alamat register yang akan diproses\r\n");
+	printf("      Offset/Base : 0 atau 1. Pengurang dalam nilai register\r\n");
+	printf("      Tipe Command : [3] Read Holdimg Register [16] Write Holding Register\r\n");
+	printf("      Panjang Data : Jumlah data yang akan disedot (dalam word = per 2 byte)\r\n");
+	printf("      Register Tujuan : Register penyimpanan di modul santer\r\n");
 }
 
 void env_kitab()	{
