@@ -556,7 +556,7 @@ void simpan_file_data()		{
 			memcpy((char*) &isi[2], st_env->id_modem, 15);
 			memcpy((char*) &isi[17], st_env->SN, 15);
 			
-			#if 1
+			#if 0
 			for (i=0; i<15; i++){
 				uprintf("[%d] = %0x\n\r",i,isi[i+2]);
 			}
