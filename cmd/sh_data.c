@@ -135,7 +135,7 @@ char set_data(int argc, char **argv)		{
 	printf(" %s(): Mallok ok di %X\r\n", __FUNCTION__, st_data);
 	int lok = (int) (no/PER_SUMBER);
 	
-	printf("no: %d, lok: %d, nox: %d\r\n", no, lok, nox);
+	//printf("no: %d, lok: %d, nox: %d\r\n", no, lok, nox);
 	
 	taskENTER_CRITICAL();
 	memcpy((char *) st_data, (char *) ALMT_DATA+(lok*JML_KOPI_TEMP), (PER_SUMBER * sizeof (struct t_data)));

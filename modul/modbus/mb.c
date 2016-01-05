@@ -223,7 +223,7 @@ unsigned char simpan_mb_gwr(int jml, unsigned char *s, int reg)	{
 			if (ff==1)	break;
 		}
 		ff = 0;
-		
+		// 0B 03 08 01 02 03 04
 		//printf("%02x %02x %02x %02x : ", s[i*4+0], s[i*4+1], s[i*4+2], s[i*4+3]);
 		tmpFl = ((s[i*4+0] & 0xFF)<<24) | ((s[i*4+1] & 0xFF)<<16) | ((s[i*4+2] & 0xFF)<<8) | (s[i*4+3] & 0xFF);
 		fl = (float *)&tmpFl;
