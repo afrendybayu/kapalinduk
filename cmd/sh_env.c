@@ -280,7 +280,7 @@ void set_env_default()		{
 	
 	
 	st_env->magic1 = 0x01;
-	st_env->magic2 = 0x04;
+	st_env->magic2 = 0x05;
 	st_env->mmc_serial = 0;
 	strcpy(st_env->SN, "SanterJadul1234");
 	strcpy(st_env->SN, "ModemJadul12345");

@@ -239,6 +239,7 @@ unsigned char simpan_mb_gwr(int jml, unsigned char *s, int reg)	{
 		//printf("dfloat: %08x %.3f\r\n", tmpFl, *fl);
 	}
 	
+	#if 0
 	if (jml == 4){
 		if (st_data[i].mv_avg == 1){
 			nox = st_data[i].no_ma -1;
@@ -246,7 +247,7 @@ unsigned char simpan_mb_gwr(int jml, unsigned char *s, int reg)	{
 		}
 		else data_f[no+1] =  data_f[no-3] - data_f[no-2];	
 	}
-	
+	#endif
 	
 	//vPortFree(st_mavg);
 	#ifdef ERROR_DATA_RATE
@@ -496,11 +497,11 @@ int baca_waktu_modem(char *str){
 	//strcpy(st_env->waktu_modem, t_modem);
 	st_env->waktu_modem = (int)strtol(t_modem, NULL, 16); //epoch
 	wkt = st_env->waktu_modem;
-	uprintf("waktu_modem=%d",st_env->waktu_modem);
+	//uprintf("waktu_modem=%d",st_env->waktu_modem);
 	
 	wm = localtime (&wkt);
 	//uprintf(" |%04d|%02d|%02d|%02d|%02d|%02d|",wm->tm_year+1900, wm->tm_mon+1, wm->tm_mday, wm->tm_hour, wm->tm_min, wm->tm_sec);
-	uprintf("\n\r");
+	//uprintf("\n\r");
 	
 	/* update waktu */	
 	rtcWrite( wm );
