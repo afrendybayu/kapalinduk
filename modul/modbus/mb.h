@@ -9,12 +9,12 @@
 
 #define READ_COIL_STATUS		 1
 #define READ_INPUT_STATUS		 2
-#define READ_HOLDING_REG		 3
+#define READ_HOLDING_REG		 3		// 0x03
 #define READ_INPUT_REG			 4
 #define WRITE_SINGLE_COIL		 5
 #define WRITE_SINGLE_REG		 6
 #define WRITE_MULTIPLE_COIL		15
-#define WRITE_MULTIPLE_REG		16
+#define WRITE_MULTIPLE_REG		16		// 0x10
 #define READ_FILE_NAME			0x24
 #define READ_FILE_CONTENT		0x25
 #define SENDED_FILE				0x26

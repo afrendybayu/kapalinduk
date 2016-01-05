@@ -106,21 +106,21 @@ int cmd_modbus(int gg, int *dReg, char *src) {
 			#endif
 			
 			
-			switch (*src){
-			case SRC_MB_SANTER:
-				timeout = 50; break;
-			case SRC_MB_GWR:
-				timeout = 20; break;
-			case SRC_MB_NATIVE:
-				timeout = 50; break;
-			case SRC_MB_PM810:
-				timeout = 50; break;
-			default :
-				timeout = 50; break;
+			switch (*src) {
+				case SRC_MB_SANTER:
+					timeout = 50; break;
+				case SRC_MB_GWR:
+					timeout = 20; break;
+				case SRC_MB_NATIVE:
+					timeout = 50; break;
+				case SRC_MB_PM810:
+					timeout = 50; break;
+				default :
+					timeout = 50; break;
 			}
 		
 			*dReg = destReg;
-			//printf("Dest Reg: %d - %d\r\n", *dReg, destReg);
+			//printf("Dest Reg: %d - %d, timeout: %d\r\n", *dReg, destReg, timeout);
 			return kirim_respon_mb(8,outmb3,timeout,3);
 		}
 	}
@@ -173,7 +173,8 @@ char src;
 		}
 		else if (mb_state==MB_REQ)	{
 			
-			int rsp = cmd_modbus(mbgilir, &dReg, &src); // << (ada bug) yang buat modbus master loop di RESP, sementara buat jalan keluar dlu. debug dsini takes long time
+			int rsp = cmd_modbus(mbgilir, &dReg, &src); 
+			// << (ada bug) yang buat modbus master loop di RESP, sementara buat jalan keluar dlu. debug dsini takes long time
 			//printf(">>> MB_REQ: %d dest: %d ", mbgilir, dReg);
 			if (rsp>0)	
 			{
@@ -189,7 +190,7 @@ char src;
 		else if (mb_state==MB_RESP)	{
 			//printf(">>> MB_RESP: %d\r\n", mbgilir);
 			xGotChar = xSerialGetChar3( xPort3, &ch, 100 );
-			printf("|%02x ", (char) ch);
+			//printf("|%02x ", (char) ch);
 			#if 1
 			if( xGotChar == pdTRUE )		
 			{
@@ -230,7 +231,7 @@ char src;
 				}
 				
 				if (flag_ms==1 && nmb>=8)	{
-					printf("hasil: %d\r\n", nmb);
+					//printf("hasil: %d\r\n", nmb);
 					//printf("x%02x ", (char) ch);
 					balas = proses_mod3(nmb, strmb3, dReg, src);					//printf("--==> BALAS MB: %d\r\n", balas);
 					nmb = 0;

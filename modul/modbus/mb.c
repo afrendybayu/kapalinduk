@@ -223,7 +223,7 @@ unsigned char simpan_mb_gwr(int jml, unsigned char *s, int reg)	{
 			if (ff==1)	break;
 		}
 		ff = 0;
-		
+		// 0B 03 08 01 02 03 04
 		//printf("%02x %02x %02x %02x : ", s[i*4+0], s[i*4+1], s[i*4+2], s[i*4+3]);
 		tmpFl = ((s[i*4+0] & 0xFF)<<24) | ((s[i*4+1] & 0xFF)<<16) | ((s[i*4+2] & 0xFF)<<8) | (s[i*4+3] & 0xFF);
 		fl = (float *)&tmpFl;
@@ -350,7 +350,7 @@ int kirim_respon_mb(int jml, char *s, int timeout, int serial)		{
 			
 			#if 0
 			//k++;
-			printf("%02X", outmb[i]);
+			printf("%02X ", outmb[i]);
 			#endif
 		}
 		#if 0
@@ -422,10 +422,10 @@ int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 	}
 	
 	if (cmd==READ_FILE_CONTENT)		{				// #define READ_FILE_CONTENT		25
-		//uprintf("==> Modbus READ FILE COntent skywave\r\n");
+		//uprintf("==> Modbus READ FILE COntent skywave : %d :: %d\r\n", reg, len);
 		#ifdef PAKAI_FILE_SIMPAN
 			//baca_kirim_file(reg, len, str);
-			baca_kirim_file(reg, len, strmb);
+			baca_kirim_file((reg-1), len, strmb);
 		#endif
 	}
 	if (cmd==SENDED_FILE)		{				// #define READ_FILE_CONTENT		25
@@ -433,7 +433,7 @@ int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 		#ifdef PAKAI_FILE_SIMPAN
 			//int kk = proses_file_terkirim(len, str);
 			int kk = proses_file_terkirim(len, strmb);
-			uprintf(" hasil sended : %d\r\n", kk);
+			//uprintf(" hasil sended : %d\r\n", kk);
 		#endif
 	}
 	if (cmd==KIRIM_IDMODEM)
@@ -479,7 +479,7 @@ int baca_waktu_modem(char *str){
 	st_env = pvPortMalloc( sizeof (struct t_env) );
 
 	if (st_env==NULL)	{
-		uprintf("  GAGAL alokmem !");
+		uprintf("  GAGAL alokmem baca waktu modem !");
 		vPortFree (st_env);
 		return;
 	}
@@ -515,7 +515,7 @@ int baca_id_modem(char *str) {
 	st_env = pvPortMalloc( sizeof (struct t_env) );
 
 	if (st_env==NULL)	{
-		uprintf("  GAGAL alokmem !");
+		uprintf("  GAGAL alokmem  baca id modem!");
 		vPortFree (st_env);
 		return;
 	}
@@ -548,6 +548,8 @@ int baca_kirim_file(int no, int len, char *str)		{
 	char *respon;
 	FILINFO *finfo;
 	
+	//printf(">>>> %s() : no: %d\r\n", __FUNCTION__, no);
+	
 	if (no==0)	{
 		//cari_berkas("H-2", LIHAT);
 		//cari_berkas("H-3", path, LIHAT_ISI_SATU);
@@ -568,7 +570,7 @@ int baca_kirim_file(int no, int len, char *str)		{
 		#if 0
 		respon = pvPortMalloc( nmx );		// nMallox
 		if (respon == NULL)	{
-			uprintf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
+			uprintf(" %s(): ERR allok memory File SDCARD gagal !\r\n", __FUNCTION__);
 			f_close(&fd2);
 			vPortFree (respon);
 			return 0;
@@ -584,7 +586,7 @@ int baca_kirim_file(int no, int len, char *str)		{
 		
 		int kk,ll, h=0;
 		for (kk=0; kk<fd2.fsize; kk++)	{
-			uprintf(" %02x", respon[30+kk]);
+		//	uprintf(" %02x", respon[30+kk]);
 			h++;
 			if (h>8)	uprintf("   ");
 			if (h>16)	{ 	h=0; uprintf("\r\n");	}
@@ -595,6 +597,13 @@ int baca_kirim_file(int no, int len, char *str)		{
 		nFilemulai = MAX_SEND_FILE_MB*(no+1);
 		lenPar = MAX_SEND_FILE_MB*no;
 		lenTot = fd2.fsize;
+		
+		//printf("nFilemulai: %d, lenPar: %d, lenTot: %d\r\n", nFilemulai, lenPar, lenTot);
+		
+		if (lenTot < 0)	{
+			
+		}
+			
 	}
 	
 	//f_lseek( &fd2, finfo);
@@ -611,12 +620,15 @@ int baca_kirim_file(int no, int len, char *str)		{
 	memcpy(&outmb[6], (void*) &lenTot, 4);
 	memcpy(&outmb[10], (void*) &nf, strlen(nf));	outmb[10+strlen(nf)]  = '\0';
 	
+	/*
 	#if 0
 	nmx = 8;
 	outmb[0] = 0x11;	outmb[1] = 0x25;	
 	outmb[2] = 0x00;	outmb[3] = 0x00;
 	outmb[4] = 0x00;	outmb[5] = 0x00;
 	#endif
+	//*/
+	
 	
 	unsigned short bad_crc=crc_ccitt_0xffff(nmx-2, outmb);
 	outmb[nmx-2] = ((bad_crc&0xFF00)>>8);
@@ -644,8 +656,11 @@ int baca_kirim_file(int no, int len, char *str)		{
 int proses_file_terkirim(int len, char *str)	{
 	char nf[32], path[64], pch[64];
 	int x = (int) (str[2]<<8 | str[3]);
-	memcpy(nf, &str[4], x);
-	uprintf("nama file dikirim: %s\r\n", nf);
+	memcpy(nf, &str[4], x);	nf[x] = 0;
+	
+	int a;
+	//for(a=0; a<=17; a++)	uprintf("%02X ", str[4+a]);
+	//uprintf(" >> nama file dikirim: %s --- %s, x: %d\r\n", nf, str, x);
 	
 	FIL fd2;
 	FRESULT res;
@@ -655,7 +670,7 @@ int proses_file_terkirim(int len, char *str)	{
 	sprintf(path, "\\%s\\%s", pch, nf);
 	
 	res = f_opendir(&dir, FOLDER_SENDED);		// masuk ke folder \\SENDED\\ //
-	uprintf("buka folder %s: %d, %d\r\n", FOLDER_SENDED, res );
+	//uprintf("buka folder %s: %d, %d\r\n", FOLDER_SENDED, res );
 	if (res != FR_OK)	{
 		f_opendir(&dir, "\\");		// masuk ke folder \\SENDED\\ //
 		res = f_mkdir(FOLDER_SENDED);
@@ -678,14 +693,14 @@ int proses_file_terkirim(int len, char *str)	{
 	sprintf(pch, "%s\\%s", FOLDER_SENDED, nf);
 	//uprintf("path: %s, ke: %s\r\n", path, pch);
 	res = f_rename(path, pch);
-	uprintf(" File %s sudah terkirim & dipindah ke %s: %d\r\n", nf, pch, res);
+	//uprintf(" File %s sudah terkirim & dipindah ke %s: %d\r\n", nf, pch, res);
 	
 	int kk=1;
-	while(res == 8) 	{
-		sprintf(pch, "\\%s\\dob%d_%s", FOLDER_SENDED, kk, nf);
+	while(res == FR_EXIST) 	{
+		sprintf(pch, "%s\\dob%d_%s", FOLDER_SENDED, kk, nf);
 		//uprintf("file %s dobel ke %s !!!\r\n", path, pch);
 		res = f_rename(path, pch);
-		uprintf(" >>>>> File DOBEL %s sudah terkirim & dipindah ke %s: %d\r\n", nf, pch, res);
+		//uprintf(" >>>>> File DOBEL %s sudah terkirim & dipindah ke %s: %d\r\n", nf, pch, res);
 		kk++;
 		//vTaskDelay(1000);
 		//res = 0;
@@ -701,8 +716,7 @@ int baca_reg_mb(int index, int jml)	{			// READ_HOLDING_REG
 	int i, nX, j=0, njml=0;
 	char *respon; 
 	
-	//njml = (int) (jml/2);
-	njml = (int) (jml);
+	njml = (int) (jml/2);
 	nX = jml_st_mb3H(njml);
 	
 	#if 0
@@ -721,21 +735,29 @@ int baca_reg_mb(int index, int jml)	{			// READ_HOLDING_REG
 	
 	outmb[0] = st_env->almtSlave;
 	outmb[1] = READ_HOLDING_REG;
-	outmb[2] = njml*4;
-	//outmb[2] = njml;
+	outmb[2] = njml*2;
+
 	
 	unsigned int *ifl;
-	for (i=0; i<njml; i++)	{
+	for (i=0; i<(njml); i++)	{
 		if (1)	{		// almt ROM lintas struct (kelipatan 10)
 			
 		}
 		
 		ifl = (unsigned int *) &data_f[index+i];
 		//printf("  data[%d]: %.2f = 0x%08x\r\n", index+i, data_f[index+i], *ifl);
+		
+		outmb[3+i*4] = (unsigned char) (*ifl>>8) & 0xff;
+		outmb[4+i*4] = (unsigned char) (*ifl & 0xff);
+		outmb[5+i*4] = (unsigned char) (*ifl>>24) & 0xff;
+		outmb[6+i*4] = (unsigned char) (*ifl>>16) & 0xff;
+		
+		/*
 		outmb[3+i*4] = (unsigned char) (*ifl>>24) & 0xff;
 		outmb[4+i*4] = (unsigned char) (*ifl>>16) & 0xff;
 		outmb[5+i*4] = (unsigned char) (*ifl>> 8) & 0xff;
 		outmb[6+i*4] = (unsigned char) (*ifl & 0xff);
+		//*/
 	}
 
 
@@ -787,7 +809,8 @@ int tulis_reg_mb(int reg, int index, int jml, char* str)	{	// WRITE_MULTIPLE_REG
 	struct tm aaa;
 	unsigned int wx = (unsigned int) now_to_time(1,aaa);		// epoch
 	for (i=0; i<njml; i++)	{
-		tmpFl = (str[7+i*4]<<24) | (str[8+i*4]<<16) | (str[9+i*4]<<8) | (str[10+i*4]) ;
+		//tmpFl = (str[7+i*4]<<24) | (str[8+i*4]<<16) | (str[9+i*4]<<8) | (str[10+i*4]) ;
+		tmpFl = (str[9+i*4]<<24) | (str[10+i*4]<<16) | (str[7+i*4]<<8) | (str[8+i*4]) ;
 		fl = (float *)&tmpFl;
 		//uprintf("data[%d]: %.3f, 0x%08x\r\n", index+i, *fl, tmpFl);
 
@@ -901,7 +924,7 @@ int parsing_mb_native_cmd(char*s, char* cmd, int* dest)	{
 	
 	unsigned int tmp;
 	//*
-	cmd[0] = buf[1];
+	cmd[0] = buf[1];		// idslave sensor
 	cmd[1] = buf[4]?WRITE_MULTIPLE_REG:READ_HOLDING_REG;
 	
 	//tmp = buf[2]>40000?(buf[2]-40000-buf[3]):buf[2];
