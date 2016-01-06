@@ -53,7 +53,7 @@
 
 #include FreeRTOSConfig.h
 
-NAMA_FILE=santer
+NAMA_FILE=rinjani
 #RTOS_SOURCE_DIR=../../../Source
 #DEMO_COMMON_DIR=../../Common/Minimal
 #DEMO_INCLUDE_DIR=../../Common/include
@@ -106,7 +106,7 @@ CFLAGS= $(DEBUG) \
 		-fomit-frame-pointer \
 		-mthumb-interwork \
 #		-I $(DEMO_INCLUDE_DIR) \
-#		-I ./$(MODUL)/serial	\
+		-I ./$(MODUL)/serial	\
 		
 THUMB_SOURCE= \
 		main.c \
@@ -129,6 +129,7 @@ THUMB_SOURCE= \
 		$(CMD)/sh_kanal.c			\
 		$(CMD)/sh_utils.c			\
 		$(CMD)/sh_sumber.c			\
+		$(CMD)/sh_modem.c 			\
 		$(CMD)/manual.c				\
 		$(APP)/ap_utils.c			\
 
@@ -155,6 +156,7 @@ SERIAL1_SOURCE= \
 
 RTC_SOURCE= \
 		$(CMD)/sh_rtc.c		\
+
 
 #SDC_SOURCE=	\
 #		$(MODUL)/ff/ff9b/src/ff.c		\
@@ -207,6 +209,7 @@ THUMB_SOURCE += $(SDC_SOURCE)
 THUMB_SOURCE += $(ADC_SOURCE)
 THUMB_SOURCE += $(SERIAL3_SOURCE)
 THUMB_SOURCE += $(COM_SOURCE)
+
 
 ARM_SOURCE	+=  $(SERIAL_SOURCE_ISR)
 ARM_SOURCE	+=  $(ADC_SOURCE_ISR)

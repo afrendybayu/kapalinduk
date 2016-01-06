@@ -161,30 +161,21 @@ void rtcWrite(struct tm *newTime);
 		
 		#ifdef PAKAI_SERIAL_1
 			#ifdef PAKAI_SERIAL_1_P2
-			#define SIM_PWR	BIT(4)
-			#define SIM_EMG BIT(3)
-			
-			//PCONP	|= BIT(4);						
-											//PCLKSEL0 &= ~(BIT(8) | BIT(9));			
-											//PCLKSEL0 |= BIT(8);						
-											//PINSEL4 &= ~(BIT(3) | BIT(2) | BIT(1) | BIT(0));	
-											//PINSEL4 |= (BIT(3) | BIT(1));	
-			
+			char flagModem;
+			char saat_gsm_aksi;
+			char status_modem;
+			char index_gsm;				
 				// TX1: P2.0, RX1: P2.1
-				#define setup_serial1_P2()	do	{	\	
-											PCONP	|= BIT(4);									\
-											PCLKSEL0 &= ~(BIT(8) | BIT(9));						\
+				#define setup_serial1_P2()	do	{	\												
+											PCONP	|= BIT(4);									\		
+											PCLKSEL0 &= ~(BIT(8) | BIT(9));						\	
 											PCLKSEL0 |= BIT(8);									\	
-											PINSEL4 &= ~(BIT(3) | BIT(2) | BIT(1) | BIT(0) | BIT(8) | BIT(9) | BIT(6) | BIT(7));	\
-											PINSEL4 |= (BIT(3) | BIT(1));						\	
-											U1MCR &= ~(BIT(4));							\							
-											FIO2DIR |= SIM_PWR | SIM_EMG; 						\
-											FIO2SET|= SIM_EMG | SIM_PWR; 						\
-											FIO1DIR = BIT(31);									\
-											FIO1SET|= BIT(31);									\
-											FIO1PIN = BIT(31);									\
+											PINSEL4 &= ~(BIT(0)) ;	\	
+											PINSEL4 &= ~(BIT(2)) ; \
+											PINSEL4 |= BIT(3) ;						\
+											PINSEL4 |= BIT(1)  ;			\	
 				} while (0)
-				#define init_serial2_P0()	do {				\
+				#define init_serial1_P2()	do {				\
 							} while(0)
 				
 				
@@ -265,10 +256,12 @@ void rtcWrite(struct tm *newTime);
 		#define POWER_5V		BIT(19)	// P019
 		#define POWER_24V		BIT(28)	// P128
 		#define POWER_2n5V		BIT(29)	// P029
+		#define POWER_4v		BIT(31) // P131
 
 		#define setup_power()		do {	\
 					FIO0DIR  |= POWER_5V;		\
 					FIO1DIR  |= POWER_24V;		\
+					FIO1DIR  |= POWER_4v;\
 				} while(0)	
 
 	#endif

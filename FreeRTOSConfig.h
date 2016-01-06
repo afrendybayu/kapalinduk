@@ -81,7 +81,7 @@
  *----------------------------------------------------------*/
 
 
-#define PROMPT				"iTong"
+#define PROMPT				"Rinjani"
 #define BOARD_SANTER		"Santer"
 #define BOARD_SANTER_v1_0
 //#define BOARD_SANTER_versi	"v1.2"
@@ -104,11 +104,19 @@
 
 #define PAKAI_SERIAL_1
 #ifdef  PAKAI_SERIAL_1
-	#define PAKAI_SERIAL_1_P2		9600
-	#define ST_SER1					15
+	#define PAKAI_SERIAL_1_P2       9600
+	#define ST_SER1					20
+	#define CEK_AT				100
+	#define M_SMS_PENUH			200
+	#define BACA_SMS			1
+	#define HAPUS_SMS			2
+	#define CEK_PULSA			4
+	#define BACA_SMS_TUNGGAL	8
+	#define KIRIM_SMS			16
+	#define ECHO_OFF			99
 	#endif
 
-#define PAKAI_SERIAL_2
+//#define PAKAI_SERIAL_2
 #ifdef  PAKAI_SERIAL_2
 	//#define PAKAI_SERIAL_2_P0		115200
 	#define PAKAI_SERIAL_2_P0		9600
@@ -117,7 +125,7 @@
 	#define MODBUS_RTU_SLAVE		
 #endif
 
-#define PAKAI_SERIAL_3
+//#define PAKAI_SERIAL_3
 #ifdef  PAKAI_SERIAL_3
 	//#define PAKAI_SERIAL_3_P4		115200
 	#define PAKAI_SERIAL_3_P4		9600

@@ -51,6 +51,11 @@ void cek_env(int argc, char **argv)	{
 	uprintf("  Konfig Debug1: %d\r\n", st_env->prioDebug);
 	uprintf("  Konfig Debug2: %d\r\n", st_env->prioDebug2);
 	uprintf("  Memory space: %d\r\n", xPortGetFreeHeapSize());
+	
+	#ifdef PAKAI_SERIAL_1
+	uprintf(" Modem Config : \r\n");
+	uprintf("Baudrate : %d\r\n",PAKAI_SERIAL_1_P2);
+	#endif
 }
 
 

@@ -274,7 +274,9 @@ void vLedTask( void *pvParameters )	{
 	xLastWakeTime = xTaskGetTickCount();
 	for ( ;; )	{
 		toogle_led_utama();
-		toogle_relay_satu();
+		//toogle_relay_satu();
+		FIO1CLR = RLY_1;
+	
 		
 		//printf("testing %.4f\r\n", 12.3455*8.1);
 		//printf("testing %d\r\n", 12);

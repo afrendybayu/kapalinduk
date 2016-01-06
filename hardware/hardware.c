@@ -143,6 +143,7 @@ void init_hardware()	{
 	
 	FIO0CLR = POWER_5V;
 	FIO1CLR = POWER_24V;
+	FIO1CLR = POWER_4v;
 }
 
 int init_konter_onoff(unsigned int aaa, unsigned char status) {

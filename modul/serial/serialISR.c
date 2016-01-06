@@ -108,15 +108,15 @@ void vSerialISRCreateQueues1( unsigned portBASE_TYPE uxQueueLength, xQueueHandle
 void vUART1_ISR_Wrapper( void ) __attribute__ ((naked));
 
 /* UART0 interrupt service routine handler. */
-//void vUART_ISR_Handler( void ) __attribute__ ((noinline));
-void vUART1_ISR_Handler( void );
+void vUART1_ISR_Handler( void ) __attribute__ ((noinline));
+//void vUART1_ISR_Handler( void );
 
 void vSerialISRCreateQueues1(	unsigned portBASE_TYPE uxQueueLength, xQueueHandle *pxRxedChars, 
 								xQueueHandle *pxCharsForTx, long volatile **pplTHREEmptyFlag )
 {
 	/* Create the queues used to hold Rx and Tx characters. */
 	//xRxedChars = xQueueCreate( uxQueueLength, ( unsigned portBASE_TYPE ) sizeof( signed char ) );
-	xRxedChars1 = xQueueCreate( 8, ( unsigned portBASE_TYPE ) sizeof( signed portCHAR ) );
+	xRxedChars1 = xQueueCreate( uxQueueLength, ( unsigned portBASE_TYPE ) sizeof( signed portCHAR ) );
 	xCharsForTx1 = xQueueCreate( uxQueueLength + 1, ( unsigned portBASE_TYPE ) sizeof( signed char ) );
 
 	/* Pass back a reference to the queues so the serial API file can 
@@ -136,7 +136,7 @@ void vUART1_ISR_Wrapper( void )
 
 	/* Call the handler.  This must be a separate function from the wrapper
 	to ensure the correct stack frame is set up. */
-	__asm volatile ("bl vUART2_ISR_Handler");
+	__asm volatile ("bl vUART1_ISR_Handler");
 
 	/* Restore the context of whichever task is going to run next. */
 	portRESTORE_CONTEXT();
@@ -152,10 +152,12 @@ portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
 	{
 		case serSOURCE_ERROR :	/* Not handling this, but clear the interrupt. */
 								cChar = U1LSR;
+								
 								break;
 
 		case serSOURCE_THRE	:	/* The THRE is empty.  If there is another
 								character in the Tx queue, send it now. */
+								
 								if( xQueueReceiveFromISR( xCharsForTx1, &cChar, &xHigherPriorityTaskWoken ) == pdTRUE )
 								{
 									U1THR = cChar;
@@ -169,9 +171,11 @@ portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
 								}
 								break;
 
-		case serSOURCE_RX_TIMEOUT :
+		case serSOURCE_RX_TIMEOUT : 
+								
 		case serSOURCE_RX	:	/* A character was received.  Place it in 
 								the queue of received characters. */
+								
 								cChar = U1RBR;
 								xQueueSendFromISR( xRxedChars1, &cChar, &xHigherPriorityTaskWoken );
 								break;
@@ -188,6 +192,7 @@ portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
 	/* Clear the ISR in the VIC. */
 	VICVectAddr = serCLEAR_VIC_INTERRUPT;
 }
+
 
 #endif
 

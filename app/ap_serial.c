@@ -33,6 +33,7 @@
 #include "sh_data.h"
 #include "sh_kanal.h"
 #include "sh_tarik.h"
+#include "sh_modem.h"
 
 #include "sh_utils.h"
 
@@ -212,7 +213,10 @@ void cmd_shell()	{
 	tinysh_add_command(&baca_rom_cmd);
 
 	tinysh_add_command(&tarik_data_cmd);
-	
+#ifdef PAKAI_SERIAL_1	
+	tinysh_add_command(&cek_modem_cmd);
+	tinysh_add_command(&set_modem_echo_cmd);
+#endif
 	#ifdef PAKAI_ADC_7708
 	tinysh_add_command(&cek_adc_cmd);
 	#endif
@@ -337,7 +341,7 @@ static portTASK_FUNCTION( vComRxTask, pvParameters )		{
 signed char cExpectedByte, cByteRxed;
 portBASE_TYPE xResyncRequired = pdFALSE, xErrorOccurred = pdFALSE;
 portBASE_TYPE xGotChar;
-int ch, mm=0;
+int ch, mm=0,x;
 char s[30];
 
 	/* Just to stop compiler warnings. */
@@ -387,6 +391,14 @@ char s[30];
 	vTaskDelay(100);
 	sprintf(s, "%s$ ", PROMPT);
 	
+	#ifdef PAKAI_SERIAL_1
+	uprintf(" Init Modem\r\n");
+		vTaskDelay(100);
+		
+		flagModem = CEK_AT;
+		perintah_modem(flagModem);
+			
+	#endif
 	
 	#ifdef PAKAI_FREERTOS_CLI		// gak jadi pake FreeRTOS-CLI
 	uprintf(s);

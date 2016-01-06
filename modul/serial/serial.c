@@ -19,7 +19,7 @@
 
     This file is part of the FreeRTOS distribution.
 
-    FreeRTOS is free software; you can redistribute it and/or modify it under
+    FreeRTOS 57is free software; you can redistribute it and/or modify it under
     the terms of the GNU General Public License (version 2) as published by the
     Free Software Foundation >>!AND MODIFIED BY!<< the FreeRTOS exception.
 
@@ -333,9 +333,9 @@ xComPortHandle xSerialPortInit2( unsigned portLONG ulWantedBaud, unsigned portBA
 			U2FCR = ( serFIFO_ON | serCLEAR_FIFO );
 			/* Setup transmission format. */
 			U2LCR = serNO_PARITY | ser1_STOP_BIT | ser8_BIT_CHARS;
-			//#define serUART0_VIC_CHANNEL			( ( unsigned portLONG ) 0x0006 )
-			//#define serUART0_VIC_CHANNEL_BIT		( ( unsigned portLONG ) 0x0040 )
-			//#define serUART0_VIC_ENABLE				( ( unsigned portLONG ) 0x0020 )
+			#define serUART0_VIC_CHANNEL			( ( unsigned portLONG ) 0x0006 )
+			#define serUART0_VIC_CHANNEL_BIT		( ( unsigned portLONG ) 0x0040 )
+			#define serUART0_VIC_ENABLE				( ( unsigned portLONG ) 0x0020 )
 
 			/* Setup the VIC for the UART. */
 			//VICIntSelect &= ~( serUART0_VIC_CHANNEL_BIT );
@@ -481,6 +481,7 @@ xComPortHandle xSerialPortInit1( unsigned portLONG ulWantedBaud, unsigned portBA
 			/* Setup the baud rate:  Calculate the divisor value. */
 			ulWantedClock = ulWantedBaud * serWANTED_CLOCK_SCALING;
 			ulDivisor = configCPU_CLOCK_HZ / ulWantedClock;
+			//U1ACR |=BIT(0) ;//enable auto baud
 			/* Set the DLAB bit so we can access the divisor. */
 			U1LCR |= serDLAB;
 			/* Setup the divisor. */
@@ -489,24 +490,24 @@ xComPortHandle xSerialPortInit1( unsigned portLONG ulWantedBaud, unsigned portBA
 			U1DLM = ( unsigned portCHAR ) ( ulDivisor & ( unsigned portLONG ) 0xff );
 			/* Turn on the FIFO's and clear the buffers. */
 			U1FCR = ( serFIFO_ON | serCLEAR_FIFO );
+			//U1MCR |= BIT(6) ;
+			//U1MCR |= BIT(7) ;
+			//U1LCR &= 0x03;
 			/* Setup transmission format. */
 			U1LCR = serNO_PARITY | ser1_STOP_BIT | ser8_BIT_CHARS;
-			//#define serUART0_VIC_CHANNEL			( ( unsigned portLONG ) 0x0006 )
-			//#define serUART0_VIC_CHANNEL_BIT		( ( unsigned portLONG ) 0x0040 )
-			//#define serUART0_VIC_ENABLE				( ( unsigned portLONG ) 0x0020 )
 
 			/* Setup the VIC for the UART. */
-			//VICIntSelect &= ~( serUART0_VIC_CHANNEL_BIT );
+			VICIntSelect &= ~( serUART1_VIC_CHANNEL_BIT );
 			
 			#if 1
-			VICIntSelect &= ~BIT(27);
-			VICVectAddr27 = ( portLONG ) vUART1_ISR_Wrapper;
-			VICVectCntl27 = (serUART0_VIC_ENABLE | 27);
+			VICIntSelect &= ~BIT(7);
+			VICVectAddr7 = ( portLONG ) vUART1_ISR_Wrapper;
+			VICVectCntl7 = (serUART1_VIC_ENABLE | 7);
 		
-			/* Enable UART2 interrupts. */
+			/* Enable UART1 interrupts. */
 			U1IER |= serENABLE_INTERRUPTS;
 			
-			VICIntEnable |= BIT(27);
+			VICIntEnable |= BIT(7);
 			#endif
 			
 		}
@@ -545,10 +546,11 @@ signed portBASE_TYPE xSerialPutChar1 ( xComPortHandle pxPort1, signed portCHAR c
 	
 	portENTER_CRITICAL();
 	{
+		
 		/* Is there space to write directly to the UART? */
 		if( *plTHREEmpty1 == ( portLONG ) pdTRUE )
 		{
-			//printf2(": kosong\r\n");
+			//qsprintf(": kosong\r\n");
 			
 			//* We wrote the character directly to the UART, so was
 			//successful. 
@@ -566,11 +568,11 @@ signed portBASE_TYPE xSerialPutChar1 ( xComPortHandle pxPort1, signed portCHAR c
 			
 			/*
 			if (xReturn == pdPASS)
-				printf2("%s(): bs masuk\r\n", __FUNCTION__);
+				qsprintf("%s(): bs masuk\r\n", __FUNCTION__);
 			else
-				printf2("%s(): masih penuh\r\n", __FUNCTION__);
+				qsprintf("%s(): masih penuh\r\n", __FUNCTION__);
 			*/
-			
+			//qsprintf("%x , %x: bs masuk\r\n", *plTHREEmpty1,xReturn);
 			#if 1
 			/* Depending on queue sizing and task prioritisation:  While we
 			were blocked waiting to post interrupts were not disabled.  It is
@@ -578,9 +580,10 @@ signed portBASE_TYPE xSerialPutChar1 ( xComPortHandle pxPort1, signed portCHAR c
 			case we need to start the Tx off again. */
 			if( ( *plTHREEmpty1 == ( portLONG ) pdTRUE ) && ( xReturn == pdPASS ) )
 			{
-				xQueueReceive( Qtx1, &cOutChar, serNO_BLOCK );
+				xQueueReceive( Qtx1, &cOutChar, xBlockTime);
 				*plTHREEmpty1 = pdFALSE;
 				U1THR = cOutChar;
+			//	qsprintf("%s(): bs masuk\r\n", __FUNCTION__);
 			}
 			#endif
 		}
@@ -596,10 +599,12 @@ void vSerialPutString1( xComPortHandle pxPort1, const signed char * const pcStri
 	pxNext = ( signed portCHAR * ) pcString;
 	while( *pxNext )
 	{	
-		//xSerialPutChar2 (pxPort2, *pxNext, serNO_BLOCK);
-		xSerialPutChar1 (pxPort1, *pxNext, 256);
-		//xSerialPutChar2( 1, *pxNext, 1000 );	// 100 OK
+		//xSerialPutChar1 (pxPort1, *pxNext, serNO_BLOCK);
+		//xSerialPutChar1 (pxPort1, *pxNext, 1024);
+		xSerialPutChar1( pxPort1, *pxNext, 100);	// 100 OK
+		
 		pxNext++;
+		
 	}
 }
 
@@ -643,7 +648,6 @@ extern void ( vUART_ISR_Wrapper )( void );
 	/* The queues are used in the serial ISR routine, so are created from
 	serialISR.c (which is always compiled to ARM mode. */
 	vSerialISRCreateQueues( uxQueueLength*8, &xRxedChars, &xCharsForTx, &plTHREEmpty );
-
 	if( 
 		( xRxedChars != serINVALID_QUEUE ) && 
 		( xCharsForTx != serINVALID_QUEUE ) && 
