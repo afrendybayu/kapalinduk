@@ -161,6 +161,10 @@ void perintah_modem(char cmd)	{
 			hasil_modem = Echo_on_cmd();
 		if (cmd==OPR_TSEL)
 			hasil_modem = set_opr_tsel();
+		if (cmd==CEK_SIM_OPR)
+			hasil_modem = sim_opr_cmd();
+		if (cmd==RST_MODEM)
+			hasil_modem = reset_modem_cmd();
 		if (hasil_modem)
 			flagModem = 0;
 		
@@ -194,6 +198,26 @@ int cek_AT_cmd()	{
 	return 1;
 	}
 
+int reset_modem_cmd()	{
+		kirimCmdModem("AT+CFUN=0\r\n",sRespM);		
+		if (strncmp(sRespM,"OK", 2)!=0)	{
+		//if (strncmp(sRespM,"\r\n", 2)!=0)
+				printf("Respon : %s\r\n", sRespM);	}
+		kirimCmdModem("AT+CFUN=1\r\n",sRespM);		
+		if (strncmp(sRespM,"OK", 2)!=0)	{
+		//if (strncmp(sRespM,"\r\n", 2)!=0)
+				printf("Respon : %s\r\n", sRespM);	}
+	return 1;
+}
+
+
+int sim_opr_cmd()	{
+		kirimCmdModem("AT+COPS?\r\n",sRespM);		
+		if (strncmp(sRespM,"OK", 2)!=0)	{
+		//if (strncmp(sRespM,"\r\n", 2)!=0)
+				printf("Respon : %s\r\n", sRespM);	}
+	return 1;
+}
 
 int Echo_off_cmd() {
 		kirimCmdModem("ATE0\r\n",sRespM);

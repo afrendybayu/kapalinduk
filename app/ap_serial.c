@@ -217,6 +217,8 @@ void cmd_shell()	{
 	tinysh_add_command(&cek_modem_cmd);
 	tinysh_add_command(&set_modem_echo_cmd);
 	tinysh_add_command(&set_modem_opr_cmd);
+	tinysh_add_command(&cek_sim_opr_cmd);
+	tinysh_add_command(&modem_reset_cmd);
 #endif
 	#ifdef PAKAI_ADC_7708
 	tinysh_add_command(&cek_adc_cmd);

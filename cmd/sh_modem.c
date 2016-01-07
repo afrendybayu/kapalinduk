@@ -6,12 +6,25 @@
 #include "ap_serial1.h"
 
 
-
+void modem_reset() {
+	printf("Reset Modem ");
+	vTaskDelay(100);
+	flagModem = RST_MODEM;
+	perintah_modem(flagModem);
+}
 
 void cek_modem()	{
 	printf(" Cek AT Modem \r\n");
 	vTaskDelay(100);
 	flagModem = CEK_AT;
+	perintah_modem(flagModem);
+	}
+	
+
+void cek_sim_opr()	{
+	printf(" Current Operator\r\n");
+	vTaskDelay(100);
+	flagModem = CEK_SIM_OPR;
 	perintah_modem(flagModem);
 	}
 	

@@ -116,6 +116,8 @@
 	#define ECHO_OFF			99
 	#define ECHO_ON				98
 	#define	OPR_TSEL			20
+	#define	CEK_SIM_OPR			30
+	#define RST_MODEM			40
 	#endif
 
 //#define PAKAI_SERIAL_2
