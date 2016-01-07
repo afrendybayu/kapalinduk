@@ -128,6 +128,8 @@
 	#define debug_ASTM
 #endif
 
+#define PRODUK_LVL
+
 #define PAKAI_SPI_SSP1
 #ifdef  PAKAI_SPI_SSP1
 	#define PAKAI_ADC_7708 

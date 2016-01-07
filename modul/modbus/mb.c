@@ -239,11 +239,11 @@ unsigned char simpan_mb_gwr(int jml, unsigned char *s, int reg)	{
 		//printf("dfloat: %08x %.3f\r\n", tmpFl, *fl);
 	}
 	
-	#if 0
+	#ifdef PRODUK_LVL
 	if (jml == 4){
-		if (st_data[i].mv_avg == 1){
-			nox = st_data[i].no_ma -1;
-			st_mavg[nox].ke_0 = st_mavg[nox-4].ke_0 - st_mavg[nox-3].ke_0;
+		if (st_data[j].mv_avg == 1){
+			nox = st_data[j].no_ma -1;
+			st_mavg[nox].ke_0 = data_f[no-3] - data_f[no-2];
 		}
 		else data_f[no+1] =  data_f[no-3] - data_f[no-2];	
 	}
