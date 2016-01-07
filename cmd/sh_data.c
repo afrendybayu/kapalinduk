@@ -230,7 +230,7 @@ char set_data(int argc, char **argv)		{
 }
 
 void set_data_default()		{
-	int i, j;
+	int i, j, di=0;
 	
 	for (j=0; j<JML_SUMBER; j++)	{
 		struct t_data *st_data;
@@ -244,9 +244,10 @@ void set_data_default()		{
 		
 		printf("  %s(): Mallok @ %X\r\n", __FUNCTION__, st_data);
 		for (i=0; i<PER_SUMBER; i++)	{
+			di++;
 			sprintf(st_data[i].nama, "data %d", j*PER_SUMBER+i+1);
 			//st_data[i].id      = j*PER_SUMBER+i+1;
-			st_data[i].id      = 0;
+			st_data[i].id      = 1000+di;
 			st_data[i].rangeL  = -50;
 			st_data[i].batasLL = 0;
 			st_data[i].batasL  = 10;
