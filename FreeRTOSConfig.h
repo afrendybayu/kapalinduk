@@ -114,6 +114,8 @@
 	#define BACA_SMS_TUNGGAL	8
 	#define KIRIM_SMS			16
 	#define ECHO_OFF			99
+	#define ECHO_ON				98
+	#define	OPR_TSEL			20
 	#endif
 
 //#define PAKAI_SERIAL_2

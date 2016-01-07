@@ -20,6 +20,7 @@
 #ifdef PAKAI_SERIAL_1
 int cek_AT_cmd();
 int Echo_off_cmd();
+int Echo_on_cmd(); 
 #endif
 
 

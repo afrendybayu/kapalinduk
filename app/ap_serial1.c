@@ -157,6 +157,10 @@ void perintah_modem(char cmd)	{
 			hasil_modem = cek_AT_cmd();
 		if (cmd==ECHO_OFF)
 			hasil_modem = Echo_off_cmd();
+		if (cmd==ECHO_ON)
+			hasil_modem = Echo_on_cmd();
+		if (cmd==OPR_TSEL)
+			hasil_modem = set_opr_tsel();
 		if (hasil_modem)
 			flagModem = 0;
 		
@@ -169,12 +173,11 @@ int cek_AT_cmd()	{
 		if (strncmp(sRespM,"OK", 2)!=0)	{
 		//if (strncmp(sRespM,"\r\n", 2)!=0)
 				printf("Respon : %s\r\n", sRespM);	}
-			
-			kirimCmdModem("AT+CGATT=1\r\n",sRespM);	
+	/*		
+		kirimCmdModem("AT+CGATT=1\r\n",sRespM);	
 		if (strncmp(sRespM,"OK", 2)!=0)	{
 		//if (strncmp(sRespM,"\r\n", 2)!=0)
 				printf("Respon : %s\r\n", sRespM);	}
-		
 		kirimCmdModem("AT+CGDCONT=1,\"IP\",\"internet\"\r\n",sRespM);		
 		if (strncmp(sRespM,"OK", 2)!=0)	{
 		//if (strncmp(sRespM,"\r\n", 2)!=0)
@@ -187,19 +190,38 @@ int cek_AT_cmd()	{
 		if (strncmp(sRespM,"OK", 2)!=0)	{
 		//if (strncmp(sRespM,"\r\n", 2)!=0)
 				printf("Respon : %s\r\n", sRespM);	}
-		
-		
-		
-		return 1;
+	*/
+	return 1;
 	}
 
 
 int Echo_off_cmd() {
+		kirimCmdModem("ATE0\r\n",sRespM);
+		if (strncmp(sRespM,"OK", 2)!=0)	{
+		//if (strncmp(sRespM,"\r\n", 2)!=0)
+				printf("Respon : %s\r\n", sRespM);}
+		kirimCmdModem("AT&W\r\n",sRespM);
+		if (strncmp(sRespM,"OK", 2)!=0)	{
+		//if (strncmp(sRespM,"\r\n", 2)!=0)
+				printf("Respon : %s\r\n", sRespM);}
+	return 1;
+}
+
+int Echo_on_cmd() {
 		kirimCmdModem("ATE1\r\n",sRespM);
 		if (strncmp(sRespM,"OK", 2)!=0)	{
 		//if (strncmp(sRespM,"\r\n", 2)!=0)
 				printf("Respon : %s\r\n", sRespM);}
 		kirimCmdModem("AT&W\r\n",sRespM);
+		if (strncmp(sRespM,"OK", 2)!=0)	{
+		//if (strncmp(sRespM,"\r\n", 2)!=0)
+				printf("Respon : %s\r\n", sRespM);}
+	return 1;
+}
+
+int set_opr_tsel() {
+		
+		kirimCmdModem("AT+COPS=4,0,\"TELKOMSEL\"",sRespM);
 		if (strncmp(sRespM,"OK", 2)!=0)	{
 		//if (strncmp(sRespM,"\r\n", 2)!=0)
 				printf("Respon : %s\r\n", sRespM);}
