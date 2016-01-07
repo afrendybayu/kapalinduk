@@ -228,9 +228,9 @@ unsigned char simpan_mb_gwr(int jml, unsigned char *s, int reg)	{
 		tmpFl = ((s[i*4+0] & 0xFF)<<24) | ((s[i*4+1] & 0xFF)<<16) | ((s[i*4+2] & 0xFF)<<8) | (s[i*4+3] & 0xFF);
 		fl = (float *)&tmpFl;
 		
-		if (st_data[i].mv_avg == 1)
+		if (st_data[j].mv_avg == 1)
 			{
-				nox = st_data[i].no_ma -1;
+				nox = st_data[j].no_ma -1;
 				st_mavg[nox].ke_0 = *fl;
 			}
 		else data_f[no] = *fl;
