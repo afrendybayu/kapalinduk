@@ -81,7 +81,7 @@
  *----------------------------------------------------------*/
 
 
-#define PROMPT				"Well_Noted"
+#define PROMPT				"Tumbal"
 #define BOARD_SANTER		"Santer"
 #define BOARD_SANTER_v1_0
 //#define BOARD_SANTER_versi	"v1.2"
