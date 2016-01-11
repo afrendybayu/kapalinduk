@@ -358,6 +358,7 @@ int kirim_respon_mb(int jml, char *s, int timeout, int serial)		{
 		#endif
 		vTaskDelay(timeout);
 		disTX2_485();
+		// kalo ada gwr 20 data jadi perlu 890ms ---> (85*10) + 40 + 100 = 890ms
 	}
 	#endif
 	
