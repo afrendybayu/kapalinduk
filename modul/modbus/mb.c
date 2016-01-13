@@ -249,7 +249,7 @@ unsigned char simpan_mb_gwr(int jml, unsigned char *s, int reg)	{
 		if (st_data[j].mv_avg == 1){
 			nox = st_data[j].no_ma -1;
 			selisih = data_f[no-3] - data_f[no-2];
-			st_mavg[nox].ke_0 = selisih;
+			st_mavg[nox+1].ke_0 = selisih;
 		}
 		else {
 			selisih =  data_f[no-3] - data_f[no-2];	
@@ -445,8 +445,8 @@ int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 		//uprintf("==> hapus file FILE SENDED\r\n");
 		#ifdef PAKAI_FILE_SIMPAN
 			//int kk = proses_file_terkirim(len, str);
-			int kk = proses_file_terkirim(len, strmb);
-			uprintf(" hasil sended : %d\r\n", kk);
+			//int kk = proses_file_terkirim(len, strmb);
+			//uprintf(" hasil sended : %d\r\n", kk);
 		#endif
 	}
 	if (cmd==KIRIM_IDMODEM)

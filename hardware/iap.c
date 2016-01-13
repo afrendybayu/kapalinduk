@@ -446,6 +446,11 @@ void load_data_rtc()	{
 			astm_f[i] = kf = *( (float*) &(*(&MEM_RTC0+(RTC_MEM_START+i+71))));
 		}
 		#endif
+		#if 1
+		for (i=0; i<JUM_MBUS; i++)		{
+			data_f[30+i] = kf = *( (float*) &(*(&MEM_RTC0+(RTC_MEM_START+i+91))));
+		}
+		#endif
 	}
 	else if (iap_return.ReturnCode == CMD_SUCCESS)	{		// setting KOSONG
 	

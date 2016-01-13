@@ -163,7 +163,7 @@
 #define configTICK_RATE_HZ          ( ( portTickType ) 1000 )
 #define configMAX_PRIORITIES		( ( unsigned portBASE_TYPE ) 4 )
 #define configMINIMAL_STACK_SIZE	( ( unsigned short ) 104 )
-#define configTOTAL_HEAP_SIZE		( ( size_t ) ( 40 * 1024 ) )			// LPC2387, max:53 << bisa dicompile, tapi tidak jalan
+#define configTOTAL_HEAP_SIZE		( ( size_t ) ( 45 * 1024 ) )			// LPC2387, max:53 << bisa dicompile, tapi tidak jalan
 																			// LPC2387, max:48
 #define configMAX_TASK_NAME_LEN		( 16 )
 #define configUSE_TRACE_FACILITY	1

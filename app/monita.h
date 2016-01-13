@@ -184,7 +184,7 @@ enum t_struct st_struct;
 
 #define JUM_GPIO	10
 #define JML_KANAL	10
-#define JUM_MBUS	40
+#define JUM_MBUS	70
 
 #define uchr		unsigned char
 //#define uint		unsigned int

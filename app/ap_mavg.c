@@ -14,11 +14,11 @@ void reset_mavg(int max)
 	
 	for (i=0; i<max; i++)
 	{
-		st_mavg[i].ke_4=0;
-		st_mavg[i].ke_3=0;
-		st_mavg[i].ke_2=0;
-		st_mavg[i].ke_1=0;
-		st_mavg[i].ke_0=0;
+		//st_mavg[i].ke_4=0;
+		st_mavg[i].ke_1=st_mavg[i].ke_0;
+		st_mavg[i].ke_2=st_mavg[i].ke_1;
+		st_mavg[i].ke_3=st_mavg[i].ke_2;
+		st_mavg[i].ke_4=st_mavg[i].ke_3;
 	}
 		
 }
@@ -101,6 +101,7 @@ void ngurut_mavg()
 {
 	int i,j,cnt_mavg,no;
 	struct t_data *st_data;
+	float kf;
 	
 	cnt_mavg = 0;
 	for (i=0; i<JML_SUMBER; i++)		
@@ -112,6 +113,8 @@ void ngurut_mavg()
 			{
 				no = i*PER_SUMBER+j;
 				st_mavg[cnt_mavg].nomer = no;
+				if (no >= 30) st_mavg[cnt_mavg].ke_0 = kf = *( (float*) &(*(&MEM_RTC0+(RTC_MEM_START+no+61))));
+				else st_mavg[cnt_mavg].ke_0 = 0;
 				cnt_mavg ++;
 			}
 		}
