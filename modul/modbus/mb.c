@@ -185,6 +185,7 @@ unsigned char simpan_mb_monita(int jml, unsigned char *s, int reg)	{
 unsigned char simpan_mb_gwr(int jml, unsigned char *s, int reg)	{
 	int i, j, k, tmpFl=0, ff=0, no=0;
 	float *fl;
+	float selisih;
 	unsigned char nox;
 	//int cnt;
 	
@@ -236,7 +237,7 @@ unsigned char simpan_mb_gwr(int jml, unsigned char *s, int reg)	{
 		else data_f[no] = *fl;
 		
 		#if 1
-			*(&MEM_RTC0+RTC_MEM_START+no+61)   = *( (int*) &fl); // krn santer reset2 mulu
+			*(&MEM_RTC0+RTC_MEM_START+no+61)   = *( (int*) fl); // krn santer reset2 mulu
 		#endif
 		//data_f[no] = *fl;
 
@@ -247,9 +248,16 @@ unsigned char simpan_mb_gwr(int jml, unsigned char *s, int reg)	{
 	if (jml == 4){
 		if (st_data[j].mv_avg == 1){
 			nox = st_data[j].no_ma -1;
-			st_mavg[nox].ke_0 = data_f[no-3] - data_f[no-2];
+			selisih = data_f[no-3] - data_f[no-2];
+			st_mavg[nox].ke_0 = selisih;
 		}
-		else data_f[no+1] =  data_f[no-3] - data_f[no-2];	
+		else {
+			selisih =  data_f[no-3] - data_f[no-2];	
+			data_f[no+1] =  selisih;	
+		}
+		#if 1
+			*(&MEM_RTC0+RTC_MEM_START+no+62)   = *( (int*) &selisih); // krn santer reset2 mulu
+		#endif
 	}
 	#endif
 	
