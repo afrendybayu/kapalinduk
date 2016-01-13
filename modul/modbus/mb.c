@@ -234,6 +234,10 @@ unsigned char simpan_mb_gwr(int jml, unsigned char *s, int reg)	{
 				st_mavg[nox].ke_0 = *fl;
 			}
 		else data_f[no] = *fl;
+		
+		#if 1
+			*(&MEM_RTC0+RTC_MEM_START+no+61)   = *( (int*) &fl); // krn santer reset2 mulu
+		#endif
 		//data_f[no] = *fl;
 
 		//printf("dfloat: %08x %.3f\r\n", tmpFl, *fl);
@@ -423,7 +427,7 @@ int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 	}
 	
 	if (cmd==READ_FILE_CONTENT)		{				// #define READ_FILE_CONTENT		25
-		//uprintf("==> Modbus READ FILE COntent skywave : %d :: %d\r\n", reg, len);
+		uprintf("==> Modbus READ FILE COntent skywave : %d :: %d\r\n", reg, len);
 		#ifdef PAKAI_FILE_SIMPAN
 			//baca_kirim_file(reg, len, str);
 			baca_kirim_file((reg-1), len, strmb);
@@ -434,7 +438,7 @@ int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 		#ifdef PAKAI_FILE_SIMPAN
 			//int kk = proses_file_terkirim(len, str);
 			int kk = proses_file_terkirim(len, strmb);
-			//uprintf(" hasil sended : %d\r\n", kk);
+			uprintf(" hasil sended : %d\r\n", kk);
 		#endif
 	}
 	if (cmd==KIRIM_IDMODEM)
