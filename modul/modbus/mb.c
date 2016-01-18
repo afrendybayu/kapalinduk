@@ -445,8 +445,8 @@ int respon_modbus(int cmd, int reg, int jml, char *str, int len)	{
 		//uprintf("==> hapus file FILE SENDED\r\n");
 		#ifdef PAKAI_FILE_SIMPAN
 			//int kk = proses_file_terkirim(len, str);
-			//int kk = proses_file_terkirim(len, strmb);
-			//uprintf(" hasil sended : %d\r\n", kk);
+			int kk = proses_file_terkirim(len, strmb);
+			uprintf(" hasil sended : %d\r\n", kk);
 		#endif
 	}
 	if (cmd==KIRIM_IDMODEM)

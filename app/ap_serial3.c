@@ -163,6 +163,7 @@ char src;
 		vTaskDelay(100);
 	} while(st_hw.init != uxTaskGetNumberOfTasks());
 	vTaskDelay(10000);	
+	//vTaskDelay(65000);	// 65 second for GWR
 
 	for( ;; )	{
 		if (mb_state==MB_REST)	{
