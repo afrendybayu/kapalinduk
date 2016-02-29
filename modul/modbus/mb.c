@@ -186,7 +186,6 @@ unsigned char simpan_mb_bem(int jml, unsigned char *s, int reg)	{
 	int i, j, k, tmpFl=0, ff=0, no=0;
 	int hasil;
 	float *fl;
-	float selisih;
 	unsigned char nox;
 	//int cnt;
 	
@@ -228,17 +227,20 @@ unsigned char simpan_mb_bem(int jml, unsigned char *s, int reg)	{
 		// 0B 03 08 01 02 03 04
 		//printf("%02x %02x %02x %02x : ", s[i*4+0], s[i*4+1], s[i*4+2], s[i*4+3]);
 		tmpFl = ((s[i*4+0] & 0xFF)<<24) | ((s[i*4+1] & 0xFF)<<16) | ((s[i*4+2] & 0xFF)<<8) | (s[i*4+3] & 0xFF);
-		//fl = (int *)tmpFl;
-		hasil = (int *) tmpFl;
-		fl = (float *)(tmpFl/100);
-		
+		//fl = (int *)&tmpFl;
+		hasil = (int) (tmpFl/10);
+		//printf("fl=%x\n\r",hasil);
 		if (st_data[j].mv_avg == 1)
 			{
 				nox = st_data[j].no_ma -1;
-				st_mavg[nox].ke_0 = *fl;
+				st_mavg[nox].ke_0 = hasil;
 			}
-		else data_f[no] = *fl;
+		else data_f[no] = (int) hasil;
+		//printf("hasil=%f\n\r",data_f[no]);
+		//printf("hex=%X\n\r",data_f[no]);
+		//printf("hex=%X\n\r",hasil);
 		
+		fl = &data_f[no];
 		#if 1
 			*(&MEM_RTC0+RTC_MEM_START+no+61)   = *( (int*) fl); // krn santer reset2 mulu
 		#endif

@@ -97,7 +97,7 @@ int cmd_modbus(int gg, int *dReg, char *src) {
 		if (src!=SRC_NOL)		{
 			//parsing_mb_cmd(s, &cmd, &dest);
 			parsing_mb_native_cmd(st_sumber[gg].form,outmb3,&destReg);
-			#if 1
+			#if 0
 			printf(" CMD: ");
 			for(k=0; k<8; k++)	{
 				printf("%02X ", outmb3[k]);
@@ -112,7 +112,7 @@ int cmd_modbus(int gg, int *dReg, char *src) {
 				case SRC_MB_GWR:
 					timeout = 20; break;
 				case SRC_MB_BEM:
-					timeout = 20; break;
+					timeout = 15; break;
 				case SRC_MB_NATIVE:
 					timeout = 50; break;
 				case SRC_MB_PM810:
@@ -193,7 +193,7 @@ char src;
 		else if (mb_state==MB_RESP)	{
 			//printf(">>> MB_RESP: %d\r\n", mbgilir);
 			xGotChar = xSerialGetChar3( xPort3, &ch, 100 );
-			//printf("|%02x ", (char) ch);
+			printf("|%02x ", (char) ch);
 			#if 1
 			if( xGotChar == pdTRUE )		
 			{
@@ -205,7 +205,7 @@ char src;
 					} 
 				else 
 					{
-					printf("%02x ", (char) ch);
+					//printf("%02x ", (char) ch);
 					//printf("%c ", (char) ch);
 					//if (nmb>8)	{
 						//nmb=0;
