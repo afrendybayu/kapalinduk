@@ -115,6 +115,7 @@ char set_sumber(int argc, char **argv)		{
 			}
 		}
 		#endif
+		#if 0
 		else if (strcmp(argv[2], "ket") == 0)	{
 			printf("  Set Keterangan ");
 
@@ -127,6 +128,7 @@ char set_sumber(int argc, char **argv)		{
 				printf(": %s\r\n", st_sumber[no].ket);
 			}
 		}
+		#endif
 		else if (strcmp(argv[2], "tipe") == 0)	{
 			st_sumber[no].tipe = atoi( argv[3] );
 			printf("  Tipe:%d\r\n", st_sumber[no].tipe);
@@ -190,7 +192,7 @@ void set_sumber_default()		{
 		st_sumber[i].tipe = 0;
 		st_sumber[i].status = 0;
 		strcpy(st_sumber[i].form, "");
-		strcpy(st_sumber[i].ket, "---");
+		//strcpy(st_sumber[i].ket, "---");
 	}
 	
 	//simpan_struct_block_rom(SEKTOR_ENV, SUMBER, 1, (char *) st_sumber);

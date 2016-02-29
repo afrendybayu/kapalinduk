@@ -184,7 +184,7 @@ enum t_struct st_struct;
 
 #define JUM_GPIO	10
 #define JML_KANAL	10
-#define JUM_MBUS	70
+#define JUM_MBUS	90
 
 #define uchr		unsigned char
 //#define uint		unsigned int
@@ -338,7 +338,7 @@ struct t_sumber {
 	unsigned int jmlReg;
 	char form[32];
 	char validForm;
-	char ket[32];
+	//char ket[32];
 };
 //struct t_sumber st_sumber[JML_SUMBER];
 
