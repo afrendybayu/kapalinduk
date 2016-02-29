@@ -97,7 +97,7 @@ int cmd_modbus(int gg, int *dReg, char *src) {
 		if (src!=SRC_NOL)		{
 			//parsing_mb_cmd(s, &cmd, &dest);
 			parsing_mb_native_cmd(st_sumber[gg].form,outmb3,&destReg);
-			#if 0
+			#if 1
 			printf(" CMD: ");
 			for(k=0; k<8; k++)	{
 				printf("%02X ", outmb3[k]);
@@ -110,6 +110,8 @@ int cmd_modbus(int gg, int *dReg, char *src) {
 				case SRC_MB_SANTER:
 					timeout = 50; break;
 				case SRC_MB_GWR:
+					timeout = 20; break;
+				case SRC_MB_BEM:
 					timeout = 20; break;
 				case SRC_MB_NATIVE:
 					timeout = 50; break;
@@ -203,7 +205,7 @@ char src;
 					} 
 				else 
 					{
-					//printf("%02x ", (char) ch);
+					printf("%02x ", (char) ch);
 					//printf("%c ", (char) ch);
 					//if (nmb>8)	{
 						//nmb=0;
@@ -232,7 +234,7 @@ char src;
 				}
 				
 				if (flag_ms==1 && nmb>=8)	{
-					//printf("hasil: %d\r\n", nmb);
+					printf("hasil: %d\r\n", nmb);
 					//printf("x%02x ", (char) ch);
 					balas = proses_mod3(nmb, strmb3, dReg, src);					//printf("--==> BALAS MB: %d\r\n", balas);
 					nmb = 0;
