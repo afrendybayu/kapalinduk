@@ -182,6 +182,80 @@ unsigned char simpan_mb_monita(int jml, unsigned char *s, int reg)	{
 	//printf("|mbus|\n\r");
 }
 
+unsigned char simpan_mb_bem(int jml, unsigned char *s, int reg)	{
+	int i, j, k, tmpFl=0, ff=0, no=0;
+	int hasil;
+	float *fl;
+	float selisih;
+	unsigned char nox;
+	//int cnt;
+	
+	struct t_data *st_data;
+	#if 0
+	struct t_env *st_env;
+	
+	cnt = st_env->n_mavg;
+	
+	struct t_mavg *st_mavg;
+	st_mavg = pvPortMalloc( cnt * sizeof (struct t_mavg) );
+	if (st_mavg == NULL)	{
+		printf(" %s(): ERR allok memory gagal !\r\n", __FUNCTION__);
+		vPortFree (st_mavg);
+		return 3;
+	}
+	#endif
+	
+	#ifdef ERROR_DATA_RATE
+		if (olah == 0xFFFF) olah = 0;
+	#endif
+	
+	//printf("jml: %d, reg: %d\r\n", jml, reg);
+	jml = jml/4;
+	for(i=0; i<jml; i++)	{
+		for (k=0; k<JML_SUMBER; k++ ) 	{
+			st_data = ALMT_DATA + k*JML_KOPI_TEMP;
+			for (j=0; j<PER_SUMBER; j++)	{
+				if ((reg+i)==st_data[j].id)	{
+					no = k*PER_SUMBER+j;
+					//printf("reg: %d, dataf %d\r\n", reg+i, (k*PER_SUMBER+j));
+					ff=1;
+					break;
+				}
+			}
+			if (ff==1)	break;
+		}
+		ff = 0;
+		// 0B 03 08 01 02 03 04
+		//printf("%02x %02x %02x %02x : ", s[i*4+0], s[i*4+1], s[i*4+2], s[i*4+3]);
+		tmpFl = ((s[i*4+0] & 0xFF)<<24) | ((s[i*4+1] & 0xFF)<<16) | ((s[i*4+2] & 0xFF)<<8) | (s[i*4+3] & 0xFF);
+		//fl = (int *)tmpFl;
+		hasil = (int *) tmpFl;
+		fl = (float *)(tmpFl/100);
+		
+		if (st_data[j].mv_avg == 1)
+			{
+				nox = st_data[j].no_ma -1;
+				st_mavg[nox].ke_0 = *fl;
+			}
+		else data_f[no] = *fl;
+		
+		#if 1
+			*(&MEM_RTC0+RTC_MEM_START+no+61)   = *( (int*) fl); // krn santer reset2 mulu
+		#endif
+		//data_f[no] = *fl;
+
+		//printf("dfloat: %08x %.3f\r\n", tmpFl, *fl);
+	}
+		
+	//vPortFree(st_mavg);
+	#ifdef ERROR_DATA_RATE
+		olah ++;
+		printf("s_m_k=%d\n\r", olah);
+	#endif
+	//printf("_____%s_____\r\n", __FUNCTION__);
+	//printf("|mbus|\n\r");
+}
+
 unsigned char simpan_mb_gwr(int jml, unsigned char *s, int reg)	{
 	int i, j, k, tmpFl=0, ff=0, no=0;
 	float *fl;

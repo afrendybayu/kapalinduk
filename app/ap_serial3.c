@@ -27,9 +27,9 @@ enum xcmd_conf	{
 	MB_REST, MB_REQ, MB_RESP, 
 } cmd_mb_state		__attribute__ ((section (".usbram1")));
 
-char* strcmd_srcmb[] 	= {" ","NATIVE", "PM810" , "SANTER" , "GWR" , NULL};
+char* strcmd_srcmb[] 	= {" ","NATIVE", "PM810" , "SANTER" , "GWR" , "BEM" , NULL};
 enum xcmd_conf_files	{
-	SRC_NOL, SRC_MB_NATIVE, SRC_MB_PM810, SRC_MB_SANTER, SRC_MB_GWR
+	SRC_NOL, SRC_MB_NATIVE, SRC_MB_PM810, SRC_MB_SANTER, SRC_MB_GWR, SRC_MB_BEM
 } cmd_conf_srcmb;
 
 
@@ -316,6 +316,8 @@ int proses_mod3(int mbn, char *mbstr, int dReg, char src)	{
 		switch (src){
 			case SRC_MB_SANTER:
 				simpan_mb_monita(ss[2], &ss[3], dReg); break;
+			case SRC_MB_BEM:
+				simpan_mb_bem(ss[2], &ss[3], dReg); break;
 			case SRC_MB_GWR:
 				simpan_mb_gwr(ss[2], &ss[3], dReg); break;
 			case SRC_MB_NATIVE:
